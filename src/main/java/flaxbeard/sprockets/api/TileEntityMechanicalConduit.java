@@ -1,0 +1,100 @@
+package flaxbeard.sprockets.api;
+
+import java.util.HashSet;
+
+import mcmultipart.multipart.PartSlot;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.Tuple;
+import net.minecraft.util.Vec3i;
+import flaxbeard.sprockets.api.network.MechanicalNetwork;
+import flaxbeard.sprockets.api.network.MechanicalNetworkRegistry;
+
+public abstract class TileEntityMechanicalConduit extends TileEntity implements IMechanicalConduit, ITickable
+{
+	public boolean initialized = false;
+	private boolean state = false;
+	private MechanicalNetwork network = null;
+
+	@Override
+	public void update()
+	{
+		if (!initialized)
+		{
+			this.initialize();
+		}
+	}
+	
+	private void initialize()
+	{
+		if (MechanicalNetworkRegistry.getInstance().hasDimension(this.worldObj))
+		{
+			MechanicalNetworkRegistry.newOrJoin(this);
+			this.initialized = true;
+		}
+		
+	}
+
+	@Override
+	public float maxSpeed()
+	{
+		return 0;
+	}
+
+	@Override
+	public float minTorque()
+	{
+		return 0;
+	}
+
+	@Override
+	public float maxTorque()
+	{
+		return 9999999F;
+	}
+
+	@Override
+	public float sizeMultiplier()
+	{
+		return 1F;
+	}
+
+	@Override
+	public void setState(boolean state)
+	{
+		this.state = state;
+	}
+
+	@Override
+	public boolean getState()
+	{
+		return this.state;
+	}
+
+	@Override
+	public MechanicalNetwork getNetwork()
+	{
+		return this.network;
+	}
+
+	@Override
+	public void setNetwork(MechanicalNetwork network)
+	{
+		this.network = network;
+	}
+	
+	@Override
+	public void invalidate()
+	{
+		getNetwork().removeConduit(this);
+		setNetwork(null);
+		super.invalidate();
+	}
+	
+	@Override
+	public void remove()
+	{
+		this.getWorld().destroyBlock(getPos(), true);
+	}
+
+}

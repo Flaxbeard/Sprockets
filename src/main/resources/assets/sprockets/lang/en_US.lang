@@ -1,0 +1,22 @@
+# MULTIPARTS
+item.sprockets.sprocket.wooden.name=Wooden Sprocket
+item.sprockets.bigSprocket.wooden.name=Large Wooden Sprocket
+item.sprockets.axle.wooden.name=Wooden Axle
+item.sprockets.sprocket.stone.name=Stone Sprocket
+item.sprockets.bigSprocket.stone.name=Large Stone Sprocket
+item.sprockets.axle.stone.name=Stone Axle
+item.sprockets.sprocket.iron.name=Iron Sprocket
+item.sprockets.bigSprocket.iron.name=Large Iron Sprocket
+item.sprockets.axle.iron.name=Iron Axle
+item.sprockets.sprocket.obsidian.name=Obsidian Sprocket
+item.sprockets.axle.obsidian.name=Obsidian Axle
+
+# BLOCKS
+tile.sprockets.windmill.name=Small Windmill
+
+# MISC
+itemGroup.sprockets=Sprockets
+
+# Items
+item.sprockets.wrench.name=Sprocket Wrench
+item.sprockets.crank.name=Crank

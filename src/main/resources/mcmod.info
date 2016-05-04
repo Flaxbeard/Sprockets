@@ -1,0 +1,16 @@
+[
+{
+  "modid": "sprockets",
+  "name": "Sprockets",
+  "description": "Simple mechanical power for Minecraft.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Flaxbeard"],
+  "credits": "Thanks to amadornes, Finvarra, Belgabor, and the Wizard Cartel.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": ["mcmultipart"]
+}
+]
