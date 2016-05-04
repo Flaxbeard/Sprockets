@@ -34,7 +34,7 @@ public class RenderPartSprocket extends MultipartSpecialRenderer
 		MechanicalNetwork network = sprocket.getNetwork();
 		if (network != null)
 		{
-			rotate = (network.rotation + network.speed * partialTicks) * LibConstants.RENDER_ROTATION_SPEED_MULTIPLIER;
+			rotate = (network.rotation + network.getSpeed() * partialTicks) * LibConstants.RENDER_ROTATION_SPEED_MULTIPLIER;
 		}
 		
 		int facing = sprocket.facing;

@@ -39,7 +39,7 @@ public class TileEntityWindmillSmallRenderer extends TileEntitySpecialRenderer
 			MechanicalNetwork network = windmill.getNetwork();
 			if (network != null)
 			{
-				rotate = (network.rotation + network.speed * partialTicks) * LibConstants.RENDER_ROTATION_SPEED_MULTIPLIER;
+				rotate = (network.rotation + network.getSpeed() * partialTicks) * LibConstants.RENDER_ROTATION_SPEED_MULTIPLIER;
 			}
 			if (network != null && windmill.getState())
 			{

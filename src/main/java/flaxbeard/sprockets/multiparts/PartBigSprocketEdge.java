@@ -17,15 +17,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.Tuple;
-import net.minecraft.util.Vec3i;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import flaxbeard.sprockets.api.IMechanicalConduit;
-import flaxbeard.sprockets.items.SprocketsItems;
 import flaxbeard.sprockets.lib.LibConstants;
 
 public class PartBigSprocketEdge extends PartSprocketBase implements ISlottedPart, IMechanicalConduit
@@ -187,7 +185,7 @@ public class PartBigSprocketEdge extends PartSprocketBase implements ISlottedPar
 	}
 	
 	@Override
-	public boolean onActivated(EntityPlayer player, ItemStack heldItem, PartMOP hit)
+	public boolean onActivated(EntityPlayer player, EnumHand hand,  ItemStack heldItem, PartMOP hit)
 	{
 		System.out.println(damage);
 		return false;
@@ -208,7 +206,7 @@ public class PartBigSprocketEdge extends PartSprocketBase implements ISlottedPar
 	@Override
 	public void addSelectionBoxes(List<AxisAlignedBB> list)
 	{
-		list.add(AxisAlignedBB.fromBounds(
+		list.add(new AxisAlignedBB(
 				RENDER_BOUNDS[facing].minX - parent.getX(),
 				RENDER_BOUNDS[facing].minY - parent.getY(),
 				RENDER_BOUNDS[facing].minZ - parent.getZ(),

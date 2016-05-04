@@ -6,8 +6,8 @@ import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import flaxbeard.sprockets.api.IMechanicalConduit;
 import flaxbeard.sprockets.lib.LibConstants;
@@ -541,5 +541,12 @@ public class MechanicalNetwork
 	{
 		this.addSpeed(f * (conduit.getState() ? 1.0F : -1.0F), g);
 	}
-	
+
+
+	public float getSpeed()
+	{
+		return isJammed() ? 0 : speed;
+	}
+
+
 }

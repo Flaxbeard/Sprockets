@@ -1,25 +1,18 @@
 package flaxbeard.sprockets.multiparts.items;
 
 
-import java.util.List;
-
 import mcmultipart.multipart.IMultipart;
 import mcmultipart.multipart.IMultipartContainer;
 import mcmultipart.multipart.MultipartHelper;
 import mcmultipart.multipart.MultipartRegistry;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import flaxbeard.sprockets.Sprockets;
 import flaxbeard.sprockets.multiparts.PartAxle;
-import flaxbeard.sprockets.multiparts.PartSprocket;
 
 public class ItemAxle extends ItemSprocketMultipart
 {
@@ -34,7 +27,7 @@ public class ItemAxle extends ItemSprocketMultipart
 	
 	@Override
 	public IMultipart createPart(World world, BlockPos pos, EnumFacing side,
-			Vec3 hit, ItemStack stack, EntityPlayer player)
+			Vec3d hit, ItemStack stack, EntityPlayer player)
 	{
 		PartAxle axle = new PartAxle();
 		axle.setFacing(side.ordinal());

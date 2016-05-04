@@ -1,12 +1,16 @@
 package flaxbeard.sprockets.multiparts;
 
+import java.util.List;
+
+import mcmultipart.multipart.INormallyOccludingPart;
 import mcmultipart.raytrace.PartMOP;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import flaxbeard.sprockets.api.PartMechanicalConduit;
 
 public abstract class PartSprocketBase extends PartMechanicalConduit
@@ -31,7 +35,7 @@ public abstract class PartSprocketBase extends PartMechanicalConduit
 	{
 		return hardness;
 	}
-	
+
 	@Override
 	public Material getMaterial()
 	{
@@ -120,7 +124,7 @@ public abstract class PartSprocketBase extends PartMechanicalConduit
 	{
 		float hardness = getHardness(hit);
 		Material mat = getMaterial();
-		ItemStack stack = player.getCurrentEquippedItem();
+		ItemStack stack = player.getHeldItemMainhand();
 		boolean effective = mat.isToolNotRequired();
 		if (!effective && stack != null)
 		{
@@ -144,6 +148,13 @@ public abstract class PartSprocketBase extends PartMechanicalConduit
 		{
 			return breakSpeed / hardness / 30F;
 		}
+	}
+	
+	
+	@Override
+	public ResourceLocation getModelPath()
+	{
+		return null;
 	}
 	
 

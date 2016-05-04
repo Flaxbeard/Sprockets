@@ -8,7 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,8 +17,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -32,7 +33,7 @@ import flaxbeard.sprockets.blocks.tiles.TileEntityWindmillSmall;
 public class BlockWindmillSmall extends BlockSprocketBase implements ITileEntityProvider, IWrenchable
 {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-	public static final PropertyBool CONNECT_TOP = PropertyBool.create("connectTop");
+	public static final PropertyBool CONNECT_TOP = PropertyBool.create("connecttop");
 	
 	public BlockWindmillSmall(String name, Material material, float hardness, float resistance)
 	{
@@ -49,6 +50,7 @@ public class BlockWindmillSmall extends BlockSprocketBase implements ITileEntity
 		return new TileEntityWindmillSmall();
 	}
 	
+	@Override
 	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
     {
 		TileEntityWindmillSmall te = (TileEntityWindmillSmall) worldIn.getTileEntity(pos);
@@ -59,30 +61,34 @@ public class BlockWindmillSmall extends BlockSprocketBase implements ITileEntity
 			worldIn.setBlockState(pos, state.withProperty(CONNECT_TOP, ct));
 			//System.out.println(te.directionFlipped);
 			
+			
 			te = (TileEntityWindmillSmall) worldIn.getTileEntity(pos);
-			te.directionFlipped = flipped;
 			te.connectedToTop = (byte) (ct ? 1 : 0);
-			worldIn.markBlockForUpdate(pos);
+
+			te.markDirty();
+			// TODO test
+			//te.directionFlipped = flipped;
+			//worldIn.markBlockForUpdate(pos);
 		}
     }
 	
 	
 	@Override
-	public boolean isOpaqueCube()
+	public boolean isOpaqueCube(IBlockState state)
 	{
 		return false;
 	}
 	
 	@Override
-	public boolean isSideSolid(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
+	public boolean isSideSolid(IBlockState base, IBlockAccess worldIn, BlockPos pos, EnumFacing side)
     {
         return side == EnumFacing.UP || side == EnumFacing.DOWN;
     }
 	
 	@Override
-	public int getRenderType()
+	public EnumBlockRenderType getRenderType(IBlockState state)
 	{
-		return 3;
+		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	
 	@Override
@@ -138,9 +144,9 @@ public class BlockWindmillSmall extends BlockSprocketBase implements ITileEntity
 		}
 	}
 	
-	protected BlockState createBlockState()
+	protected BlockStateContainer createBlockState()
 	{
-	    return new BlockState(this, new IProperty[] {FACING, CONNECT_TOP});
+	    return new BlockStateContainer(this, new IProperty[] {FACING, CONNECT_TOP});
 	}
 
 	@Override

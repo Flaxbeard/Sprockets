@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import flaxbeard.sprockets.lib.LibConstants;
 import mcmultipart.multipart.IMultipart;
 import mcmultipart.multipart.IMultipartContainer;
 import mcmultipart.multipart.ISlottedPart;
@@ -17,9 +16,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import flaxbeard.sprockets.lib.LibConstants;
 
 public class PartBigSprocketPlaceholder extends PartSprocketBaseNoConduit implements ISlottedPart
 {
@@ -52,6 +52,14 @@ public class PartBigSprocketPlaceholder extends PartSprocketBaseNoConduit implem
 			FACING.add(SprocketsMultiparts.rotatePartSlot(side, PartSlot.UP));
 		}				
 	}
+	
+
+	@Override
+	public ResourceLocation getModelPath()
+	{
+		return null;
+	}
+	
 
 	
 	
@@ -74,7 +82,7 @@ public class PartBigSprocketPlaceholder extends PartSprocketBaseNoConduit implem
 	@Override
 	public void addSelectionBoxes(List<AxisAlignedBB> list)
 	{
-		list.add(AxisAlignedBB.fromBounds(
+		list.add(new AxisAlignedBB(
 				RENDER_BOUNDS[facing].minX - parent.getX(),
 				RENDER_BOUNDS[facing].minY - parent.getY(),
 				RENDER_BOUNDS[facing].minZ - parent.getZ(),

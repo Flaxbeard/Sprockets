@@ -10,9 +10,9 @@ import mcmultipart.multipart.ISlottedPart;
 import mcmultipart.multipart.MultipartHelper;
 import mcmultipart.multipart.PartSlot;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.Tuple;
-import net.minecraft.util.Vec3i;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import flaxbeard.sprockets.api.IMechanicalConduit;
 

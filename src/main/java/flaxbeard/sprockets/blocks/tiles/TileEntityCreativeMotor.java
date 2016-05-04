@@ -4,10 +4,9 @@ import java.util.HashSet;
 
 import mcmultipart.multipart.PartSlot;
 import net.minecraft.util.Tuple;
-import net.minecraft.util.Vec3i;
-import flaxbeard.sprockets.api.TileEntityMechanicalConduit;
+import net.minecraft.util.math.Vec3i;
 
-public class TileEntityCreativeMotor extends TileEntityMechanicalConduit
+public class TileEntityCreativeMotor extends TileEntitySprocketBase
 {
 	private static final HashSet<Tuple<Vec3i, PartSlot>> CIS;
 	

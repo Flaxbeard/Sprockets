@@ -1,12 +1,7 @@
 package flaxbeard.sprockets.api;
 
-import java.util.HashSet;
-
-import mcmultipart.multipart.PartSlot;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.Tuple;
-import net.minecraft.util.Vec3i;
 import flaxbeard.sprockets.api.network.MechanicalNetwork;
 import flaxbeard.sprockets.api.network.MechanicalNetworkRegistry;
 

@@ -14,10 +14,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.Tuple;
-import net.minecraft.util.Vec3i;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.Vec3i;
 import flaxbeard.sprockets.api.IMechanicalConduit;
 import flaxbeard.sprockets.items.SprocketsItems;
 import flaxbeard.sprockets.lib.LibConstants;
@@ -74,7 +75,7 @@ public class PartSprocket extends PartSprocketBase implements ISlottedPart, IMec
 
 	
 	@Override
-	public boolean onActivated(EntityPlayer player, ItemStack heldItem, PartMOP hit)
+	public boolean onActivated(EntityPlayer player, EnumHand hand, ItemStack heldItem, PartMOP hit)
 	{
 		if (heldItem != null && heldItem.getItem() == SprocketsItems.crank)
 		{
@@ -105,6 +106,7 @@ public class PartSprocket extends PartSprocketBase implements ISlottedPart, IMec
 	public void addSelectionBoxes(List<AxisAlignedBB> list)
 	{
 		list.add(BOUNDS[facing]);
+
 	}
 
 	@Override

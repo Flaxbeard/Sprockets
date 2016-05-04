@@ -1,7 +1,5 @@
 package flaxbeard.sprockets.blocks.tiles;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -11,13 +9,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.Tuple;
-import net.minecraft.util.Vec3i;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenBeach;
@@ -27,12 +24,11 @@ import net.minecraft.world.biome.BiomeGenOcean;
 import net.minecraft.world.biome.BiomeGenPlains;
 import net.minecraft.world.biome.BiomeGenStoneBeach;
 import flaxbeard.sprockets.api.IWrenchable;
-import flaxbeard.sprockets.api.TileEntityMechanicalConduit;
 import flaxbeard.sprockets.blocks.SprocketsBlocks;
 import flaxbeard.sprockets.lib.LibConstants;
 import flaxbeard.sprockets.multiparts.SprocketsMultiparts;
 
-public class TileEntityWindmillSmall extends TileEntityMechanicalConduit implements IWrenchable
+public class TileEntityWindmillSmall extends TileEntitySprocketBase implements IWrenchable
 {
 	private static final ArrayList<HashSet<Tuple<Vec3i, PartSlot>>> CIS;
 	public int facing = -1;
@@ -125,7 +121,9 @@ public class TileEntityWindmillSmall extends TileEntityMechanicalConduit impleme
 				{
 					BlockPos pos2 = pos.add(facing <= 3 ? j : 0, y, facing <= 3 ? 0 : j);
 					BlockPos pos3 = pos2.add(directionVec);
-					if (worldObj.getBlockState(pos3).getBlock().isFullBlock())
+					
+					IBlockState statePos3 = worldObj.getBlockState(pos3);
+					if (statePos3.getBlock().isFullBlock(statePos3))
 					{
 						canSpin = 0;
 					}
@@ -198,7 +196,7 @@ public class TileEntityWindmillSmall extends TileEntityMechanicalConduit impleme
 	}
 	
 	@Override
-	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
 	{
 		NBTTagCompound data = pkt.getNbtCompound();
 		this.readFromNBT(data);
@@ -209,7 +207,7 @@ public class TileEntityWindmillSmall extends TileEntityMechanicalConduit impleme
 	{
 		NBTTagCompound data = new NBTTagCompound();
 		this.writeToNBT(data);
-		return new S35PacketUpdateTileEntity(pos, 0, data);
+		return new SPacketUpdateTileEntity(pos, 0, data);
 	}
 
 	

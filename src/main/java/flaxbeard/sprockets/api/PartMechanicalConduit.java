@@ -5,8 +5,8 @@ import java.util.List;
 import mcmultipart.multipart.Multipart;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import flaxbeard.sprockets.api.network.MechanicalNetwork;
 import flaxbeard.sprockets.api.network.MechanicalNetworkRegistry;
 

@@ -17,14 +17,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.Tuple;
-import net.minecraft.util.Vec3i;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import flaxbeard.sprockets.api.IMechanicalConduit;
-import flaxbeard.sprockets.items.SprocketsItems;
 import flaxbeard.sprockets.lib.LibConstants;
 
 public class PartBigSprocketCenter extends PartSprocketBase implements ISlottedPart, IMechanicalConduit
@@ -86,7 +86,7 @@ public class PartBigSprocketCenter extends PartSprocketBase implements ISlottedP
 	}
 	
 	@Override
-	public boolean onActivated(EntityPlayer player, ItemStack heldItem, PartMOP hit)
+	public boolean onActivated(EntityPlayer player, EnumHand hand, ItemStack heldItem, PartMOP hit)
 	{
 
 		return false;

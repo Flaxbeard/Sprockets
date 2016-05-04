@@ -119,7 +119,7 @@ public abstract class PartSprocketBaseNoConduit extends Multipart
 	{
 		float hardness = getHardness(hit);
 		Material mat = getMaterial();
-		ItemStack stack = player.getCurrentEquippedItem();
+		ItemStack stack = player.getHeldItemMainhand();
 		boolean effective = mat.isToolNotRequired();
 		if (!effective && stack != null)
 		{

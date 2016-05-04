@@ -131,7 +131,7 @@ public class MechanicalNetworkRegistry
 	
 	public void register(String id, MechanicalNetwork mechanicalNetwork, World dimension)
 	{
-		register(id, mechanicalNetwork, dimension.provider.getDimensionId());
+		register(id, mechanicalNetwork, dimension.provider.getDimension());
 	}
 
 	public void register(String id, MechanicalNetwork mechanicalNetwork, int dimension)
@@ -141,7 +141,7 @@ public class MechanicalNetworkRegistry
 	
 	public MechanicalNetwork getNetwork(String id, World dimension)
 	{
-		return getNetwork(id, dimension.provider.getDimensionId());
+		return getNetwork(id, dimension.provider.getDimension());
 	}
 	
 	public MechanicalNetwork getNetwork(String id, int dimension)
@@ -166,19 +166,19 @@ public class MechanicalNetworkRegistry
 	@SubscribeEvent
 	public void loadWorld(Load loadEvent)
 	{
-		if (!hasDimension(loadEvent.world))
-			this.networks.put(loadEvent.world.provider.getDimensionId(), new HashMap<String, MechanicalNetwork>());
+		if (!hasDimension(loadEvent.getWorld()))
+			this.networks.put(loadEvent.getWorld().provider.getDimension(), new HashMap<String, MechanicalNetwork>());
 	}
 	
 	@SubscribeEvent
 	public void unloadWorld(Unload unloadEvent)
 	{
-		this.networks.remove(unloadEvent.world.provider.getDimensionId());
+		this.networks.remove(unloadEvent.getWorld().provider.getDimension());
 	}
 
 	public boolean hasDimension(World worldObj)
 	{
-		return this.networks.containsKey(worldObj.provider.getDimensionId());
+		return this.networks.containsKey(worldObj.provider.getDimension());
 	}
 
 }
