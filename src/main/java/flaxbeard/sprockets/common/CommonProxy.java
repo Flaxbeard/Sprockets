@@ -23,6 +23,7 @@ public class CommonProxy
 		SprocketsHandlers.init();
 		
 		SprocketsMultiparts.init();
+		SprocketsItems.init();
 	}
 	
 	public void postInit()

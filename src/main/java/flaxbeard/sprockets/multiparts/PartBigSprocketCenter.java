@@ -191,11 +191,11 @@ public class PartBigSprocketCenter extends PartSprocketBase implements ISlottedP
 		switch(damage)
 		{
 			case 0:
-				return LibConstants.MAX_TORQUE_WOODEN_SPROCKET;
+				return LibConstants.MAX_TORQUE_WOODEN_SPROCKET * 3;
 			case 1:
-				return LibConstants.MAX_TORQUE_STONE_SPROCKET;
+				return LibConstants.MAX_TORQUE_STONE_SPROCKET * 3;
 		}
-		return LibConstants.MAX_TORQUE_IRON_SPROCKET;
+		return LibConstants.MAX_TORQUE_IRON_SPROCKET * 3;
 	}
 
 

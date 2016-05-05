@@ -9,9 +9,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import flaxbeard.sprockets.api.PartMechanicalConduit;
+import flaxbeard.sprockets.common.handler.WrenchHandler;
+import flaxbeard.sprockets.items.SprocketsItems;
+import flaxbeard.sprockets.lib.LibConstants;
 
 public abstract class PartSprocketBase extends PartMechanicalConduit
 {
@@ -155,6 +159,14 @@ public abstract class PartSprocketBase extends PartMechanicalConduit
 	public ResourceLocation getModelPath()
 	{
 		return null;
+	}
+	
+	@Override
+	public boolean onActivated(EntityPlayer player, EnumHand hand, ItemStack heldItem, PartMOP hit)
+	{
+		WrenchHandler.handle(player, getWorld(), getPos(), null, null, heldItem, this);
+
+		return false;
 	}
 	
 

@@ -50,12 +50,14 @@ public class MechanicalNetwork
 	private BlockPos jammedPoint = null;
 	public float rotation = 0;
 	public float speed = 0;
+	public float cachedSpeed = 0;
 	private int numSpeeds = 0;
 	public int handSpin = 0;
 	World world;
 	
 	private float minTorque = 0.0F;
 	private boolean torqueJammed = false;
+	private boolean torqueCapped = false;
 	private float maxTorque = 99999.0F;
 	
 	public HashSet<IMechanicalConduit> conduits;
@@ -69,6 +71,7 @@ public class MechanicalNetwork
 	private int shouldRecalculateJams;
 
 	public float torque;
+
 
 
 	
@@ -344,6 +347,8 @@ public class MechanicalNetwork
 	public void addSpeed(float speed, float torque, HashSet<String> history)
 	{
 		history.add(this.id);
+		
+
 		if (numSpeeds == 0)
 		{
 			this.speed = speed;
@@ -354,7 +359,17 @@ public class MechanicalNetwork
 		{
 			if (speed == this.speed)
 			{
-				this.torque += torque;
+				
+				if (this.torque + torque > this.maxTorque)
+				{
+					float torque2 = this.maxTorque - this.torque;
+					this.torque += torque;
+					torque = torque2;
+				}
+				else
+				{
+					this.torque += torque;
+				}
 			}
 			else
 			{
@@ -425,11 +440,17 @@ public class MechanicalNetwork
 		if (this.torque > this.maxTorque)
 		{
 			this.torque = this.maxTorque;
+			this.torqueCapped = true;
 		}
+		else
+		{
+			this.torqueCapped = false;
+		}
+		
 		
 		//System.out.println(this.maxTorquePos);
 	
-		
+		this.cachedSpeed = speed;
 		this.speed = 0;
 
 		
@@ -546,6 +567,31 @@ public class MechanicalNetwork
 	public float getSpeed()
 	{
 		return isJammed() ? 0 : speed;
+	}
+	
+	public float getCachedSpeed()
+	{
+		return isJammed() ? 0 : cachedSpeed;
+	}
+
+	public float getMaxTorque()
+	{
+		return this.maxTorque;
+	}
+	
+	public float getMinTorque()
+	{
+		return this.minTorque;
+	}
+	
+	public boolean isTorqueCapped()
+	{
+		return this.torqueCapped;
+	}
+	
+	public boolean isTorqueJammed()
+	{
+		return this.torqueJammed;
 	}
 
 

@@ -93,14 +93,14 @@ public class TileEntityWindmillSmallRenderer extends TileEntitySpecialRenderer
 		{
 			temp.renderHousing(null, 0, 0, 0, 0, 0, .0625f);
 		}
-		
 
 		GL11.glRotatef(rotate, 0.0F, 0.0F, 1.0F);
-		
-		
 	
 
 		temp.render(null, 0, 0, 0, 0, 0, .0625f);
+		
+		temp = null;
+
 		
 		GL11.glPopMatrix();
 	}

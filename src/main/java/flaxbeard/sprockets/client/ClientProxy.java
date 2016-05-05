@@ -78,6 +78,7 @@ public class ClientProxy extends CommonProxy
 		
 		registerItemRenders(SprocketsItems.wrench);
 		registerItemRenders(SprocketsItems.crank);
+		registerItemRenders(SprocketsItems.gyrometer);
 		
 		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(SprocketsBlocks.windmill), 0, TileEntityWindmillSmall.class);
 		registerRenders(SprocketsBlocks.windmill);

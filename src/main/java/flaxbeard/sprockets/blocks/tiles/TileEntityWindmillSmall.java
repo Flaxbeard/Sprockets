@@ -2,10 +2,12 @@ package flaxbeard.sprockets.blocks.tiles;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import mcmultipart.multipart.PartSlot;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -15,6 +17,8 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenBeach;
@@ -23,12 +27,13 @@ import net.minecraft.world.biome.BiomeGenHills;
 import net.minecraft.world.biome.BiomeGenOcean;
 import net.minecraft.world.biome.BiomeGenPlains;
 import net.minecraft.world.biome.BiomeGenStoneBeach;
+import flaxbeard.sprockets.api.IGyrometerable;
 import flaxbeard.sprockets.api.IWrenchable;
 import flaxbeard.sprockets.blocks.SprocketsBlocks;
 import flaxbeard.sprockets.lib.LibConstants;
 import flaxbeard.sprockets.multiparts.SprocketsMultiparts;
 
-public class TileEntityWindmillSmall extends TileEntitySprocketBase implements IWrenchable
+public class TileEntityWindmillSmall extends TileEntitySprocketBase implements IWrenchable, IGyrometerable
 {
 	private static final ArrayList<HashSet<Tuple<Vec3i, PartSlot>>> CIS;
 	public int facing = -1;
@@ -108,28 +113,58 @@ public class TileEntityWindmillSmall extends TileEntitySprocketBase implements I
 		Vec3i directionVec = dir.getDirectionVec();
 		if (!worldObj.isAirBlock(pos.add(directionVec)))
 		{
-			canSpin = 0;
+			canSpin = 2;
 		}
 		
-		//System.out.println(facing);
 		
-		for (int j = -1; j <= 1; j++)
+		// Make sure there aren't blocks or windmills blocking the blade
+		for (int w = -1; w <= 1; w++)
 		{
 			for (int y = -1; y <= 1; y++)
 			{
-				if (j != 0 || y != 0)
+				if (w != 0 || y != 0)
 				{
-					BlockPos pos2 = pos.add(facing <= 3 ? j : 0, y, facing <= 3 ? 0 : j);
+					BlockPos pos2 = pos.add(facing <= 3 ? w : 0, y, facing <= 3 ? 0 : w);
 					BlockPos pos3 = pos2.add(directionVec);
 					
 					IBlockState statePos3 = worldObj.getBlockState(pos3);
+					
+					// Check for obstructing blocks
 					if (statePos3.getBlock().isFullBlock(statePos3))
 					{
-						canSpin = 0;
+						canSpin = 2;
+						return;
 					}
-					if (worldObj.getBlockState(pos2).getBlock() == SprocketsBlocks.windmill)
+					
+					// Check for windmills
+					if (w == 0 || y == 0)
 					{
-						canSpin = 0;
+						if (worldObj.getBlockState(pos2).getBlock() == SprocketsBlocks.windmill)
+						{
+							canSpin = 2;
+							return;
+						}
+					}
+				}
+			}
+		}
+		
+		// Check for blocks in front of the windmill
+		for (int d = 2; d < 16; d++)
+		{
+			for (int w = -1; w <= 1; w++)
+			{
+				for (int y = -1; y <= 1; y++)
+				{
+					if ((w == 0 || y == 0))
+					{
+						BlockPos pos2 = pos.add(facing <= 3 ? w : (facing == 5 ? d : -d), y, facing <= 3 ? (facing == 3 ? d : -d) : w);					
+						IBlockState statePos3 = worldObj.getBlockState(pos2);
+						if (statePos3.getBlock() != Blocks.air)
+						{
+							canSpin = 3;
+							return;
+						}
 					}
 				}
 			}
@@ -221,6 +256,35 @@ public class TileEntityWindmillSmall extends TileEntitySprocketBase implements I
 			this.directionFlipped = !directionFlipped;
 		}
 		return false;
+	}
+
+	@Override
+	public void addInfo(List<ITextComponent> list)
+	{
+		if (canSpin == 2)
+		{
+			list.add(new TextComponentString("The windmill seems stuck on something"));
+		}
+		else if (canSpin == 3)
+		{
+			list.add(new TextComponentString("It seems that something is blocking the wind from reaching the windmill"));
+		}
+		else if (canSpin == 1)
+		{
+			if (speedMult == 1.5F)
+			{
+				list.add(new TextComponentString("A strong wind spins the blades of the windmill"));
+			}
+			else if (speedMult == 1.25F)
+			{
+				list.add(new TextComponentString("A steady wind spins the blades of the windmill"));
+			}
+			else
+			{
+				list.add(new TextComponentString("A gentle wind spins the blades of the windmill"));
+			}
+		}
+			
 	}
 
 }

@@ -88,7 +88,7 @@ public class PartSprocket extends PartSprocketBase implements ISlottedPart, IMec
 			System.out.println("SPEED: " + getNetwork().speed);
 		}
 
-		return false;
+		return super.onActivated(player, hand, heldItem, hit);
 	}
 	
 	@Override
