@@ -1,4 +1,5 @@
 {
+	"parent": "block/block",
 	"__comment": "Dummy for TESRS that still want to set their block break particle without using code",
 	"elements": [
 		{

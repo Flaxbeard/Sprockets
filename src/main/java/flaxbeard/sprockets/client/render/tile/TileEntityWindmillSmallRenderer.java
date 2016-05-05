@@ -50,6 +50,8 @@ public class TileEntityWindmillSmallRenderer extends TileEntitySpecialRenderer
 		}
 		else
 		{
+			GL11.glRotatef(90, 0.0F, 1.0F, 0.0F);
+
 			GL11.glTranslatef(0.0F, 0.0F, -0.4F);
 		}
 		
