@@ -5,6 +5,12 @@ import net.minecraft.util.ITickable;
 import flaxbeard.sprockets.api.network.MechanicalNetwork;
 import flaxbeard.sprockets.api.network.MechanicalNetworkRegistry;
 
+/**
+ * @author Flaxbeard
+ *
+ * A base class for TileEntities that are mechanical conduits.
+ * 
+ */
 public abstract class TileEntityMechanicalConduit extends TileEntity implements IMechanicalConduit, ITickable
 {
 	public boolean initialized = false;

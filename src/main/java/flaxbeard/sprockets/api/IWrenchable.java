@@ -6,6 +6,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+/**
+ * @author Flaxbeard
+ *
+ * Implement this interface if your block/te/multipart should have an effect when
+ * the Wrench is used on it.
+ */
 public interface IWrenchable
 {
 	public boolean wrench(EntityPlayer player, World world, BlockPos pos, IBlockState state, EnumFacing side);

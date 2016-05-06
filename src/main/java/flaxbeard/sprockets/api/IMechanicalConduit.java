@@ -11,8 +11,11 @@ import flaxbeard.sprockets.api.network.MechanicalNetwork;
 
 
 /**
+ * @author Flaxbeard
+ *
  * Implement this class in a TileEntity or IMultipart if it can receive
  * or output mechanical energy
+ * 
  */
 public interface IMechanicalConduit
 {

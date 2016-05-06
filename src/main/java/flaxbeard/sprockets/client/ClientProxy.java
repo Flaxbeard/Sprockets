@@ -11,10 +11,12 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import flaxbeard.sprockets.Sprockets;
 import flaxbeard.sprockets.blocks.BlockSprocketBase;
 import flaxbeard.sprockets.blocks.SprocketsBlocks;
+import flaxbeard.sprockets.blocks.tiles.TileEntityWindmill;
 import flaxbeard.sprockets.blocks.tiles.TileEntityWindmillSmall;
 import flaxbeard.sprockets.client.render.tile.RenderPartAxle;
 import flaxbeard.sprockets.client.render.tile.RenderPartBigSprocket;
 import flaxbeard.sprockets.client.render.tile.RenderPartSprocket;
+import flaxbeard.sprockets.client.render.tile.TileEntityWindmillRenderer;
 import flaxbeard.sprockets.client.render.tile.TileEntityWindmillSmallRenderer;
 import flaxbeard.sprockets.common.CommonProxy;
 import flaxbeard.sprockets.items.ItemSprocketBase;
@@ -56,10 +58,15 @@ public class ClientProxy extends CommonProxy
 	{
 		super.init();
 		registerRenders(SprocketsBlocks.creativeMotor);
+		
+		
 		MultipartRegistryClient.bindMultipartSpecialRenderer(PartSprocket.class, new RenderPartSprocket());
 		MultipartRegistryClient.bindMultipartSpecialRenderer(PartBigSprocketCenter.class, new RenderPartBigSprocket());
 		MultipartRegistryClient.bindMultipartSpecialRenderer(PartAxle.class, new RenderPartAxle());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindmillSmall.class, new TileEntityWindmillSmallRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindmill.class, new TileEntityWindmillRenderer());
+		
+		
 		ItemSprocketMultipart part = SprocketsMultiparts.sprocket;
 		for (int i = 0; i < part.subnames.length; i++)
 		{
@@ -80,7 +87,10 @@ public class ClientProxy extends CommonProxy
 		registerItemRenders(SprocketsItems.crank);
 		registerItemRenders(SprocketsItems.gyrometer);
 		
-		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(SprocketsBlocks.windmill), 0, TileEntityWindmillSmall.class);
+		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(SprocketsBlocks.windmillSmall), 0, TileEntityWindmillSmall.class);
+		registerRenders(SprocketsBlocks.windmillSmall);
+		
+		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(SprocketsBlocks.windmill), 0, TileEntityWindmill.class);
 		registerRenders(SprocketsBlocks.windmill);
 	}
 	

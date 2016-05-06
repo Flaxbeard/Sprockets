@@ -12,6 +12,10 @@
 			"west": {},
 			"north": {},
 			"south": {}
+		},
+		"connecttop": {
+			"true": {},
+			"false": {}
 		}
 	}
 }

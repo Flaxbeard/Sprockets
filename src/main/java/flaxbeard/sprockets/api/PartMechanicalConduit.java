@@ -10,6 +10,13 @@ import net.minecraft.util.math.BlockPos;
 import flaxbeard.sprockets.api.network.MechanicalNetwork;
 import flaxbeard.sprockets.api.network.MechanicalNetworkRegistry;
 
+
+/**
+ * @author Flaxbeard
+ *
+ * A base class for Multiparts that are mechanical conduits.
+ * 
+ */
 public abstract class PartMechanicalConduit extends Multipart implements IMechanicalConduit, ITickable
 {
 	public boolean initialized = false;

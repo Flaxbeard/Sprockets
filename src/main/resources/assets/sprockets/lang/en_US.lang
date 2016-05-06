@@ -12,11 +12,26 @@ item.sprockets.sprocket.obsidian.name=Obsidian Sprocket
 item.sprockets.axle.obsidian.name=Obsidian Axle
 
 # BLOCKS
-tile.sprockets.windmill.name=Small Windmill
+tile.sprockets.windmillSmall.name=Small Windmill
+tile.sprockets.windmill.name=Windmill
 
 # MISC
 itemGroup.sprockets=Sprockets
 
-# Items
+# ITEMS
 item.sprockets.wrench.name=Sprocket Wrench
 item.sprockets.crank.name=Crank
+item.sprockets.gyrometer.name=Gyrometer
+
+
+# GYROMETER OUTPUT
+sprockets.gyrometer.windmill.stuck=The windmill seems stuck on something
+sprockets.gyrometer.windmill.windBlockedFull=Not enough wind is reaching the windmill to spin it
+sprockets.gyrometer.windmill.windBlockedHigh=Not much wind is reaching the windmill, so it turns lazily
+sprockets.gyrometer.windmill.windBlockedMed=The flow of wind to the windmill seems interrupted, so it turns slowly
+sprockets.gyrometer.windmill.windBlockedLowSpeedHigh=A strong wind spins the blades of the windmill, slightly obstructed
+sprockets.gyrometer.windmill.windBlockedLowSpeedMed=A steady wind spins the blades of the windmill, slightly obstructed
+sprockets.gyrometer.windmill.windBlockedLowSpeedLow=A gentle wind spins the blades of the windmill, slightly obstructed
+sprockets.gyrometer.windmill.windSpeedHigh=A strong wind spins the blades of the windmill
+sprockets.gyrometer.windmill.windSpeedMed=A steady wind spins the blades of the windmill
+sprockets.gyrometer.windmill.windSpeedLow=A gentle wind spins the blades of the windmill

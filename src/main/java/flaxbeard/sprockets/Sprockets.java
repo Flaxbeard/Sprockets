@@ -1,7 +1,6 @@
 package flaxbeard.sprockets;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
@@ -11,6 +10,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import flaxbeard.sprockets.common.CommonProxy;
+import flaxbeard.sprockets.lib.LibConstants;
 import flaxbeard.sprockets.multiparts.SprocketsMultiparts;
 
 @Mod(modid = Sprockets.MODID, version = Sprockets.VERSION, dependencies = "required-after:mcmultipart")
@@ -25,6 +25,7 @@ public class Sprockets
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+    	LibConstants.loadConfig(event);
     	proxy.preInit();
     }
     

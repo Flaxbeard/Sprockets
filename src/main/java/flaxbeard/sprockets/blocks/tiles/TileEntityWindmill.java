@@ -34,17 +34,16 @@ import flaxbeard.sprockets.blocks.SprocketsBlocks;
 import flaxbeard.sprockets.lib.LibConstants;
 import flaxbeard.sprockets.multiparts.SprocketsMultiparts;
 
-public class TileEntityWindmillSmall extends TileEntitySprocketBase implements IWrenchable, IGyrometerable
+public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenchable, IGyrometerable
 {
 	private static final ArrayList<HashSet<Tuple<Vec3i, PartSlot>>> CIS;
 	public int facing = -1;
 	public byte canSpin = -1;
 	public float speedMult = 1.0F;
 	public float blockedMult = 1.0F;
-	public byte connectedToTop = -1;
 	public boolean directionFlipped = false;
 	
-	public TileEntityWindmillSmall()
+	public TileEntityWindmill()
 	{
 	}
 	
@@ -70,29 +69,22 @@ public class TileEntityWindmillSmall extends TileEntitySprocketBase implements I
 		
 		if (this.getNetwork() != null && canSpin == 1)
 		{
-			getNetwork().addSpeedFromBlock(this, LibConstants.SMALL_WINDMILL_SPEED * speedMult  * blockedMult * (directionFlipped ? -1 : 1), LibConstants.SMALL_WINDMILL_TORQUE * speedMult * blockedMult);
+			getNetwork().addSpeedFromBlock(this, LibConstants.WINDMILL_SPEED * speedMult  * blockedMult * (directionFlipped ? -1 : 1), LibConstants.WINDMILL_TORQUE * speedMult * blockedMult);
 		}
 		
 		
 		
-		if (this.worldObj.isRemote && canSpin == 1 && this.worldObj.getTotalWorldTime() % 10 == 0 && getNetwork() != null && !getNetwork().isJammed())
+		if (this.worldObj.isRemote && canSpin == 1 && getNetwork() != null && !getNetwork().isJammed())
 		{
+			
 			Vec3i dir = EnumFacing.VALUES[facing].getDirectionVec();
-			worldObj.spawnParticle(EnumParticleTypes.CLOUD, getPos().getX() + worldObj.rand.nextFloat(), getPos().getY() + worldObj.rand.nextFloat(), getPos().getZ() + worldObj.rand.nextFloat(), 
+			worldObj.spawnParticle(EnumParticleTypes.CLOUD, 
+					getPos().getX() + (worldObj.rand.nextFloat() - .5F) * (facing <= 3 ? 6F : 0F) + .5F, 
+					getPos().getY() + (worldObj.rand.nextFloat() - .5F) * 6F + .5F, 
+					getPos().getZ() + (worldObj.rand.nextFloat() - .5F) * (facing <= 3 ? 0F : 6F) + .5F, 
 					-dir.getX() * speedMult * 0.1F, 0, -dir.getZ() * speedMult * 0.1F, 0);
 		}
 	}
-	
-	public boolean connectedToTop()
-	{
-		if (connectedToTop == -1)
-		{
-			connectedToTop = (byte) (SprocketsBlocks.windmillSmall.getMetaFromState(worldObj.getBlockState(getPos())) >= 6 ? 1 : 0);
-		}
-		
-		return connectedToTop == 1;
-	}
-
 
 	private void checkSurroundings()
 	{
@@ -113,39 +105,47 @@ public class TileEntityWindmillSmall extends TileEntitySprocketBase implements I
 		
 		
 		Vec3i directionVec = dir.getDirectionVec();
-		if (!worldObj.isAirBlock(pos.add(directionVec)))
-		{
-			canSpin = 2;
-		}
+
 		
-		
-		// Make sure there aren't blocks or windmills blocking the blade
-		for (int w = -1; w <= 1; w++)
+		for (int w = -6; w <= 6; w++)
 		{
-			for (int y = -1; y <= 1; y++)
+			for (int y = -6; y <=6; y++)
 			{
 				if (w != 0 || y != 0)
 				{
 					BlockPos pos2 = pos.add(facing <= 3 ? w : 0, y, facing <= 3 ? 0 : w);
-					BlockPos pos3 = pos2.add(directionVec);
-					
-					IBlockState statePos3 = worldObj.getBlockState(pos3);
-					
-					// Check for obstructing blocks
-					if (statePos3.getBlock().isFullBlock(statePos3))
-					{
-						canSpin = 2;
-						return;
-					}
-					
+
 					// Check for windmills
-					if (w == 0 || y == 0)
+					if (Math.abs(w) + Math.abs(y) < 10)
 					{
-						if (worldObj.getBlockState(pos2).getBlock() == SprocketsBlocks.windmillSmall)
+						if (worldObj.getBlockState(pos2).getBlock() == SprocketsBlocks.windmill)
 						{
+							((TileEntityWindmill) worldObj.getTileEntity(pos2)).canSpin = 2;
 							canSpin = 2;
 							return;
 						}
+					}
+				}
+			}
+		}
+		
+		
+		// Make sure there aren't blocks or windmills blocking the blade
+		for (int w = -3; w <= 3; w++)
+		{
+			for (int y = -3; y <= 3; y++)
+			{
+				if (w != 0 || y != 0)
+				{
+					BlockPos pos2 = pos.add(facing <= 3 ? w : 0, y, facing <= 3 ? 0 : w);
+					
+					IBlockState statePos = worldObj.getBlockState(pos2);
+					
+					// Check for obstructing blocks
+					if (!statePos.getBlock().isReplaceable(worldObj, pos2))
+					{
+						canSpin = 2;
+						return;
 					}
 				}
 			}
@@ -155,49 +155,68 @@ public class TileEntityWindmillSmall extends TileEntitySprocketBase implements I
 		int airBlocks = 0;
 		int starts = 0;
 		int finishes = 0;
-		for (int w = -1; w <= 1; w++)
+		for (int w = -3; w <= 3; w++)
 		{
-			nonDepthLoop:
-			for (int y = -1; y <= 1; y++)
+			int minY = -3;
+			int maxY = 3;
+			
+			if (w == -3 || w == 3)
 			{
-				for (int d = 2; d < 16; d++)
+				minY = 0;
+				maxY = 0;
+			}
+			else if (w == -2 || w == 2)
+			{
+				minY = -1;
+				maxY = 1;
+			}
+			else if (w == -1 || w == 1)
+			{
+				minY = -2;
+				maxY = 2;
+			}
+			
+			nonDepthLoop:
+			for (int y = minY; y <= maxY; y++)
+			{
+				for (int d = 1; d < 24; d++)
 				{
-					if ((w == 0 || y == 0))
+					
+					BlockPos pos2 = pos.add(facing <= 3 ? w : (facing == 5 ? d : -d), y, facing <= 3 ? (facing == 3 ? d : -d) : w);					
+					IBlockState statePos3 = worldObj.getBlockState(pos2);
+					if (statePos3.getBlock() == Blocks.air)
 					{
-						
-						BlockPos pos2 = pos.add(facing <= 3 ? w : (facing == 5 ? d : -d), y, facing <= 3 ? (facing == 3 ? d : -d) : w);					
-						IBlockState statePos3 = worldObj.getBlockState(pos2);
-						if (statePos3.getBlock() == Blocks.air)
-						{
-							airBlocks++;
-						}
-						else
-						{
-							if (statePos3.getBlock().isFullBlock(statePos3))
-							{
-								continue nonDepthLoop;
-							}
-						}
-						
+						airBlocks++;
 					}
+					else
+					{								
+						if (statePos3.getBlock().isFullBlock(statePos3))
+						{
+							continue nonDepthLoop;
+						}
+					}
+					
+					
 					
 				}
 			}
 		}
 		
-		if (airBlocks > 65)
+		System.out.println(airBlocks);
+		
+		if (airBlocks > 500)
 		{
 			this.blockedMult = 1.0F;
 		}
-		else if (airBlocks > 60)
+		else if (airBlocks > 465)
 		{
 			this.blockedMult = 0.8F;
 		}
-		else if (airBlocks > 50)
+		else if (airBlocks > 385)
 		{
 			this.blockedMult = 0.5F;
 		}
-		else if (airBlocks > 40)
+		else if (airBlocks > 310)
 		{
 			this.blockedMult = 0.2F;
 		}
@@ -218,9 +237,9 @@ public class TileEntityWindmillSmall extends TileEntitySprocketBase implements I
 	@Override
 	public HashSet<Tuple<Vec3i, PartSlot>> multipartCisConnections()
 	{
-		if (facing == -1 && worldObj != null && worldObj.getBlockState(getPos()) != null && worldObj.getBlockState(getPos()).getBlock() == SprocketsBlocks.windmillSmall)
+		if (facing == -1 && worldObj != null && worldObj.getBlockState(getPos()) != null && worldObj.getBlockState(getPos()).getBlock() == SprocketsBlocks.windmill)
 		{
-			facing = SprocketsBlocks.windmillSmall.getMetaFromState(worldObj.getBlockState(getPos())) % 6;
+			facing = SprocketsBlocks.windmill.getMetaFromState(worldObj.getBlockState(getPos())) % 6;
 		}
 
 		

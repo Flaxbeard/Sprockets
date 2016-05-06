@@ -1,12 +1,13 @@
 package flaxbeard.sprockets.blocks;
 
+import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashSet;
 
-import net.minecraft.block.Block;
+import mcmultipart.multipart.PartSlot;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -19,7 +20,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Tuple;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -28,48 +32,69 @@ import flaxbeard.sprockets.api.IMechanicalConduit;
 import flaxbeard.sprockets.api.IWrenchable;
 import flaxbeard.sprockets.api.network.MechanicalNetworkHelper;
 import flaxbeard.sprockets.api.network.MechanicalNetworkRegistry;
-import flaxbeard.sprockets.blocks.tiles.TileEntityWindmillSmall;
+import flaxbeard.sprockets.blocks.tiles.TileEntityWindmill;
+import flaxbeard.sprockets.multiparts.SprocketsMultiparts;
 
-public class BlockWindmillSmall extends BlockSprocketBase implements ITileEntityProvider, IWrenchable
+public class BlockWindmill extends BlockSprocketBase implements ITileEntityProvider, IWrenchable
 {
-	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-	public static final PropertyBool CONNECT_TOP = PropertyBool.create("connecttop");
 	
-	public BlockWindmillSmall(String name, Material material, float hardness, float resistance)
+	private static final AxisAlignedBB[] BOUNDS;
+	static
+	{
+		BOUNDS = new AxisAlignedBB[6];
+		for (int side = 0; side < 6; side++)
+		{
+			BOUNDS[side] = SprocketsMultiparts.rotateAxis(side, 5F / 16F, 4F / 16F, 5F / 16F, 11F / 16F, 16F / 16F, 11F / 16F);
+		}		
+		
+		
+	}
+	
+	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	
+	public BlockWindmill(String name, Material material, float hardness, float resistance)
 	{
 		super(material, name,  ItemBlock.class);
 		this.setHardness(hardness);
 		this.setResistance(resistance);
 		this.setLightOpacity(0);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(CONNECT_TOP, false));
+		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+	}
+	
+	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side)
+	{
+		
+		return canThisFit(worldIn, pos, side) && super.canPlaceBlockOnSide(worldIn, pos, side);
+	}
+	
+	private boolean canThisFit(World worldIn, BlockPos pos, EnumFacing side)
+	{
+		int facing = side.ordinal();
+		for (int w = -3; w <= 3; w++)
+		{
+			for (int y = -3; y <= 3; y++)
+			{
+				if (w != 0 || y != 0)
+				{
+					BlockPos pos2 = pos.add(facing <= 3 ? w : 0, y, facing <= 3 ? 0 : w);
+					
+					IBlockState statePos = worldIn.getBlockState(pos2);
+					
+					// Check for obstructing blocks
+					if (!statePos.getBlock().isReplaceable(worldIn, pos2))
+					{
+						return false;
+					}
+				}
+			}
+		}
+		return true;
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta)
 	{
-		return new TileEntityWindmillSmall();
-	}
-	
-	@Override
-	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
-    {
-		TileEntityWindmillSmall te = (TileEntityWindmillSmall) worldIn.getTileEntity(pos);
-		if (te != null)
-		{
-			boolean ct = worldIn.getBlockState(pos.add(0, 1, 0)).getBlock() != Blocks.air;
-			boolean flipped = te.directionFlipped;
-			worldIn.setBlockState(pos, state.withProperty(CONNECT_TOP, ct));
-			//System.out.println(te.directionFlipped);
-			
-			
-			te = (TileEntityWindmillSmall) worldIn.getTileEntity(pos);
-			te.connectedToTop = (byte) (ct ? 1 : 0);
-
-			te.markDirty();
-			// TODO test
-			//te.directionFlipped = flipped;
-			//worldIn.markBlockForUpdate(pos);
-		}
+		return new TileEntityWindmill();
     }
 	
 	
@@ -107,8 +132,15 @@ public class BlockWindmillSmall extends BlockSprocketBase implements ITileEntity
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World worldIn, BlockPos pos)
 	{
-	    return Item.getItemFromBlock(SprocketsBlocks.windmillSmall);
+	    return Item.getItemFromBlock(SprocketsBlocks.windmill);
 	}
+	
+	
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return BOUNDS[((EnumFacing)state.getValue(FACING)).getIndex()];
+    }
 	
 	
 	public IBlockState getStateFromMeta(int meta)
@@ -126,7 +158,7 @@ public class BlockWindmillSmall extends BlockSprocketBase implements ITileEntity
 	        enumfacing = EnumFacing.NORTH;
 	    }
 	
-	    return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(CONNECT_TOP, conTop);
+	    return this.getDefaultState().withProperty(FACING, enumfacing);
 	}
 	
 	/**
@@ -136,7 +168,7 @@ public class BlockWindmillSmall extends BlockSprocketBase implements ITileEntity
 	{
 		if (state.getBlock() == this)
 		{
-			return ((EnumFacing)state.getValue(FACING)).getIndex() + ((Boolean) state.getValue(CONNECT_TOP) ? 6 : 0);
+			return ((EnumFacing)state.getValue(FACING)).getIndex();
 		}
 		else
 		{
@@ -146,18 +178,19 @@ public class BlockWindmillSmall extends BlockSprocketBase implements ITileEntity
 	
 	protected BlockStateContainer createBlockState()
 	{
-	    return new BlockStateContainer(this, new IProperty[] {FACING, CONNECT_TOP});
+	    return new BlockStateContainer(this, new IProperty[] {FACING});
 	}
 
 	@Override
 	public boolean wrench(EntityPlayer player, World world, BlockPos pos, IBlockState state,
 			EnumFacing side)
 	{
+		side = side.getOpposite();
 		if (!player.isSneaking())
 		{
-			if (side.ordinal() >= 2 && side != state.getValue(FACING))
+			if (side.ordinal() >= 2 && canThisFit(world, pos, side) && side != state.getValue(FACING))
 			{
-				TileEntityWindmillSmall te = (TileEntityWindmillSmall) world.getTileEntity(pos);
+				TileEntityWindmill te = (TileEntityWindmill) world.getTileEntity(pos);
 
 				HashSet<IMechanicalConduit> neighbors = MechanicalNetworkHelper.getConnectedConduits(te);
 				te.getNetwork().removeConduitTotal(te, neighbors);
