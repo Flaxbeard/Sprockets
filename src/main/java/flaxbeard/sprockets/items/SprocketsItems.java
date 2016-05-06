@@ -16,22 +16,19 @@ public class SprocketsItems
 	public static ItemWrench wrench;
 	public static ItemCrank crank;
 	public static ItemGyrometer gyrometer;
+	public static ItemSprocketsResource resource;
 	
 	public static void preInit()
 	{
 		wrench = new ItemWrench();
 		crank = new ItemCrank();
 		gyrometer = new ItemGyrometer();
+		resource = new ItemSprocketsResource();
 	}
 
 	public static void init()
 	{
-		GameRegistry.addRecipe(new ItemStack(gyrometer),
-				"G",
-				"G",
-				"C",
-				Character.valueOf('G'), new ItemStack(SprocketsMultiparts.sprocket, 1, 0), Character.valueOf('C'), new ItemStack(Items.compass)
-				);
+
 	}
 	
 }

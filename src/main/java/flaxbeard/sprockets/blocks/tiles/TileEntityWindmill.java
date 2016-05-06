@@ -61,7 +61,7 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 	public void update()
 	{
 		super.update();
-		
+
 		if (this.worldObj.getTotalWorldTime() % LibConstants.WINDMILL_UPDATE_TICKS == 0 || canSpin == -1)
 		{
 			checkSurroundings();
@@ -160,6 +160,7 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 			int minY = -3;
 			int maxY = 3;
 			
+			// Check a diamond shaped area
 			if (w == -3 || w == 3)
 			{
 				minY = 0;
@@ -192,6 +193,7 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 					{								
 						if (statePos3.getBlock().isFullBlock(statePos3))
 						{
+							// A solid block will make all blocks behind it register as blocked as well
 							continue nonDepthLoop;
 						}
 					}
@@ -201,9 +203,7 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 				}
 			}
 		}
-		
-		System.out.println(airBlocks);
-		
+				
 		if (airBlocks > 500)
 		{
 			this.blockedMult = 1.0F;

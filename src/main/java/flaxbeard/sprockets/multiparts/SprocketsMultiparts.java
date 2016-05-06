@@ -34,38 +34,7 @@ public class SprocketsMultiparts
 	
 	public static void init()
 	{
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(sprocket, 4, 0),
-				" I ",
-				"ISI",
-				" I ",
-				Character.valueOf('I'), "plankWood", Character.valueOf('S'), "stickWood"
-				));
-		
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(sprocket, 4, 1),
-				" I ",
-				"ISI",
-				" I ",
-				Character.valueOf('I'), "stone", Character.valueOf('S'), "stickWood"
-				));
-		
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(sprocket, 4, 2),
-				" I ",
-				"ISI",
-				" I ",
-				Character.valueOf('I'), "ingotIron", Character.valueOf('S'), "stickWood"
-				));
-		
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(bigSprocket, 1, 0),
-				new ItemStack(sprocket, 1, 0), new ItemStack(sprocket, 1, 0), new ItemStack(sprocket, 1, 0), new ItemStack(sprocket, 1, 0)
-				));
-		
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(bigSprocket, 1, 1),
-				new ItemStack(sprocket, 1, 1), new ItemStack(sprocket, 1, 1), new ItemStack(sprocket, 1, 1), new ItemStack(sprocket, 1, 1)
-				));
-		
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(bigSprocket, 1, 2),
-				new ItemStack(sprocket, 1, 2), new ItemStack(sprocket, 1, 2), new ItemStack(sprocket, 1, 2), new ItemStack(sprocket, 1, 2)
-				));
+
 		
 	}
 	

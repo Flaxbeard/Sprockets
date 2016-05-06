@@ -51,6 +51,12 @@ public class ClientProxy extends CommonProxy
 		{
 			registerItemRendersPre(part, part.subnames[i]);
 		}
+		
+		ItemSprocketBase resource = SprocketsItems.resource;
+		for (int i = 0; i < resource.subnames.length; i++)
+		{
+			registerItemRendersPre(resource, resource.subnames[i]);
+		}
 	}
 	
 	@Override
@@ -81,6 +87,12 @@ public class ClientProxy extends CommonProxy
 		for (int i = 0; i < part.subnames.length; i++)
 		{
 			registerItemRenders(part, i, part.subnames[i]);
+		}
+		
+		ItemSprocketBase resource = SprocketsItems.resource;
+		for (int i = 0; i < resource.subnames.length; i++)
+		{
+			registerItemRenders(resource, i, resource.subnames[i]);
 		}
 		
 		registerItemRenders(SprocketsItems.wrench);

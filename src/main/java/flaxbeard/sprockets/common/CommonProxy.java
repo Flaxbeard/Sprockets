@@ -24,6 +24,8 @@ public class CommonProxy
 		
 		SprocketsMultiparts.init();
 		SprocketsItems.init();
+		
+		SprocketsRecipes.init();
 	}
 	
 	public void postInit()

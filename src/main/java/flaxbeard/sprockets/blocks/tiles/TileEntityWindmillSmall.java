@@ -175,6 +175,7 @@ public class TileEntityWindmillSmall extends TileEntitySprocketBase implements I
 						{
 							if (statePos3.getBlock().isFullBlock(statePos3))
 							{
+								// A solid block will make all blocks behind it register as blocked as well
 								continue nonDepthLoop;
 							}
 						}

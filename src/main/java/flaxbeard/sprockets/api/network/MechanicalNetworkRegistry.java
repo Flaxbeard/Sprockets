@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
 
+import javafx.geometry.Side;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Unload;
@@ -35,11 +36,14 @@ public class MechanicalNetworkRegistry
 	{
 		if (e.phase == TickEvent.Phase.END)
 		{
+
+			
 			HashSet<MechanicalNetwork> toRemove = new HashSet<MechanicalNetwork>();
 			try
 			{
 				for (Integer dimension : networks.keySet())
 				{
+					
 					for (MechanicalNetwork network : networks.get(dimension).values())
 					{
 						if (!network.tick())

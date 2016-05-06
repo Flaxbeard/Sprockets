@@ -22,6 +22,7 @@ itemGroup.sprockets=Sprockets
 item.sprockets.wrench.name=Sprocket Wrench
 item.sprockets.crank.name=Crank
 item.sprockets.gyrometer.name=Gyrometer
+item.sprockets.resource.windmillBlade=Windmill Blade
 
 
 # GYROMETER OUTPUT
