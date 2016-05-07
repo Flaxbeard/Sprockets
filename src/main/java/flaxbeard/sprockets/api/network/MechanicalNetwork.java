@@ -72,8 +72,6 @@ public class MechanicalNetwork
 
 	private float torque;
 
-	private boolean connJammed = false;
-
 
 
 	
@@ -194,12 +192,15 @@ public class MechanicalNetwork
 		return networkJammed || this.numSpeeds > 1;
 	}
 	
-
+	public boolean isInternallyJammed()
+	{
+		return jammed;
+	}
 	
 	public boolean recalculateJams(HashSet<String> history, boolean isJammed)
 	{
 		history.add(id);
-		isJammed = isJammed || this.jammed || this.torqueJammed || this.connJammed;
+		isJammed = isJammed || this.jammed || this.torqueJammed;
 		for (String key : links.keySet())
 		{
 			if (!history.contains(key))
@@ -250,6 +251,7 @@ public class MechanicalNetwork
 	{
 		links = new HashMap<String, NetworkLink>();
 		connections = new HashMap<String, ArrayList<NetworkConnection>>();
+		HashSet<String> linksToCrawl = new HashSet<String>();
 		jammedPoint = MechanicalNetworkHelper.lock(next, conduits, this);
 		jammed = jammedPoint != null;
 		
@@ -303,7 +305,7 @@ public class MechanicalNetwork
 						lastCis = l.cis;
 					}
 				}
-	
+
 				NetworkLink link = new NetworkLink(inconsistantConnection, lastCis, lastShouldFlip);
 				this.links.put(key, link);
 				network.links.put(this.id, link);
@@ -326,6 +328,9 @@ public class MechanicalNetwork
 
 	}
 	
+
+
+
 	public void passSpeed(float i, HashSet<String> history)
 	{
 		history.add(this.id);
@@ -343,11 +348,9 @@ public class MechanicalNetwork
 		}
 	}
 	
-	public void addSpeed(float speed, float torque, HashSet<String> history, HashMap<String, Boolean> historyFlip)
+	public void addSpeed(float speed, float torque, HashSet<String> history)
 	{
-		boolean neg = speed > 0;
 		history.add(this.id);
-		historyFlip.put(this.id, neg);
 
 		if (numSpeeds == 0)
 		{
@@ -397,29 +400,13 @@ public class MechanicalNetwork
 					}
 					if (links.get(key).cis)
 					{
-						network.addSpeed(speed2, torque, history, historyFlip);
+						network.addSpeed(speed2, torque, history);
 					}
 					else
 					{
 						network.addSpeed(speed2 * (this.getSizeMultiplier() / network.getSizeMultiplier()),
 								torque * (network.getSizeMultiplier() / this.getSizeMultiplier()),
-								history, historyFlip);
-					}
-				}
-				else
-				{
-					
-					if (!links.get(key).shouldDirectionFlip)
-					{
-						neg = !neg;
-					}
-					
-					boolean connJammed = neg != historyFlip.get(key);
-					
-					if (connJammed != this.connJammed)
-					{
-						this.connJammed = connJammed;
-						this.recalculateJams();
+								history);
 					}
 				}
 			}
@@ -429,7 +416,7 @@ public class MechanicalNetwork
 	public void addSpeed(float speed, float torque)
 	{
 
-		this.addSpeed(speed, torque, new HashSet<String>(), new HashMap<String, Boolean>());
+		this.addSpeed(speed, torque, new HashSet<String>());
 	}
 
 	public boolean tick()
