@@ -72,6 +72,8 @@ public class MechanicalNetwork
 
 	private float torque;
 
+	private boolean connJammed = false;
+
 
 
 	
@@ -192,15 +194,12 @@ public class MechanicalNetwork
 		return networkJammed || this.numSpeeds > 1;
 	}
 	
-	public boolean isInternallyJammed()
-	{
-		return jammed;
-	}
+
 	
 	public boolean recalculateJams(HashSet<String> history, boolean isJammed)
 	{
 		history.add(id);
-		isJammed = isJammed || this.jammed || this.torqueJammed;
+		isJammed = isJammed || this.jammed || this.torqueJammed || this.connJammed;
 		for (String key : links.keySet())
 		{
 			if (!history.contains(key))
@@ -344,10 +343,11 @@ public class MechanicalNetwork
 		}
 	}
 	
-	public void addSpeed(float speed, float torque, HashSet<String> history)
+	public void addSpeed(float speed, float torque, HashSet<String> history, HashMap<String, Boolean> historyFlip)
 	{
+		boolean neg = speed > 0;
 		history.add(this.id);
-		
+		historyFlip.put(this.id, neg);
 
 		if (numSpeeds == 0)
 		{
@@ -385,22 +385,42 @@ public class MechanicalNetwork
 		for (String key : links.keySet())
 		{
 			MechanicalNetwork network = MechanicalNetworkRegistry.getInstance().getNetwork(key, world);
-			if (!history.contains(key) && network != null) // TODO make it check even if it already has been passed to make sure it's the same direction
+			if (network != null)
 			{
-				float speed2 = speed;
-				if (!links.get(key).shouldDirectionFlip)
+			
+				if (!history.contains(key)) // TODO make it check even if it already has been passed to make sure it's the same direction
 				{
-					speed2 *= -1;
-				}
-				if (links.get(key).cis)
-				{
-					network.addSpeed(speed2, torque, history);
+					float speed2 = speed;
+					if (!links.get(key).shouldDirectionFlip)
+					{
+						speed2 *= -1;
+					}
+					if (links.get(key).cis)
+					{
+						network.addSpeed(speed2, torque, history, historyFlip);
+					}
+					else
+					{
+						network.addSpeed(speed2 * (this.getSizeMultiplier() / network.getSizeMultiplier()),
+								torque * (network.getSizeMultiplier() / this.getSizeMultiplier()),
+								history, historyFlip);
+					}
 				}
 				else
 				{
-					network.addSpeed(speed2 * (this.getSizeMultiplier() / network.getSizeMultiplier()),
-							torque * (network.getSizeMultiplier() / this.getSizeMultiplier()),
-							history);
+					
+					if (!links.get(key).shouldDirectionFlip)
+					{
+						neg = !neg;
+					}
+					
+					boolean connJammed = neg != historyFlip.get(key);
+					
+					if (connJammed != this.connJammed)
+					{
+						this.connJammed = connJammed;
+						this.recalculateJams();
+					}
 				}
 			}
 		}
@@ -409,7 +429,7 @@ public class MechanicalNetwork
 	public void addSpeed(float speed, float torque)
 	{
 
-		this.addSpeed(speed, torque, new HashSet<String>());
+		this.addSpeed(speed, torque, new HashSet<String>(), new HashMap<String, Boolean>());
 	}
 
 	public boolean tick()
