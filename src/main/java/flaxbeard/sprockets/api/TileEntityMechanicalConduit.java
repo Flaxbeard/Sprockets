@@ -39,7 +39,7 @@ public abstract class TileEntityMechanicalConduit extends TileEntity implements 
 	@Override
 	public float maxSpeed()
 	{
-		return 0;
+		return 9999999F;
 	}
 
 	@Override

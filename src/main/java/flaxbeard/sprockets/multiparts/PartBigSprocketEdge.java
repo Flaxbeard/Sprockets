@@ -233,7 +233,14 @@ public class PartBigSprocketEdge extends PartSprocketBase implements ISlottedPar
 	@Override
 	public float maxSpeed()
 	{
-		return 0F;
+		switch(damage)
+		{
+			case 0:
+				return LibConstants.MAX_SPEED_WOODEN_SPROCKET;
+			case 1:
+				return LibConstants.MAX_SPEED_STONE_SPROCKET;
+		}
+		return LibConstants.MAX_SPEED_IRON_SPROCKET;
 	}
 
 	@Override

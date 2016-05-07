@@ -8,23 +8,27 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3i;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
+import net.minecraftforge.oredict.OreDictionary;
 import flaxbeard.sprockets.multiparts.items.ItemAxle;
 import flaxbeard.sprockets.multiparts.items.ItemBigSprocket;
+import flaxbeard.sprockets.multiparts.items.ItemLapisSprocket;
+import flaxbeard.sprockets.multiparts.items.ItemRedstoneSprocket;
 import flaxbeard.sprockets.multiparts.items.ItemSprocket;
 import flaxbeard.sprockets.multiparts.items.ItemSprocketMultipart;
 
 public class SprocketsMultiparts
 {
 	public static ItemSprocketMultipart sprocket;
+	public static ItemSprocketMultipart redstoneSprocket;
 	public static ItemSprocketMultipart axle;
 	public static ItemSprocketMultipart bigSprocket;
+	public static ItemSprocketMultipart lapisSprocket;
 	
 	public static void preInit()
 	{
 		sprocket = new ItemSprocket();
+		redstoneSprocket = new ItemRedstoneSprocket();
+		lapisSprocket = new ItemLapisSprocket();
 		
 		axle = new ItemAxle();
 		
@@ -34,8 +38,9 @@ public class SprocketsMultiparts
 	
 	public static void init()
 	{
-
-		
+		OreDictionary.registerOre("gearWood", new ItemStack(bigSprocket, 1, 0));
+		OreDictionary.registerOre("gearStone", new ItemStack(bigSprocket, 1, 1));
+		OreDictionary.registerOre("gearIron", new ItemStack(bigSprocket, 1, 2));
 	}
 	
 	

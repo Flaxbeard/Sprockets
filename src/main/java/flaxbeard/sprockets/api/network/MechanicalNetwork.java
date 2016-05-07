@@ -70,7 +70,7 @@ public class MechanicalNetwork
 
 	private int shouldRecalculateJams;
 
-	public float torque;
+	private float torque;
 
 
 
@@ -592,6 +592,11 @@ public class MechanicalNetwork
 	public boolean isTorqueJammed()
 	{
 		return this.torqueJammed;
+	}
+
+	public float getTorque()
+	{
+		return torque;
 	}
 
 

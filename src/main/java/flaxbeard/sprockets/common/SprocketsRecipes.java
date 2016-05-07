@@ -25,7 +25,7 @@ public class SprocketsRecipes
 				" I ",
 				"ISI",
 				" I ",
-				Character.valueOf('I'), "stone", Character.valueOf('S'), "stickWood"
+				Character.valueOf('I'), new ItemStack(Blocks.hardened_clay), Character.valueOf('S'), "stickWood"
 				));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SprocketsMultiparts.sprocket, 4, 2),
 				" I ",
@@ -34,15 +34,43 @@ public class SprocketsRecipes
 				Character.valueOf('I'), "ingotIron", Character.valueOf('S'), "stickWood"
 				));
 		
+		// Redstone Sprockets
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SprocketsMultiparts.redstoneSprocket, 1, 0),
+				new ItemStack(SprocketsMultiparts.sprocket, 1, 0), "dustRedstone"
+				));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SprocketsMultiparts.redstoneSprocket, 1, 1),
+				new ItemStack(SprocketsMultiparts.sprocket, 1, 1), "dustRedstone"
+				));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SprocketsMultiparts.redstoneSprocket, 1, 2),
+				new ItemStack(SprocketsMultiparts.sprocket, 1, 2), "dustRedstone"
+				));
+		
+		// Lapis Sprockets
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SprocketsMultiparts.lapisSprocket, 1, 0),
+				new ItemStack(SprocketsMultiparts.sprocket, 1, 0), "gemLapis"
+				));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SprocketsMultiparts.lapisSprocket, 1, 1),
+				new ItemStack(SprocketsMultiparts.sprocket, 1, 1), "gemLapis"
+				));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SprocketsMultiparts.lapisSprocket, 1, 2),
+				new ItemStack(SprocketsMultiparts.sprocket, 1, 2), "gemLapis"
+				));
+		
 		// Big sprockets
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SprocketsMultiparts.bigSprocket, 1, 0),
-				new ItemStack(SprocketsMultiparts.sprocket, 1, 0), new ItemStack(SprocketsMultiparts.sprocket, 1, 0), new ItemStack(SprocketsMultiparts.sprocket, 1, 0), new ItemStack(SprocketsMultiparts.sprocket, 1, 0)
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SprocketsMultiparts.bigSprocket, 1, 0),
+				"SS",
+				"SS",
+				Character.valueOf('S'), new ItemStack(SprocketsMultiparts.sprocket, 1, 0)
 				));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SprocketsMultiparts.bigSprocket, 1, 1),
-				new ItemStack(SprocketsMultiparts.sprocket, 1, 1), new ItemStack(SprocketsMultiparts.sprocket, 1, 1), new ItemStack(SprocketsMultiparts.sprocket, 1, 1), new ItemStack(SprocketsMultiparts.sprocket, 1, 1)
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SprocketsMultiparts.bigSprocket, 1, 1),
+				"SS",
+				"SS",
+				Character.valueOf('S'), new ItemStack(SprocketsMultiparts.sprocket, 1, 1)
 				));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SprocketsMultiparts.bigSprocket, 1, 2),
-				new ItemStack(SprocketsMultiparts.sprocket, 1, 2), new ItemStack(SprocketsMultiparts.sprocket, 1, 2), new ItemStack(SprocketsMultiparts.sprocket, 1, 2), new ItemStack(SprocketsMultiparts.sprocket, 1, 2)
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SprocketsMultiparts.bigSprocket, 1, 2),
+				"SS",
+				"SS",
+				Character.valueOf('S'), new ItemStack(SprocketsMultiparts.sprocket, 1, 2)
 				));
 		
 		// Axles
@@ -56,7 +84,7 @@ public class SprocketsRecipes
 				"I",
 				"I",
 				"I",
-				Character.valueOf('I'), "stone"
+				Character.valueOf('I'), new ItemStack(Blocks.hardened_clay)
 				));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SprocketsMultiparts.axle, 4, 2),
 				"I",

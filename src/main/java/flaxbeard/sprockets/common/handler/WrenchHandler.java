@@ -112,7 +112,7 @@ public class WrenchHandler
 		if (network != null)
 		{
 			float speed = Math.abs(network.getCachedSpeed());
-			float torque = (speed == 0 ? 0 : network.torque);
+			float torque = (speed == 0 ? 0 : network.getTorque());
 			list.add(new TextComponentString("This network has a torque of " + torque));
 			list.add(new TextComponentString("This network has a speed of " + speed));
 			

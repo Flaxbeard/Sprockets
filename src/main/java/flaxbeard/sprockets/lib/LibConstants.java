@@ -28,6 +28,11 @@ public class LibConstants
 	public static final float MAX_TORQUE_STONE_SPROCKET		= 20.0F;
 	public static final float MAX_TORQUE_IRON_SPROCKET		= 40.0F;
 	
+	// Maximum speed various gear types can handle
+	public static final float MAX_SPEED_WOODEN_SPROCKET		= 40.0F;
+	public static final float MAX_SPEED_STONE_SPROCKET		= 20.0F;
+	public static final float MAX_SPEED_IRON_SPROCKET		= 10.0F;
+	
 	// Ticks between each update for both windmills
 	public static final int WINDMILL_UPDATE_TICKS = 140;
 	
@@ -41,6 +46,9 @@ public class LibConstants
 	public static final float CRANK_SPEED 	= 5.0F;
 	public static final float CRANK_TORQUE 	= 1.0F;
 	public static final int CRANK_TICKS		= 10;
+	
+	// Maximum speed for Redstone gear displays
+	public static final float MAX_SPEED_REDGEAR = 60.F;
 
 	public static void loadConfig(FMLPreInitializationEvent event)
 	{

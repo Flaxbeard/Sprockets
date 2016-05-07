@@ -23,6 +23,8 @@ import flaxbeard.sprockets.items.ItemSprocketBase;
 import flaxbeard.sprockets.items.SprocketsItems;
 import flaxbeard.sprockets.multiparts.PartAxle;
 import flaxbeard.sprockets.multiparts.PartBigSprocketCenter;
+import flaxbeard.sprockets.multiparts.PartLapisSprocket;
+import flaxbeard.sprockets.multiparts.PartRedstoneSprocket;
 import flaxbeard.sprockets.multiparts.PartSprocket;
 import flaxbeard.sprockets.multiparts.SprocketsMultiparts;
 import flaxbeard.sprockets.multiparts.items.ItemSprocketMultipart;
@@ -40,6 +42,17 @@ public class ClientProxy extends CommonProxy
 		{
 			registerItemRendersPre(part, part.subnames[i]);
 		}
+		part = SprocketsMultiparts.redstoneSprocket;
+		for (int i = 0; i < part.subnames.length; i++)
+		{
+			registerItemRendersPre(part, part.subnames[i]);
+		}
+		part = SprocketsMultiparts.lapisSprocket;
+		for (int i = 0; i < part.subnames.length; i++)
+		{
+			registerItemRendersPre(part, part.subnames[i]);
+		}
+		
 		part = SprocketsMultiparts.axle;
 		for (int i = 0; i < part.subnames.length; i++)
 		{
@@ -67,6 +80,8 @@ public class ClientProxy extends CommonProxy
 		
 		
 		MultipartRegistryClient.bindMultipartSpecialRenderer(PartSprocket.class, new RenderPartSprocket());
+		MultipartRegistryClient.bindMultipartSpecialRenderer(PartRedstoneSprocket.class, new RenderPartSprocket());
+		MultipartRegistryClient.bindMultipartSpecialRenderer(PartLapisSprocket.class, new RenderPartSprocket());
 		MultipartRegistryClient.bindMultipartSpecialRenderer(PartBigSprocketCenter.class, new RenderPartBigSprocket());
 		MultipartRegistryClient.bindMultipartSpecialRenderer(PartAxle.class, new RenderPartAxle());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindmillSmall.class, new TileEntityWindmillSmallRenderer());
@@ -79,6 +94,16 @@ public class ClientProxy extends CommonProxy
 			registerItemRenders(part, i, part.subnames[i]);
 		}
 		part = SprocketsMultiparts.axle;
+		for (int i = 0; i < part.subnames.length; i++)
+		{
+			registerItemRenders(part, i, part.subnames[i]);
+		}
+		part = SprocketsMultiparts.redstoneSprocket;
+		for (int i = 0; i < part.subnames.length; i++)
+		{
+			registerItemRenders(part, i, part.subnames[i]);
+		}
+		part = SprocketsMultiparts.lapisSprocket;
 		for (int i = 0; i < part.subnames.length; i++)
 		{
 			registerItemRenders(part, i, part.subnames[i]);

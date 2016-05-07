@@ -1,13 +1,22 @@
 # MULTIPARTS
 item.sprockets.sprocket.wooden.name=Wooden Sprocket
+item.sprockets.redstoneSprocket.wooden.name=Redstone Wooden Sprocket
+item.sprockets.lapisSprocket.wooden.name=Lapis Wooden Sprocket
 item.sprockets.bigSprocket.wooden.name=Large Wooden Sprocket
 item.sprockets.axle.wooden.name=Wooden Axle
+
 item.sprockets.sprocket.stone.name=Stone Sprocket
+item.sprockets.redstoneSprocket.stone.name=Redstone Stone Sprocket
+item.sprockets.lapisSprocket.stone.name=Lapis Stone Sprocket
 item.sprockets.bigSprocket.stone.name=Large Stone Sprocket
 item.sprockets.axle.stone.name=Stone Axle
+
 item.sprockets.sprocket.iron.name=Iron Sprocket
+item.sprockets.redstoneSprocket.iron.name=Redstone Iron Sprocket
+item.sprockets.lapisSprocket.iron.name=Lapis Iron Sprocket
 item.sprockets.bigSprocket.iron.name=Large Iron Sprocket
 item.sprockets.axle.iron.name=Iron Axle
+
 item.sprockets.sprocket.obsidian.name=Obsidian Sprocket
 item.sprockets.axle.obsidian.name=Obsidian Axle
 
@@ -22,7 +31,7 @@ itemGroup.sprockets=Sprockets
 item.sprockets.wrench.name=Sprocket Wrench
 item.sprockets.crank.name=Crank
 item.sprockets.gyrometer.name=Gyrometer
-item.sprockets.resource.windmillBlade=Windmill Blade
+item.sprockets.resource.windmillBlade.name=Windmill Blade
 
 
 # GYROMETER OUTPUT

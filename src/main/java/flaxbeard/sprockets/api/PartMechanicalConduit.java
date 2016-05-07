@@ -32,7 +32,7 @@ public abstract class PartMechanicalConduit extends Multipart implements IMechan
 		}
 	}
 	
-	private void initialize()
+	protected void initialize()
 	{
 		if (MechanicalNetworkRegistry.getInstance().hasDimension(this.getWorld()))
 		{
@@ -54,7 +54,7 @@ public abstract class PartMechanicalConduit extends Multipart implements IMechan
 	@Override
 	public float maxSpeed()
 	{
-		return 0;
+		return 9999999F;
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public abstract class PartMechanicalConduit extends Multipart implements IMechan
 	@Override
 	public float maxTorque()
 	{
-		return 0;
+		return 9999999F;
 	}
 
 	@Override

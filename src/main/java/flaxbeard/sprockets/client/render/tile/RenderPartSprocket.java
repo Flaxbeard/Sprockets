@@ -9,6 +9,8 @@ import flaxbeard.sprockets.api.network.MechanicalNetwork;
 import flaxbeard.sprockets.client.ClientUtils;
 import flaxbeard.sprockets.client.render.model.ModelSprocket;
 import flaxbeard.sprockets.lib.LibConstants;
+import flaxbeard.sprockets.multiparts.PartLapisSprocket;
+import flaxbeard.sprockets.multiparts.PartRedstoneSprocket;
 import flaxbeard.sprockets.multiparts.PartSprocket;
 import flaxbeard.sprockets.multiparts.SprocketsMultiparts;
 
@@ -16,6 +18,8 @@ public class RenderPartSprocket extends MultipartSpecialRenderer
 {
 	private static ModelSprocket model = new ModelSprocket();
 	private static String textureBase = "sprockets:textures/models/sprocket";
+	private static String textureRed = "sprockets:textures/models/redstoneSprocket";
+	private static String textureLapis = "sprockets:textures/models/lapisSprocket";
 
 	private static final float EIGHTH = (float) 22.5F;
 	
@@ -59,7 +63,19 @@ public class RenderPartSprocket extends MultipartSpecialRenderer
 				break;
 		}
 		
-		ClientUtils.bindTexture(textureBase + "_" + SprocketsMultiparts.sprocket.subnames[sprocket.getDamage()] + ".png");
+		if (sprocket instanceof PartRedstoneSprocket)
+		{
+			ClientUtils.bindTexture(textureRed + "_" + SprocketsMultiparts.sprocket.subnames[sprocket.getDamage()] + ".png");
+		}
+		else if (sprocket instanceof PartLapisSprocket)
+		{
+			ClientUtils.bindTexture(textureLapis + "_" + SprocketsMultiparts.sprocket.subnames[sprocket.getDamage()] + ".png");
+		}
+		else
+		{
+			ClientUtils.bindTexture(textureBase + "_" + SprocketsMultiparts.sprocket.subnames[sprocket.getDamage()] + ".png");
+		}
+		
 		
 		model.renderNub(null, 0, 0, 0, 0, 0, .0625f);
 		
