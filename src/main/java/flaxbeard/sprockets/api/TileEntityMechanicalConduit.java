@@ -87,8 +87,12 @@ public abstract class TileEntityMechanicalConduit extends TileEntity implements 
 	@Override
 	public void invalidate()
 	{
-		getNetwork().removeConduit(this);
-		setNetwork(null);
+		if (getNetwork() != null)
+		{
+			getNetwork().removeConduit(this);
+			setNetwork(null);
+		}
+	
 		super.invalidate();
 	}
 	

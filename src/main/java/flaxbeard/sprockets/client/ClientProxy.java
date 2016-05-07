@@ -1,12 +1,12 @@
 package flaxbeard.sprockets.client;
 
 import mcmultipart.client.multipart.MultipartRegistryClient;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import flaxbeard.sprockets.Sprockets;
 import flaxbeard.sprockets.blocks.BlockSprocketBase;
@@ -70,25 +70,13 @@ public class ClientProxy extends CommonProxy
 		{
 			registerItemRendersPre(resource, resource.subnames[i]);
 		}
-	}
-	
-	@Override
-	public void init()
-	{
-		super.init();
+		
+		
+		
+		
 		registerRenders(SprocketsBlocks.creativeMotor);
-		
-		
-		MultipartRegistryClient.bindMultipartSpecialRenderer(PartSprocket.class, new RenderPartSprocket());
-		MultipartRegistryClient.bindMultipartSpecialRenderer(PartRedstoneSprocket.class, new RenderPartSprocket());
-		MultipartRegistryClient.bindMultipartSpecialRenderer(PartLapisSprocket.class, new RenderPartSprocket());
-		MultipartRegistryClient.bindMultipartSpecialRenderer(PartBigSprocketCenter.class, new RenderPartBigSprocket());
-		MultipartRegistryClient.bindMultipartSpecialRenderer(PartAxle.class, new RenderPartAxle());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindmillSmall.class, new TileEntityWindmillSmallRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindmill.class, new TileEntityWindmillRenderer());
-		
-		
-		ItemSprocketMultipart part = SprocketsMultiparts.sprocket;
+		registerRenders(SprocketsBlocks.redEngine);
+		part = SprocketsMultiparts.sprocket;
 		for (int i = 0; i < part.subnames.length; i++)
 		{
 			registerItemRenders(part, i, part.subnames[i]);
@@ -114,7 +102,7 @@ public class ClientProxy extends CommonProxy
 			registerItemRenders(part, i, part.subnames[i]);
 		}
 		
-		ItemSprocketBase resource = SprocketsItems.resource;
+		resource = SprocketsItems.resource;
 		for (int i = 0; i < resource.subnames.length; i++)
 		{
 			registerItemRenders(resource, i, resource.subnames[i]);
@@ -124,11 +112,29 @@ public class ClientProxy extends CommonProxy
 		registerItemRenders(SprocketsItems.crank);
 		registerItemRenders(SprocketsItems.gyrometer);
 		
-		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(SprocketsBlocks.windmillSmall), 0, TileEntityWindmillSmall.class);
+		
 		registerRenders(SprocketsBlocks.windmillSmall);
+		registerRenders(SprocketsBlocks.windmill);
+
+	}
+	
+	@Override
+	public void init()
+	{
+		super.init();
+
+		MultipartRegistryClient.bindMultipartSpecialRenderer(PartSprocket.class, new RenderPartSprocket());
+		MultipartRegistryClient.bindMultipartSpecialRenderer(PartRedstoneSprocket.class, new RenderPartSprocket());
+		MultipartRegistryClient.bindMultipartSpecialRenderer(PartLapisSprocket.class, new RenderPartSprocket());
+		MultipartRegistryClient.bindMultipartSpecialRenderer(PartBigSprocketCenter.class, new RenderPartBigSprocket());
+		MultipartRegistryClient.bindMultipartSpecialRenderer(PartAxle.class, new RenderPartAxle());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindmillSmall.class, new TileEntityWindmillSmallRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindmill.class, new TileEntityWindmillRenderer());
+
+		
+		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(SprocketsBlocks.windmillSmall), 0, TileEntityWindmillSmall.class);
 		
 		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(SprocketsBlocks.windmill), 0, TileEntityWindmill.class);
-		registerRenders(SprocketsBlocks.windmill);
 	}
 	
 	@Override
@@ -141,13 +147,13 @@ public class ClientProxy extends CommonProxy
 	private void registerRenders(BlockSprocketBase block)
 	{
 		Item item = Item.getItemFromBlock(block);
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 
+		ModelLoader.setCustomModelResourceLocation(item, 
 				0, new ModelResourceLocation(Sprockets.MODID + ":" + block.name, "inventory"));
 	}
 	
 	private void registerItemRenders(ItemSprocketMultipart item, int meta, String mod)
 	{
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 
+		ModelLoader.setCustomModelResourceLocation(item, 
 				meta, new ModelResourceLocation(Sprockets.MODID + ":" + item.name + "_" + mod, "inventory"));
 	}
 	
@@ -158,13 +164,13 @@ public class ClientProxy extends CommonProxy
 	
 	private void registerItemRenders(ItemSprocketMultipart item)
 	{
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 
+		ModelLoader.setCustomModelResourceLocation(item, 
 				0, new ModelResourceLocation(Sprockets.MODID + ":" + item.name, "inventory"));
 	}
 	
 	private void registerItemRenders(ItemSprocketBase item, int meta, String mod)
 	{
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 
+		ModelLoader.setCustomModelResourceLocation(item, 
 				meta, new ModelResourceLocation(Sprockets.MODID + ":" + item.name + "_" + mod, "inventory"));
 	}
 	
@@ -175,7 +181,7 @@ public class ClientProxy extends CommonProxy
 	
 	private void registerItemRenders(ItemSprocketBase item)
 	{
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 
+		ModelLoader.setCustomModelResourceLocation(item, 
 				0, new ModelResourceLocation(Sprockets.MODID + ":" + item.name, "inventory"));
 	}
 }

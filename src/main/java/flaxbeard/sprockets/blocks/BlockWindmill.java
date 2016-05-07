@@ -145,12 +145,7 @@ public class BlockWindmill extends BlockSprocketBase implements ITileEntityProvi
 	
 	public IBlockState getStateFromMeta(int meta)
 	{
-		boolean conTop = false;
-		if (meta >= 6)
-		{
-			conTop = true;
-			meta -= 6;
-		}
+
 	    EnumFacing enumfacing = EnumFacing.getFront(meta);
 	
 	    if (enumfacing.getAxis() == EnumFacing.Axis.Y)

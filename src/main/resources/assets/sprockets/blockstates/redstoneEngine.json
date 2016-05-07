@@ -1,0 +1,30 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "minecraft:orientable_vertical", 
+		"textures": {
+			"front": "sprockets:blocks/redEngine",
+			"side": "sprockets:blocks/redEngine2"
+		}
+	},
+	"variants": {
+		"facing": {
+			"east": { "y": 90, "x": 270 },
+			"west": { "y": 90, "x": 90 },
+			"north": { "y": 0, "x": 270 },
+			"south": { "y": 0, "x": 270 },
+			"up": { "x": 180 },
+			"down": {}
+		},
+		"powered": {
+			"true": {},
+			"false": {
+				"textures": {
+					"front": "sprockets:blocks/redEngineOff",
+					"side": "sprockets:blocks/redEngine2Off"
+				}
+			}
+		},
+		"inventory": [{}]
+	}
+}

@@ -41,6 +41,9 @@ public class LibConstants
 	public static final float SMALL_WINDMILL_SPEED	 	= 16F;
 	public static final float WINDMILL_TORQUE 			= 4F;
 	public static final float WINDMILL_SPEED			= 8F;
+	public static final float REDSTONE_ENGINE_TORQUE	= 0.5F;
+	public static final float REDSTONE_ENGINE_SPEED 	= 4F;
+
 	
 	// Speed/torque/ticks of a hand crank
 	public static final float CRANK_SPEED 	= 5.0F;
