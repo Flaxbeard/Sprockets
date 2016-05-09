@@ -61,6 +61,12 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 	public void update()
 	{
 		super.update();
+		
+		if (facing == -1 && worldObj != null && worldObj.getBlockState(getPosMC()) != null && worldObj.getBlockState(getPosMC()).getBlock() == SprocketsBlocks.windmillSmall)
+		{
+			facing = SprocketsBlocks.windmillSmall.getMetaFromState(worldObj.getBlockState(getPosMC())) % 6;
+		}
+
 
 		if (this.worldObj.getTotalWorldTime() % LibConstants.WINDMILL_UPDATE_TICKS == 0 || canSpin == -1)
 		{
@@ -79,9 +85,9 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 			
 			Vec3i dir = EnumFacing.VALUES[facing].getDirectionVec();
 			worldObj.spawnParticle(EnumParticleTypes.CLOUD, 
-					getPos().getX() + (worldObj.rand.nextFloat() - .5F) * (facing <= 3 ? 6F : 0F) + .5F, 
-					getPos().getY() + (worldObj.rand.nextFloat() - .5F) * 6F + .5F, 
-					getPos().getZ() + (worldObj.rand.nextFloat() - .5F) * (facing <= 3 ? 0F : 6F) + .5F, 
+					getPosMC().getX() + (worldObj.rand.nextFloat() - .5F) * (facing <= 3 ? 6F : 0F) + .5F, 
+					getPosMC().getY() + (worldObj.rand.nextFloat() - .5F) * 6F + .5F, 
+					getPosMC().getZ() + (worldObj.rand.nextFloat() - .5F) * (facing <= 3 ? 0F : 6F) + .5F, 
 					-dir.getX() * speedMult * 0.1F, 0, -dir.getZ() * speedMult * 0.1F, 0);
 		}
 	}
@@ -91,7 +97,7 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 		canSpin = 1;
 		speedMult = 1.0F;
 		
-		BiomeGenBase biome = worldObj.getBiomeGenForCoordsBody(getPos());
+		BiomeGenBase biome = worldObj.getBiomeGenForCoordsBody(getPosMC());
 		if (biome instanceof BiomeGenOcean || biome instanceof BiomeGenBeach || biome instanceof BiomeGenStoneBeach)
 		{
 			speedMult *= 1.5F;
@@ -111,18 +117,25 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 		{
 			for (int y = -6; y <=6; y++)
 			{
-				if (w != 0 || y != 0)
+				for (int d = -6; d <=6; d++)
 				{
-					BlockPos pos2 = pos.add(facing <= 3 ? w : 0, y, facing <= 3 ? 0 : w);
-
-					// Check for windmills
-					if (Math.abs(w) + Math.abs(y) < 10)
+					if (w != 0 || y != 0 || d != 0)
 					{
-						if (worldObj.getBlockState(pos2).getBlock() == SprocketsBlocks.windmill)
+						BlockPos pos2 = pos.add(facing <= 3 ? w : d, y, facing <= 3 ? d : w);
+	
+						// Check for windmills
+						if (Math.abs(w) + Math.abs(y) < 10)
 						{
-							((TileEntityWindmill) worldObj.getTileEntity(pos2)).canSpin = 2;
-							canSpin = 2;
-							return;
+							if (worldObj.getBlockState(pos2).getBlock() == SprocketsBlocks.windmill)
+							{
+								TileEntityWindmill otherWindmill = ((TileEntityWindmill) worldObj.getTileEntity(pos2));
+								if (d == 0 || (facing <= 3 && otherWindmill.facing > 3 || facing > 3 && otherWindmill.facing <= 3))
+								{
+									((TileEntityWindmill) worldObj.getTileEntity(pos2)).canSpin = 2;
+									canSpin = 2;
+									return;
+								}
+							}
 						}
 					}
 				}
@@ -237,9 +250,9 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 	@Override
 	public HashSet<Tuple<Vec3i, PartSlot>> multipartCisConnections()
 	{
-		if (facing == -1 && worldObj != null && worldObj.getBlockState(getPos()) != null && worldObj.getBlockState(getPos()).getBlock() == SprocketsBlocks.windmill)
+		if (facing == -1 && worldObj != null && worldObj.getBlockState(getPosMC()) != null && worldObj.getBlockState(getPosMC()).getBlock() == SprocketsBlocks.windmill)
 		{
-			facing = SprocketsBlocks.windmill.getMetaFromState(worldObj.getBlockState(getPos())) % 6;
+			facing = SprocketsBlocks.windmill.getMetaFromState(worldObj.getBlockState(getPosMC())) % 6;
 		}
 
 		

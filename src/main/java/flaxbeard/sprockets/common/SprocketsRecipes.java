@@ -124,6 +124,14 @@ public class SprocketsRecipes
 				"SSS",
 				Character.valueOf('S'), "stone", Character.valueOf('R'), "blockRedstone", Character.valueOf('A'), new ItemStack(SprocketsMultiparts.axle, 1, 1)
 				));
+
+		// Millstone
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SprocketsBlocks.millstone),
+				" A ",
+				"SAS",
+				"SSS",
+				Character.valueOf('S'), "stoneDiorite", Character.valueOf('A'), new ItemStack(SprocketsMultiparts.axle, 1, 0)
+				));
 		
 		// Gyrometer
 		GameRegistry.addRecipe(new ItemStack(SprocketsItems.gyrometer),

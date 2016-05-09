@@ -63,6 +63,12 @@ public class TileEntityWindmillSmall extends TileEntitySprocketBase implements I
 	{
 		super.update();
 		
+		if (facing == -1 && worldObj != null && worldObj.getBlockState(getPosMC()) != null && worldObj.getBlockState(getPosMC()).getBlock() == SprocketsBlocks.windmillSmall)
+		{
+			facing = SprocketsBlocks.windmillSmall.getMetaFromState(worldObj.getBlockState(getPosMC())) % 6;
+		}
+
+		
 		if (this.worldObj.getTotalWorldTime() % LibConstants.WINDMILL_UPDATE_TICKS == 0 || canSpin == -1)
 		{
 			checkSurroundings();
@@ -78,7 +84,7 @@ public class TileEntityWindmillSmall extends TileEntitySprocketBase implements I
 		if (this.worldObj.isRemote && canSpin == 1 && this.worldObj.getTotalWorldTime() % 10 == 0 && getNetwork() != null && !getNetwork().isJammed())
 		{
 			Vec3i dir = EnumFacing.VALUES[facing].getDirectionVec();
-			worldObj.spawnParticle(EnumParticleTypes.CLOUD, getPos().getX() + worldObj.rand.nextFloat(), getPos().getY() + worldObj.rand.nextFloat(), getPos().getZ() + worldObj.rand.nextFloat(), 
+			worldObj.spawnParticle(EnumParticleTypes.CLOUD, getPosMC().getX() + worldObj.rand.nextFloat(), getPosMC().getY() + worldObj.rand.nextFloat(), getPosMC().getZ() + worldObj.rand.nextFloat(), 
 					-dir.getX() * speedMult * 0.1F, 0, -dir.getZ() * speedMult * 0.1F, 0);
 		}
 	}
@@ -87,7 +93,7 @@ public class TileEntityWindmillSmall extends TileEntitySprocketBase implements I
 	{
 		if (connectedToTop == -1)
 		{
-			connectedToTop = (byte) (SprocketsBlocks.windmillSmall.getMetaFromState(worldObj.getBlockState(getPos())) >= 6 ? 1 : 0);
+			connectedToTop = (byte) (SprocketsBlocks.windmillSmall.getMetaFromState(worldObj.getBlockState(getPosMC())) >= 6 ? 1 : 0);
 		}
 		
 		return connectedToTop == 1;
@@ -99,7 +105,9 @@ public class TileEntityWindmillSmall extends TileEntitySprocketBase implements I
 		canSpin = 1;
 		speedMult = 1.0F;
 		
-		BiomeGenBase biome = worldObj.getBiomeGenForCoordsBody(getPos());
+		
+		
+		BiomeGenBase biome = worldObj.getBiomeGenForCoordsBody(getPosMC());
 		if (biome instanceof BiomeGenOcean || biome instanceof BiomeGenBeach || biome instanceof BiomeGenStoneBeach)
 		{
 			speedMult *= 1.5F;
@@ -219,9 +227,9 @@ public class TileEntityWindmillSmall extends TileEntitySprocketBase implements I
 	@Override
 	public HashSet<Tuple<Vec3i, PartSlot>> multipartCisConnections()
 	{
-		if (facing == -1 && worldObj != null && worldObj.getBlockState(getPos()) != null && worldObj.getBlockState(getPos()).getBlock() == SprocketsBlocks.windmillSmall)
+		if (facing == -1 && worldObj != null && worldObj.getBlockState(getPosMC()) != null && worldObj.getBlockState(getPosMC()).getBlock() == SprocketsBlocks.windmillSmall)
 		{
-			facing = SprocketsBlocks.windmillSmall.getMetaFromState(worldObj.getBlockState(getPos())) % 6;
+			facing = SprocketsBlocks.windmillSmall.getMetaFromState(worldObj.getBlockState(getPosMC())) % 6;
 		}
 
 		

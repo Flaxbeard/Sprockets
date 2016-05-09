@@ -20,13 +20,13 @@ public class LibConstants
 	
 	// Minimum torque needed to spin various gear types
 	public static final float MIN_TORQUE_WOODEN_SPROCKET	= 0.0F;
-	public static final float MIN_TORQUE_STONE_SPROCKET		= 2.0F;
-	public static final float MIN_TORQUE_IRON_SPROCKET		= 4.0F;
+	public static final float MIN_TORQUE_STONE_SPROCKET		= 3.0F;
+	public static final float MIN_TORQUE_IRON_SPROCKET		= 6.0F;
 	
 	// Maximum torque various gear types can handle
-	public static final float MAX_TORQUE_WOODEN_SPROCKET	= 10.0F;
-	public static final float MAX_TORQUE_STONE_SPROCKET		= 20.0F;
-	public static final float MAX_TORQUE_IRON_SPROCKET		= 40.0F;
+	public static final float MAX_TORQUE_WOODEN_SPROCKET	= 20.0F;
+	public static final float MAX_TORQUE_STONE_SPROCKET		= 40.0F;
+	public static final float MAX_TORQUE_IRON_SPROCKET		= 60.0F;
 	
 	// Maximum speed various gear types can handle
 	public static final float MAX_SPEED_WOODEN_SPROCKET		= 40.0F;
@@ -43,6 +43,9 @@ public class LibConstants
 	public static final float WINDMILL_SPEED			= 8F;
 	public static final float REDSTONE_ENGINE_TORQUE	= 0.5F;
 	public static final float REDSTONE_ENGINE_SPEED 	= 4F;
+	
+	// Power consumption
+	public static final float MILLSTONE_TORQUE			= 30F;
 
 	
 	// Speed/torque/ticks of a hand crank

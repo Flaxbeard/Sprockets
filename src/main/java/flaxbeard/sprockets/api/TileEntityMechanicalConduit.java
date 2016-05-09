@@ -2,6 +2,8 @@ package flaxbeard.sprockets.api;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import flaxbeard.sprockets.api.network.MechanicalNetwork;
 import flaxbeard.sprockets.api.network.MechanicalNetworkRegistry;
 
@@ -99,7 +101,19 @@ public abstract class TileEntityMechanicalConduit extends TileEntity implements 
 	@Override
 	public void remove()
 	{
-		this.getWorld().destroyBlock(getPos(), true);
+		this.getWorldMC().destroyBlock(getPosMC(), true);
+	}
+	
+	@Override
+	public BlockPos getPosMC()
+	{
+		return getPos();
+	}
+	
+	@Override
+	public World getWorldMC()
+	{
+		return getWorld();
 	}
 
 }

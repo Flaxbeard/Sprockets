@@ -25,7 +25,7 @@ public class PartRedstoneSprocket extends PartSprocket implements ISlottedRedsto
 		{
 			cachedSpeed = speed;
 			cachedValue = (int) Math.min((15F * (cachedSpeed / (this.maxSpeed()))), 15);
-			getWorld().notifyNeighborsOfStateChange(getPos(), getWorld().getBlockState(getPos()).getBlock());
+			getWorldMC().notifyNeighborsOfStateChange(getPosMC(), getWorldMC().getBlockState(getPosMC()).getBlock());
 		}
 	}
 	

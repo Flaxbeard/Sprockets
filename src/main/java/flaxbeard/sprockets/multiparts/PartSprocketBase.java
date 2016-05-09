@@ -142,7 +142,7 @@ public abstract class PartSprocketBase extends PartMechanicalConduit
 			}
 		}
 		
-		float breakSpeed = player.getBreakSpeed(createBlockState().getBaseState(), getPos());
+		float breakSpeed = player.getBreakSpeed(createBlockState().getBaseState(), getPosMC());
 		
 		if (!effective)
 		{
@@ -164,7 +164,7 @@ public abstract class PartSprocketBase extends PartMechanicalConduit
 	@Override
 	public boolean onActivated(EntityPlayer player, EnumHand hand, ItemStack heldItem, PartMOP hit)
 	{
-		WrenchHandler.handle(player, getWorld(), getPos(), null, null, heldItem, this);
+		WrenchHandler.handle(player, getWorldMC(), getPosMC(), null, null, heldItem, this);
 
 		return false;
 	}

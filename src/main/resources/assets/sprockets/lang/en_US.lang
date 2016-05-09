@@ -24,6 +24,7 @@ item.sprockets.axle.obsidian.name=Obsidian Axle
 tile.sprockets.windmillSmall.name=Small Windmill
 tile.sprockets.windmill.name=Windmill
 tile.sprockets.redstoneEngine.name=Redstone Engine
+tile.sprockets.millstone.name=Millstone
 
 # MISC
 itemGroup.sprockets=Sprockets

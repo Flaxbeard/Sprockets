@@ -23,7 +23,7 @@ public abstract class ItemSprocketMultipart extends ItemMultiPart
 	public ItemSprocketMultipart(String name)
 	{
 		this.setRegistryName(name);
-		GameRegistry.registerItem(this);
+		GameRegistry.register(this);
 		this.setUnlocalizedName(Sprockets.MODID + "." + name);
 		this.setCreativeTab(Sprockets.creativeTab);
 		this.name = name;

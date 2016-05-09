@@ -54,7 +54,7 @@ public class BlockWindmill extends BlockSprocketBase implements ITileEntityProvi
 	
 	public BlockWindmill(String name, Material material, float hardness, float resistance)
 	{
-		super(material, name,  ItemBlock.class);
+		super(material, name);
 		this.setHardness(hardness);
 		this.setResistance(resistance);
 		this.setLightOpacity(0);

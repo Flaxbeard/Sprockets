@@ -7,6 +7,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import flaxbeard.sprockets.api.network.MechanicalNetwork;
 import flaxbeard.sprockets.api.network.MechanicalNetworkRegistry;
 
@@ -34,7 +35,7 @@ public abstract class PartMechanicalConduit extends Multipart implements IMechan
 	
 	protected void initialize()
 	{
-		if (MechanicalNetworkRegistry.getInstance().hasDimension(this.getWorld()))
+		if (MechanicalNetworkRegistry.getInstance().hasDimension(this.getWorldMC()))
 		{
 			MechanicalNetworkRegistry.newOrJoin(this);
 			this.initialized = true;
@@ -102,16 +103,16 @@ public abstract class PartMechanicalConduit extends Multipart implements IMechan
 	@Override
 	public void remove()
 	{
-		BlockPos pos = getPos();
-		if (this.getWorld() != null)
+		BlockPos pos = getPosMC();
+		if (this.getWorldMC() != null)
 		{
-			if (!this.getWorld().isRemote)
+			if (!this.getWorldMC().isRemote)
 			{
 				List<ItemStack> drops = this.getDrops();
 				for (ItemStack drop : drops)
 				{
-					EntityItem item = new EntityItem(getWorld(), pos.getX(), pos.getY(), pos.getZ(), drop);
-					getWorld().spawnEntityInWorld(item);
+					EntityItem item = new EntityItem(getWorldMC(), pos.getX(), pos.getY(), pos.getZ(), drop);
+					getWorldMC().spawnEntityInWorld(item);
 				}
 				this.getContainer().removePart(this);
 				System.out.println("REMOVING");
@@ -123,5 +124,16 @@ public abstract class PartMechanicalConduit extends Multipart implements IMechan
 		
 	}
 	
+	@Override
+	public BlockPos getPosMC()
+	{
+		return getPos();
+	}
+	
+	@Override
+	public World getWorldMC()
+	{
+		return getWorld();
+	}
 
 }

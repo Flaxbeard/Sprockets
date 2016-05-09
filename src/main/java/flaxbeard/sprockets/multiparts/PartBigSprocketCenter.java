@@ -106,7 +106,7 @@ public class PartBigSprocketCenter extends PartSprocketBase implements ISlottedP
 	@Override
 	public void addSelectionBoxes(List<AxisAlignedBB> list)
 	{
-		list.add(RENDER_BOUNDS[facing]);
+		list.add(BOUNDS[facing]);
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -296,7 +296,7 @@ public class PartBigSprocketCenter extends PartSprocketBase implements ISlottedP
 						z = 0;
 					}
 					
-					IMultipartContainer container = MultipartHelper.getPartContainer(getWorld(), getPos().add(x, y, z));
+					IMultipartContainer container = MultipartHelper.getPartContainer(getWorldMC(), getPosMC().add(x, y, z));
 					if (container != null)
 					{
 						IMultipart part = container.getPartInSlot(FACING.get(facing));

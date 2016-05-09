@@ -83,9 +83,9 @@ public interface IMechanicalConduit
 	 */
 	public float sizeMultiplier();
 	
-	public World getWorld();
+	public World getWorldMC();
 	
-	public BlockPos getPos();
+	public BlockPos getPosMC();
 	
 	public void setState(boolean state);
 	

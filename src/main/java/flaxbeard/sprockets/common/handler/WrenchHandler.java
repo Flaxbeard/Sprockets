@@ -18,6 +18,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import flaxbeard.sprockets.api.IGyrometerable;
 import flaxbeard.sprockets.api.IMechanicalConduit;
+import flaxbeard.sprockets.api.IMechanicalConsumer;
 import flaxbeard.sprockets.api.IWrench;
 import flaxbeard.sprockets.api.IWrenchable;
 import flaxbeard.sprockets.api.network.MechanicalNetwork;
@@ -115,12 +116,20 @@ public class WrenchHandler
 			float torque = (speed == 0 ? 0 : network.getTorque());
 			list.add(new TextComponentString("This network has a torque of " + torque));
 			list.add(new TextComponentString("This network has a speed of " + speed));
-			
+			//list.add(new TextComponentString("CONSUMERS: " + network.networkConsumers.size()));
+			//for (IMechanicalConsumer consumer : network.networkConsumers.keySet())
+			//{
+				//if (getNetwork().networkConsumers.get(consumer) != 5.0)
+				//{
+				//	System.out.println(network.networkConsumers.get(consumer));
+				//}
+				//System.out.println(getNetwork().id.substring(0, 10) + " " + getNetwork().networkConsumers.get(consumer));
+			//}
 			if (network.isTorqueCapped() && part.maxTorque() == network.getMaxTorque())
 			{
 				list.add(new TextComponentString("This component seems to be throttling the torque of nearby components"));
 			}
-			if (network.isTorqueJammed() && part.minTorque() == network.getMinTorque())
+			if (network.isTorqueJammed() && ((network.getMinTorque() == part.minTorque() && network.getTorque() >= network.consumerTorqueNeeded)|| (part instanceof IMechanicalConsumer && network.getTorque() <= network.consumerTorqueNeeded)))
 			{
 				list.add(new TextComponentString("The torque seems too low to turn this component"));
 			}

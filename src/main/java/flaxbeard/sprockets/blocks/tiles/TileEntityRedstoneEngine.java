@@ -68,7 +68,7 @@ public class TileEntityRedstoneEngine extends TileEntitySprocketBase implements 
 	{
 		if (isOn == -1)
 		{
-			isOn = (byte) (SprocketsBlocks.redEngine.getMetaFromState(worldObj.getBlockState(getPos())) >= 6 ? 1 : 0);
+			isOn = (byte) (SprocketsBlocks.redEngine.getMetaFromState(worldObj.getBlockState(getPosMC())) >= 6 ? 1 : 0);
 		}
 		
 		return isOn == 1;
@@ -84,9 +84,9 @@ public class TileEntityRedstoneEngine extends TileEntitySprocketBase implements 
 	@Override
 	public HashSet<Tuple<Vec3i, PartSlot>> multipartCisConnections()
 	{
-		if (facing == -1 && worldObj != null && worldObj.getBlockState(getPos()) != null && worldObj.getBlockState(getPos()).getBlock() == SprocketsBlocks.redEngine)
+		if (facing == -1 && worldObj != null && worldObj.getBlockState(getPosMC()) != null && worldObj.getBlockState(getPosMC()).getBlock() == SprocketsBlocks.redEngine)
 		{
-			facing = SprocketsBlocks.redEngine.getMetaFromState(worldObj.getBlockState(getPos())) % 6;
+			facing = SprocketsBlocks.redEngine.getMetaFromState(worldObj.getBlockState(getPosMC())) % 6;
 		}
 
 		

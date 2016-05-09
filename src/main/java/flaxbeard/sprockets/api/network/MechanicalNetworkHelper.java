@@ -58,7 +58,7 @@ public class MechanicalNetworkHelper
 			{
 				if (map.get(connectedConduit) != visitedMap.get(connectedConduit))
 				{
-					result = connectedConduit.getPos();
+					result = connectedConduit.getPosMC();
 				}
 			}
 		}
@@ -124,8 +124,8 @@ public class MechanicalNetworkHelper
 	{
 		HashSet<IMechanicalConduit> output = new HashSet<IMechanicalConduit>();
 
-		BlockPos position = base.getPos();
-		World world = base.getWorld();
+		BlockPos position = base.getPosMC();
+		World world = base.getWorldMC();
 		
 		// Process all potential multipart cis-type connections
 		outerLoop:
@@ -346,8 +346,8 @@ public class MechanicalNetworkHelper
 		HashSet<IMechanicalConduit> output = new HashSet<IMechanicalConduit>();
 		HashMap<IMechanicalConduit, Boolean> states = new HashMap<IMechanicalConduit, Boolean>();
 
-		BlockPos position = base.getPos();
-		World world = base.getWorld();
+		BlockPos position = base.getPosMC();
+		World world = base.getWorldMC();
 		
 		// Process all potential multipart cis-type connections
 		outerLoop:
@@ -719,7 +719,7 @@ public class MechanicalNetworkHelper
 	 */
 	public static boolean willConnectTransMultipart(IMechanicalConduit conduit, Vec3i vector, PartSlot slot)
 	{
-		BlockPos position = conduit.getPos();
+		BlockPos position = conduit.getPosMC();
 		for (Tuple potentialConnection : conduit.multipartTransConnections())
 		{
 			if (potentialConnection.getFirst().equals(vector) && potentialConnection.getSecond().equals(slot))

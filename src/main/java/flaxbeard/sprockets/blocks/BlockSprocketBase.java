@@ -13,16 +13,11 @@ public class BlockSprocketBase extends Block
 	public BlockSprocketBase(Material material, String name)
 	{
 		super(material);
-		GameRegistry.registerBlock(this, name);
-		this.setUnlocalizedName(Sprockets.MODID + "." + name);
-		this.setCreativeTab(Sprockets.creativeTab);
-		this.name = name;
-	}
-	
-	public BlockSprocketBase(Material material, String name, Class<? extends ItemBlock> ib)
-	{
-		super(material);
-		GameRegistry.registerBlock(this, ib, name);
+		this.setRegistryName(name);
+		GameRegistry.register(this);
+		ItemBlock ib = new ItemBlock(this);
+		ib.setRegistryName(name);
+		GameRegistry.register(ib);
 		this.setUnlocalizedName(Sprockets.MODID + "." + name);
 		this.setCreativeTab(Sprockets.creativeTab);
 		this.name = name;

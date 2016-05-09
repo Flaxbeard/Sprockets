@@ -83,12 +83,12 @@ public class PartBigSprocketPlaceholder extends PartSprocketBaseNoConduit implem
 	public void addSelectionBoxes(List<AxisAlignedBB> list)
 	{
 		list.add(new AxisAlignedBB(
-				RENDER_BOUNDS[facing].minX - parent.getX(),
-				RENDER_BOUNDS[facing].minY - parent.getY(),
-				RENDER_BOUNDS[facing].minZ - parent.getZ(),
-				RENDER_BOUNDS[facing].maxX - parent.getX(),
-				RENDER_BOUNDS[facing].maxY - parent.getY(),
-				RENDER_BOUNDS[facing].maxZ - parent.getZ()
+				BOUNDS[facing].minX,
+				BOUNDS[facing].minY ,
+				BOUNDS[facing].minZ,
+				BOUNDS[facing].maxX,
+				BOUNDS[facing].maxY,
+				BOUNDS[facing].maxZ
 				));
 	}
 	

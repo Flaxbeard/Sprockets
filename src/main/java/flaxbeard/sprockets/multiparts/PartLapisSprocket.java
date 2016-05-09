@@ -19,13 +19,17 @@ public class PartLapisSprocket extends PartSprocket implements ISlottedRedstoneP
 	{
 		super.update();
 		
-		float torque = getNetwork().isJammed() ? 0 : getNetwork().getTorque();
-		if (cachedTorque != torque)
+		if (initialized)
 		{
-			cachedTorque = torque;
-			cachedValue = (int) (15F * (cachedTorque / this.maxTorque()));
-			getWorld().notifyNeighborsOfStateChange(getPos(), getWorld().getBlockState(getPos()).getBlock());
+			float torque = getNetwork().isJammed() ? 0 : getNetwork().getTorque();
+			if (cachedTorque != torque)
+			{
+				cachedTorque = torque;
+				cachedValue = (int) (15F * (cachedTorque / this.maxTorque()));
+				getWorldMC().notifyNeighborsOfStateChange(getPosMC(), getWorldMC().getBlockState(getPosMC()).getBlock());
+			}
 		}
+
 	}
 	
 	@Override

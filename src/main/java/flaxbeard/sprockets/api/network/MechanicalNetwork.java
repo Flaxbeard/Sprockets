@@ -10,6 +10,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import flaxbeard.sprockets.api.IMechanicalConduit;
+import flaxbeard.sprockets.api.IMechanicalConsumer;
 import flaxbeard.sprockets.lib.LibConstants;
 
 public class MechanicalNetwork
@@ -61,6 +62,9 @@ public class MechanicalNetwork
 	private float maxTorque = 99999.0F;
 	
 	public HashSet<IMechanicalConduit> conduits;
+	public HashMap<IMechanicalConsumer, Float> networkConsumers;
+	private HashMap<IMechanicalConsumer, Float> consumers;
+	public float consumerTorqueNeeded = 0.0F;
 	public String id;
 	
 	private float size;
@@ -80,6 +84,8 @@ public class MechanicalNetwork
 		id = string;
 		this.size = size;
 		conduits = new HashSet<IMechanicalConduit>();
+		networkConsumers = new HashMap<IMechanicalConsumer, Float>();
+		consumers = new HashMap<IMechanicalConsumer, Float>();
 		this.world = world;
 		MechanicalNetworkRegistry.getInstance().register(id, this, world);
 	}
@@ -117,21 +123,143 @@ public class MechanicalNetwork
 		IMechanicalConduit starting = conduits.iterator().next();
 		this.addAllConduits(network.conduits, starting);
 		network.conduits = new HashSet<IMechanicalConduit>();
+		network.consumers = new HashMap<IMechanicalConsumer, Float>();
+		network.updateConsumers();
+
 	}
 	
+	public void updateConsumers()
+	{
+		this.resetConsumers(new HashSet<String>());
+		HashMap<IMechanicalConsumer, Float> newNetConsumers = this.updateConsumers(new HashSet<String>(), new HashMap<IMechanicalConsumer, Float>(), 1.0F);
+		this.passConsumers(new HashSet<String>(), newNetConsumers, 1.0F);
+
+	}
+
+
+	private void passConsumers(HashSet<String> history,
+			HashMap<IMechanicalConsumer, Float> newNetConsumers, float modifier)
+	{
+		history.add(id);
+		for (IMechanicalConsumer consumer : newNetConsumers.keySet())
+		{
+			networkConsumers.put(consumer, newNetConsumers.get(consumer) * modifier);
+			consumerTorqueNeeded += newNetConsumers.get(consumer) * modifier;
+		}
+		
+		for (String key : links.keySet())
+		{
+			MechanicalNetwork network = MechanicalNetworkRegistry.getInstance().getNetwork(key, world);
+			if (network != null)
+			{
+				if (!history.contains(key))
+				{
+					if (links.get(key).cis)
+					{
+						network.passConsumers(history, newNetConsumers, modifier);
+					}
+					else
+					{
+						network.passConsumers(history, newNetConsumers, modifier * (network.getSizeMultiplier() / this.getSizeMultiplier()));
+					}
+				}
+			}
+		}
+	}
+
+
+	public void resetConsumers()
+	{
+		this.networkConsumers = new HashMap<IMechanicalConsumer, Float>();
+		for (IMechanicalConsumer consumer : this.consumers.keySet())
+		{
+			this.consumers.put(consumer, consumer.torqueCost());
+		}
+		this.consumerTorqueNeeded = 0F;
+	}
+	
+	private void resetConsumers(HashSet<String> history)
+	{
+		history.add(id);
+		resetConsumers();
+		
+		for (String key : links.keySet())
+		{
+			MechanicalNetwork network = MechanicalNetworkRegistry.getInstance().getNetwork(key, world);
+			if (network != null)
+			{
+				if (!history.contains(key))
+				{
+					network.resetConsumers(history);
+				}
+			}
+		}
+	}
+	
+	
+	private HashMap<IMechanicalConsumer, Float> updateConsumers(HashSet<String> history, HashMap<IMechanicalConsumer, Float> results, float modifier)
+	{
+		history.add(id);
+		
+		for (IMechanicalConsumer consumer : consumers.keySet())
+		{
+			results.put(consumer, consumers.get(consumer) * modifier);
+		}
+		
+		for (String key : links.keySet())
+		{
+			MechanicalNetwork network = MechanicalNetworkRegistry.getInstance().getNetwork(key, world);
+			if (network != null)
+			{
+				if (!history.contains(key))
+				{
+					
+					if (links.get(key).cis)
+					{
+						network.updateConsumers(history, results, modifier);
+					}
+					else
+					{
+						network.updateConsumers(history, results, modifier / (network.getSizeMultiplier() / this.getSizeMultiplier()));
+					}
+				}
+			}
+		}
+		
+		return results;
+	}
+
+
+
 	public void addAllConduits(Collection<IMechanicalConduit> conduitsToAdd, IMechanicalConduit base)
 	{
-		this.conduits.addAll(conduitsToAdd);
 		for (IMechanicalConduit conduit : conduitsToAdd)
 		{
+			conduits.add(conduit);
+			
+			if (conduit instanceof IMechanicalConsumer)
+			{
+				IMechanicalConsumer consumer = (IMechanicalConsumer) conduit;
+				consumers.put(consumer, consumer.torqueCost());
+			}
 			conduit.setNetwork(this);
 		}
 		recalculateStates(base);
+		updateConsumers();
+
 	}
 
 	public void addConduit(IMechanicalConduit conduit)
 	{
 		conduits.add(conduit);
+		
+		if (conduit instanceof IMechanicalConsumer)
+		{
+			IMechanicalConsumer consumer = (IMechanicalConsumer) conduit;
+			consumers.put(consumer, consumer.torqueCost());
+			
+		}
+		
 		if (conduits.size() == 1)
 		{
 			recalculateStates(conduit);
@@ -141,6 +269,11 @@ public class MechanicalNetwork
 			recalculateStates(conduits.iterator().next());
 		}
 		conduit.setNetwork(this);
+		
+		if (conduit instanceof IMechanicalConsumer)
+		{
+			updateConsumers();
+		}
 	}
 	
 	public boolean contains(IMechanicalConduit conduit)
@@ -181,8 +314,10 @@ public class MechanicalNetwork
 			{
 				network.rotation = rotation;
 			}
-			
+
 			this.conduits = new HashSet<IMechanicalConduit>();
+			consumers = new HashMap<IMechanicalConsumer, Float>();
+			
 		}
 	}
 	
@@ -223,10 +358,12 @@ public class MechanicalNetwork
 	
 	public void recalculateJams()
 	{
+		this.updateConsumers();
+
 		HashSet<String> history = new HashSet<String>();
 		boolean isJammed = recalculateJams(history, false);
 		
-		//System.out.println(isJammed);
+	//	System.out.println("rj");
 		//System.out.println(history);
 		//System.out.println(links.size());
 		for (String key : history)
@@ -242,7 +379,6 @@ public class MechanicalNetwork
 
 	public void recalculateStates()
 	{
-		
 		recalculateStates(conduits.iterator().next());
 		
 	}
@@ -418,7 +554,7 @@ public class MechanicalNetwork
 
 		this.addSpeed(speed, torque, new HashSet<String>());
 	}
-
+	
 	public boolean tick()
 	{
 		
@@ -430,7 +566,7 @@ public class MechanicalNetwork
 		}
 
 		
-		if (this.torque < this.minTorque && !torqueJammed)
+		if ((this.torque < this.minTorque || this.torque < this.consumerTorqueNeeded)&& !torqueJammed)
 		{
 			this.torqueJammed = true;
 			this.recalculateJams();
@@ -438,7 +574,7 @@ public class MechanicalNetwork
 		
 
 		
-		if (torqueJammed && (this.torque >= this.minTorque))
+		if (torqueJammed && (this.torque >= this.minTorque && this.torque >= this.consumerTorqueNeeded))
 		{
 			this.torqueJammed = false;
 			this.recalculateJams();
@@ -474,11 +610,14 @@ public class MechanicalNetwork
 			for (String key : links.keySet())
 			{
 				MechanicalNetwork network = MechanicalNetworkRegistry.getInstance().getNetwork(key, world);
+				
 				if (network != null && network.links != null && network.links.containsKey(id))
 				{
 					network.links.remove(id);
 				}
 			}
+			
+
 		}
 		
 		try
@@ -521,7 +660,7 @@ public class MechanicalNetwork
 	{
 		if (conduits.size() > 0 && jammedPoint != null)
 		{
-			World world = conduits.iterator().next().getWorld();
+			World world = conduits.iterator().next().getWorldMC();
 			for (int i = 0; i < 3; i++)
 				world.spawnParticle(EnumParticleTypes.VILLAGER_ANGRY, jammedPoint.getX() + world.rand.nextFloat(), jammedPoint.getY(), jammedPoint.getZ() + world.rand.nextFloat(), 0, 0, 0, 0);
 		}
@@ -560,6 +699,8 @@ public class MechanicalNetwork
 			//	System.out.println(network.size());
 			}
 			this.conduits = new HashSet<IMechanicalConduit>();
+			consumers = new HashMap<IMechanicalConsumer, Float>();
+
 		}
 	}
 

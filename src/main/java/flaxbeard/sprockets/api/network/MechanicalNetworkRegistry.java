@@ -125,7 +125,7 @@ public class MechanicalNetworkRegistry
 		
 		if (toReturn == null)
 		{
-			toReturn = new MechanicalNetwork(UUID.randomUUID().toString(), conduit.sizeMultiplier(), conduit.getWorld());
+			toReturn = new MechanicalNetwork(UUID.randomUUID().toString(), conduit.sizeMultiplier(), conduit.getWorldMC());
 			toReturn.addConduit(conduit);
 		}
 		
@@ -160,7 +160,7 @@ public class MechanicalNetworkRegistry
 	public MechanicalNetwork newNetworkFromConduit(
 			IMechanicalConduit conduit, IMechanicalConduit ignore)
 	{
-		MechanicalNetwork toReturn = new MechanicalNetwork(UUID.randomUUID().toString(), conduit.sizeMultiplier(), conduit.getWorld());
+		MechanicalNetwork toReturn = new MechanicalNetwork(UUID.randomUUID().toString(), conduit.sizeMultiplier(), conduit.getWorldMC());
 		HashSet<IMechanicalConduit> conduits = MechanicalNetworkHelper.crawl(conduit, ignore);
 		toReturn.addAllConduits(conduits, conduit);
 

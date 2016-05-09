@@ -36,7 +36,7 @@ public class BlockRedstoneEngine extends BlockSprocketBase implements ITileEntit
 	
 	public BlockRedstoneEngine(String name, Material material, float hardness, float resistance)
 	{
-		super(material, name,  ItemBlock.class);
+		super(material, name);
 		this.setHardness(hardness);
 		this.setResistance(resistance);
 		this.setLightOpacity(0);
