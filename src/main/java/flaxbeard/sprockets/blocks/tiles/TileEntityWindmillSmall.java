@@ -69,7 +69,7 @@ public class TileEntityWindmillSmall extends TileEntitySprocketBase implements I
 		}
 
 		
-		if (this.worldObj.getTotalWorldTime() % LibConstants.WINDMILL_UPDATE_TICKS == 0 || canSpin == -1)
+		if ((this.worldObj.getTotalWorldTime() % LibConstants.WINDMILL_UPDATE_TICKS == 0 || canSpin == -1) && facing != -1)
 		{
 			checkSurroundings();
 		}
@@ -81,7 +81,7 @@ public class TileEntityWindmillSmall extends TileEntitySprocketBase implements I
 		
 		
 		
-		if (this.worldObj.isRemote && canSpin == 1 && this.worldObj.getTotalWorldTime() % 10 == 0 && getNetwork() != null && !getNetwork().isJammed())
+		if (this.worldObj.isRemote && canSpin == 1 && this.worldObj.getTotalWorldTime() % 10 == 0 && getNetwork() != null && !getNetwork().isJammed() && facing != -1)
 		{
 			Vec3i dir = EnumFacing.VALUES[facing].getDirectionVec();
 			worldObj.spawnParticle(EnumParticleTypes.CLOUD, getPosMC().getX() + worldObj.rand.nextFloat(), getPosMC().getY() + worldObj.rand.nextFloat(), getPosMC().getZ() + worldObj.rand.nextFloat(), 

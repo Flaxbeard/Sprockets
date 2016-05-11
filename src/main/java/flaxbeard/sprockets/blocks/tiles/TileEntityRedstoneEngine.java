@@ -2,34 +2,21 @@ package flaxbeard.sprockets.blocks.tiles;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 import mcmultipart.multipart.PartSlot;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.biome.BiomeGenBeach;
-import net.minecraft.world.biome.BiomeGenDesert;
-import net.minecraft.world.biome.BiomeGenHills;
-import net.minecraft.world.biome.BiomeGenOcean;
-import net.minecraft.world.biome.BiomeGenPlains;
-import net.minecraft.world.biome.BiomeGenStoneBeach;
-import flaxbeard.sprockets.api.IGyrometerable;
 import flaxbeard.sprockets.api.IWrenchable;
+import flaxbeard.sprockets.blocks.BlockRedstoneEngine;
 import flaxbeard.sprockets.blocks.SprocketsBlocks;
 import flaxbeard.sprockets.lib.LibConstants;
 import flaxbeard.sprockets.multiparts.SprocketsMultiparts;
@@ -155,6 +142,8 @@ public class TileEntityRedstoneEngine extends TileEntitySprocketBase implements 
 		if (player.isSneaking())
 		{
 			this.directionFlipped = !directionFlipped;
+			this.worldObj.setBlockState(pos, state.withProperty(BlockRedstoneEngine.REVERSED, directionFlipped), 2);
+			worldObj.notifyBlockUpdate(pos, state, state.withProperty(BlockRedstoneEngine.REVERSED, directionFlipped), 2);
 		}
 		return false;
 	}

@@ -19,6 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -33,6 +34,7 @@ public class BlockRedstoneEngine extends BlockSprocketBase implements ITileEntit
 {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
+	public static final PropertyBool REVERSED = PropertyBool.create("reversed");
 	
 	public BlockRedstoneEngine(String name, Material material, float hardness, float resistance)
 	{
@@ -40,7 +42,7 @@ public class BlockRedstoneEngine extends BlockSprocketBase implements ITileEntit
 		this.setHardness(hardness);
 		this.setResistance(resistance);
 		this.setLightOpacity(0);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(POWERED, false));
+		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(POWERED, false).withProperty(REVERSED, false));
 	}
 
 	@Override
@@ -55,6 +57,17 @@ public class BlockRedstoneEngine extends BlockSprocketBase implements ITileEntit
 		return EnumBlockRenderType.MODEL;
 	}
 	
+	@Override
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+	{
+		TileEntity te = worldIn.getTileEntity(pos);
+		if (te != null && te instanceof TileEntityRedstoneEngine)
+		{
+			return state.withProperty(REVERSED, ((TileEntityRedstoneEngine) te).directionFlipped);
+		}
+		return super.getActualState(state, worldIn, pos);
+	}
+
 	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 	{
@@ -158,7 +171,7 @@ public class BlockRedstoneEngine extends BlockSprocketBase implements ITileEntit
 	
 	protected BlockStateContainer createBlockState()
 	{
-	    return new BlockStateContainer(this, new IProperty[] {FACING, POWERED});
+	    return new BlockStateContainer(this, new IProperty[] {FACING, POWERED, REVERSED});
 	}
 
 	@Override
@@ -175,11 +188,13 @@ public class BlockRedstoneEngine extends BlockSprocketBase implements ITileEntit
 				HashSet<IMechanicalConduit> neighbors = MechanicalNetworkHelper.getConnectedConduits(te);
 				te.getNetwork().removeConduitTotal(te, neighbors);
 				te.setNetwork(null);
+				boolean reversed = te.directionFlipped;
 				MechanicalNetworkRegistry.newOrJoin(te);
 				
-				world.setBlockState(pos, state.withProperty(FACING, side), 2);
+				world.setBlockState(pos, state.withProperty(FACING, side).withProperty(REVERSED, te.directionFlipped), 2);
+				te = (TileEntityRedstoneEngine) world.getTileEntity(pos);
 				te.facing = side.ordinal();
-				
+				te.directionFlipped = reversed;
 			}
 		}
 		return false;

@@ -29,6 +29,7 @@ import net.minecraft.world.biome.BiomeGenOcean;
 import net.minecraft.world.biome.BiomeGenPlains;
 import net.minecraft.world.biome.BiomeGenStoneBeach;
 import flaxbeard.sprockets.api.IGyrometerable;
+import flaxbeard.sprockets.api.IMechanicalProducer;
 import flaxbeard.sprockets.api.IWrenchable;
 import flaxbeard.sprockets.blocks.SprocketsBlocks;
 import flaxbeard.sprockets.lib.LibConstants;
@@ -39,8 +40,11 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 	private static final ArrayList<HashSet<Tuple<Vec3i, PartSlot>>> CIS;
 	public int facing = -1;
 	public byte canSpin = -1;
+	private byte lastCanSpin = -1;
 	public float speedMult = 1.0F;
+	private float lastSpeedMult = 1.0F;
 	public float blockedMult = 1.0F;
+	private float lastBlockedMult = 1.0F;
 	public boolean directionFlipped = false;
 	
 	public TileEntityWindmill()
@@ -68,7 +72,7 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 		}
 
 
-		if (this.worldObj.getTotalWorldTime() % LibConstants.WINDMILL_UPDATE_TICKS == 0 || canSpin == -1)
+		if ((this.worldObj.getTotalWorldTime() % LibConstants.WINDMILL_UPDATE_TICKS == 0 || canSpin == -1) && facing != -1)
 		{
 			checkSurroundings();
 		}
@@ -80,7 +84,7 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 		
 		
 		
-		if (this.worldObj.isRemote && canSpin == 1 && getNetwork() != null && !getNetwork().isJammed())
+		if (this.worldObj.isRemote && canSpin == 1 && getNetwork() != null && !getNetwork().isJammed() && facing != -1)
 		{
 			
 			Vec3i dir = EnumFacing.VALUES[facing].getDirectionVec();
@@ -94,6 +98,9 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 
 	private void checkSurroundings()
 	{
+		lastCanSpin = canSpin;
+		lastSpeedMult = speedMult;
+		lastBlockedMult = blockedMult;
 		canSpin = 1;
 		speedMult = 1.0F;
 		
@@ -237,7 +244,6 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 		{
 			this.canSpin = 3;
 		}
-		
 	}
 
 
@@ -386,5 +392,4 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 		}
 			
 	}
-
 }
