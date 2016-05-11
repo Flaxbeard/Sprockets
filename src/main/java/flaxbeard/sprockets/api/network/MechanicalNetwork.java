@@ -520,32 +520,38 @@ public class MechanicalNetwork
 		}
 			
 			
-		
-		for (String key : links.keySet())
+		try
 		{
-			MechanicalNetwork network = MechanicalNetworkRegistry.getInstance().getNetwork(key, world);
-			if (network != null)
+			for (String key : links.keySet())
 			{
-			
-				if (!history.contains(key)) // TODO make it check even if it already has been passed to make sure it's the same direction
+				MechanicalNetwork network = MechanicalNetworkRegistry.getInstance().getNetwork(key, world);
+				if (network != null)
 				{
-					float speed2 = speed;
-					if (!links.get(key).shouldDirectionFlip)
+				
+					if (!history.contains(key)) // TODO make it check even if it already has been passed to make sure it's the same direction
 					{
-						speed2 *= -1;
-					}
-					if (links.get(key).cis)
-					{
-						network.addSpeed(speed2, torque, history);
-					}
-					else
-					{
-						network.addSpeed(speed2 * (this.getSizeMultiplier() / network.getSizeMultiplier()),
-								torque * (network.getSizeMultiplier() / this.getSizeMultiplier()),
-								history);
+						float speed2 = speed;
+						if (!links.get(key).shouldDirectionFlip)
+						{
+							speed2 *= -1;
+						}
+						if (links.get(key).cis)
+						{
+							network.addSpeed(speed2, torque, history);
+						}
+						else
+						{
+							network.addSpeed(speed2 * (this.getSizeMultiplier() / network.getSizeMultiplier()),
+									torque * (network.getSizeMultiplier() / this.getSizeMultiplier()),
+									history);
+						}
 					}
 				}
 			}
+		}
+		catch (ConcurrentModificationException e1)
+		{
+			
 		}
 	}
 
