@@ -33,7 +33,7 @@ public class PartBigSprocketCenter extends PartSprocketBase implements ISlottedP
 	public int facing = 0;
 	
 	private static final AxisAlignedBB[] BOUNDS;
-	private static final AxisAlignedBB[] RENDER_BOUNDS;
+	public static final AxisAlignedBB[] RENDER_BOUNDS;
 	private static final ArrayList<HashSet<Vec3i>> BLOCK_CIS_CONNECTIONS;
 	private static final HashSet<Vec3i> BLOCK_TRANS_CONNECTIONS;
 	private static final ArrayList<HashSet<Tuple<Vec3i, PartSlot>>> PART_CIS_CONNECTIONS;

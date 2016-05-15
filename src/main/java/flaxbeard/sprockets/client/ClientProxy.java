@@ -114,7 +114,7 @@ public class ClientProxy extends CommonProxy
 		registerItemRenders(SprocketsItems.wrench);
 		registerItemRenders(SprocketsItems.crank);
 		registerItemRenders(SprocketsItems.gyrometer);
-		
+		registerItemRenders(SprocketsItems.book);
 		
 		registerRenders(SprocketsBlocks.windmillSmall);
 		registerRenders(SprocketsBlocks.windmill);

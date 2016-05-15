@@ -46,7 +46,7 @@ public class LibConstants
 	
 	// Power consumption
 	public static final float MILLSTONE_TORQUE			= 30F;
-
+	public static final float MILLSTONE_MIN_SPEED		= 1F;
 	
 	// Speed/torque/ticks of a hand crank
 	public static final float CRANK_SPEED 	= 5.0F;

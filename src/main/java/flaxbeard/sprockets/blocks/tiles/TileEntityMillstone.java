@@ -100,14 +100,10 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 				network.updateConsumers();
 				this.markDirty();
 				worldObj.notifyBlockUpdate(getPosMC(), worldObj.getBlockState(getPosMC()), worldObj.getBlockState(getPosMC()), 2);
-				if (!isActive)
-				{
-					this.activeTicks  = 0;
-				}
 				wasActive = isActive;
 			}
 			
-			if (!network.isJammed() && isActive)
+			if (!network.isJammed() && isActive && getNetwork().getCachedSpeed() > LibConstants.MILLSTONE_MIN_SPEED)
 			{
 				activeTicks += Math.abs(network.getCachedSpeed());
 				ItemStack output = getOutput(contents[0]);

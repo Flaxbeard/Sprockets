@@ -5,6 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -18,6 +19,9 @@ public class Sprockets
 {
     public static final String MODID = "sprockets";
     public static final String VERSION = "@VERSION@";
+    
+    @Instance(MODID)
+    public static Sprockets INSTANCE;
         
     @SidedProxy(clientSide = "flaxbeard.sprockets.client.ClientProxy", serverSide = "flaxbeard.sprockets.common.CommonProxy")
     public static CommonProxy proxy;

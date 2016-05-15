@@ -7,5 +7,6 @@ public class SprocketsHandlers
 	public static void init()
 	{
 		MinecraftForge.EVENT_BUS.register(new WrenchHandler());
+		MinecraftForge.EVENT_BUS.register(new SprocketPlacementHandler());
 	}
 }

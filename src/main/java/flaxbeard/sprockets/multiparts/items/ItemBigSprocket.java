@@ -2,6 +2,7 @@ package flaxbeard.sprockets.multiparts.items;
 
 
 import mcmultipart.multipart.IMultipart;
+import mcmultipart.multipart.IMultipartContainer;
 import mcmultipart.multipart.MultipartHelper;
 import mcmultipart.multipart.MultipartRegistry;
 import net.minecraft.block.SoundType;
@@ -9,6 +10,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.Tuple;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -16,6 +19,7 @@ import flaxbeard.sprockets.Sprockets;
 import flaxbeard.sprockets.multiparts.PartBigSprocketCenter;
 import flaxbeard.sprockets.multiparts.PartBigSprocketEdge;
 import flaxbeard.sprockets.multiparts.PartBigSprocketPlaceholder;
+import flaxbeard.sprockets.multiparts.PartSprocket;
 
 public class ItemBigSprocket extends ItemSprocketMultipart
 {
@@ -33,6 +37,7 @@ public class ItemBigSprocket extends ItemSprocketMultipart
 	@Override
 	public boolean place(World world, BlockPos pos, EnumFacing side, Vec3d hit, ItemStack stack, EntityPlayer player)
 	{
+
 
 		if (!player.canPlayerEdit(pos, side, stack)) return false;
 		
@@ -158,6 +163,7 @@ public class ItemBigSprocket extends ItemSprocketMultipart
 	public IMultipart createPart(World world, BlockPos pos, EnumFacing side,
 			Vec3d hit, ItemStack stack, EntityPlayer player)
 	{
+		
 		PartBigSprocketCenter sprocket = new PartBigSprocketCenter();
 		sprocket.setSlot(side.getOpposite().ordinal());
 		sprocket.markDirty();
@@ -172,5 +178,17 @@ public class ItemBigSprocket extends ItemSprocketMultipart
 		return sprocket;
 	}
 
+	@Override
+	public boolean hasBoundingBox()
+	{
+		return true;
+	}
 
+
+	@Override
+	public AxisAlignedBB boundingBox(World world, BlockPos blockpos, EnumFacing hitFace, Vec3d hitVec)
+	{
+		AxisAlignedBB box = PartBigSprocketCenter.RENDER_BOUNDS[hitFace.getOpposite().ordinal()];
+		return box;
+	}
 }

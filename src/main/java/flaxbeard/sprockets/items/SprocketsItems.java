@@ -7,6 +7,7 @@ public class SprocketsItems
 	public static ItemCrank crank;
 	public static ItemGyrometer gyrometer;
 	public static ItemSprocketsResource resource;
+	public static ItemSprocketBook book;
 	
 	public static void preInit()
 	{
@@ -14,6 +15,7 @@ public class SprocketsItems
 		crank = new ItemCrank();
 		gyrometer = new ItemGyrometer();
 		resource = new ItemSprocketsResource();
+		book = new ItemSprocketBook();
 	}
 
 	public static void init()

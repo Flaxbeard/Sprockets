@@ -28,7 +28,7 @@ public class PartSprocket extends PartSprocketBase implements ISlottedPart, IMec
 	
 	public int facing = 0;
 	
-	private static final AxisAlignedBB[] BOUNDS;
+	public static final AxisAlignedBB[] BOUNDS;
 	private static final ArrayList<HashSet<Vec3i>> BLOCK_CIS_CONNECTIONS;
 	private static final ArrayList<HashSet<Vec3i>> BLOCK_TRANS_CONNECTIONS;
 	private static final ArrayList<HashSet<Tuple<Vec3i, PartSlot>>> PART_CIS_CONNECTIONS;
@@ -41,6 +41,7 @@ public class PartSprocket extends PartSprocketBase implements ISlottedPart, IMec
 	private static final Vec3i UP = EnumFacing.UP.getDirectionVec();
 	private static final Vec3i DOWN = EnumFacing.DOWN.getDirectionVec();
 	private static final ArrayList<EnumSet<PartSlot>> MASK;
+	public static final ArrayList<PartSlot> SLOT_FROM_FACING;
 	private int c = 0;
 	
 	static
@@ -51,6 +52,7 @@ public class PartSprocket extends PartSprocketBase implements ISlottedPart, IMec
 		PART_CIS_CONNECTIONS = new ArrayList<HashSet<Tuple<Vec3i, PartSlot>>>();
 		PART_TRANS_CONNECTIONS = new ArrayList<HashSet<Tuple<Vec3i, PartSlot>>>();
 		MASK = new ArrayList<EnumSet<PartSlot>>();
+		SLOT_FROM_FACING = new ArrayList<PartSlot>();
 		for (int side = 0; side < 6; side++)
 		{
 			BOUNDS[side] = SprocketsMultiparts.rotateAxis(side, 0F / 16F, 15F / 16F, 0F / 16F, 16F / 16F, 16F / 16F, 16F / 16F);
@@ -66,6 +68,7 @@ public class PartSprocket extends PartSprocketBase implements ISlottedPart, IMec
 						new Tuple(HERE, PartSlot.EAST), new Tuple(HERE, PartSlot.WEST), new Tuple(HERE, PartSlot.NORTH), new Tuple(HERE, PartSlot.SOUTH)
 					));
 			MASK.add(EnumSet.of(SprocketsMultiparts.rotatePartSlot(side, PartSlot.UP)));
+			SLOT_FROM_FACING.add(SprocketsMultiparts.rotatePartSlot(side, PartSlot.UP));
 		}		
 		
 		//BLOCK_CONNECTIONS = (ArrayList<EnumFacing>[]) temp.toArray();
