@@ -3,9 +3,10 @@ package flaxbeard.sprockets.api.network;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
-import javafx.geometry.Side;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Unload;
@@ -19,7 +20,7 @@ public class MechanicalNetworkRegistry
 	
 	private static MechanicalNetworkRegistry INSTANCE = new MechanicalNetworkRegistry();
 	
-	private HashMap<Integer, HashMap<String, MechanicalNetwork>> networks = new HashMap<Integer, HashMap<String, MechanicalNetwork>>();
+	private Map<Integer, Map<String, MechanicalNetwork>> networks = new HashMap<Integer, Map<String, MechanicalNetwork>>();
 	
 	public static void initialize()
 	{
@@ -38,7 +39,7 @@ public class MechanicalNetworkRegistry
 		{
 
 			
-			HashSet<MechanicalNetwork> toRemove = new HashSet<MechanicalNetwork>();
+			Set<MechanicalNetwork> toRemove = new HashSet<MechanicalNetwork>();
 			try
 			{
 				for (Integer dimension : networks.keySet())
@@ -58,8 +59,7 @@ public class MechanicalNetworkRegistry
 							networks.get(dimension).remove(remove.id);
 						}
 					}
-					//if (dimension == 0)
-						//System.out.println(e.phase + " " + networks.get(dimension).size());
+
 					
 				}
 			}
@@ -74,9 +74,8 @@ public class MechanicalNetworkRegistry
 
 	public static MechanicalNetwork newOrJoin(IMechanicalConduit conduit)
 	{
-		HashSet<IMechanicalConduit> connected = MechanicalNetworkHelper.getConnectedConduits(conduit);
-		HashSet<MechanicalNetwork> networks = new HashSet<MechanicalNetwork>();
-		HashSet<MechanicalNetwork> otherSizeNetworks = new HashSet<MechanicalNetwork>();
+		Set<IMechanicalConduit> connected = MechanicalNetworkHelper.getConnectedConduits(conduit);
+		Set<MechanicalNetwork> networks = new HashSet<MechanicalNetwork>();
 		MechanicalNetwork toReturn = null;
 		int joined = 0;
 		
@@ -96,24 +95,17 @@ public class MechanicalNetworkRegistry
 				
 				for (MechanicalNetwork network : networks)
 				{
-					if (network.getSizeMultiplier() == conduit.sizeMultiplier())
+					if (toReturn == null)
 					{
-						if (toReturn == null)
-						{
-							toReturn = network;
-							toReturn.addConduit(conduit);
-						}
-						else
-						{
-							toReturn.merge(network);
-							joined++;
-						}
+						toReturn = network;
+						toReturn.addConduit(conduit);
 					}
 					else
 					{
-						otherSizeNetworks.add(network);
+						toReturn.merge(network);
+						joined++;
 					}
-					
+				
 				}
 				
 				if (joined > 0)
@@ -125,7 +117,7 @@ public class MechanicalNetworkRegistry
 		
 		if (toReturn == null)
 		{
-			toReturn = new MechanicalNetwork(UUID.randomUUID().toString(), conduit.sizeMultiplier(), conduit.getWorldMC());
+			toReturn = new MechanicalNetwork(UUID.randomUUID().toString(), conduit.getWorldMC());
 			toReturn.addConduit(conduit);
 		}
 		
@@ -160,9 +152,9 @@ public class MechanicalNetworkRegistry
 	public MechanicalNetwork newNetworkFromConduit(
 			IMechanicalConduit conduit, IMechanicalConduit ignore)
 	{
-		MechanicalNetwork toReturn = new MechanicalNetwork(UUID.randomUUID().toString(), conduit.sizeMultiplier(), conduit.getWorldMC());
-		HashSet<IMechanicalConduit> conduits = MechanicalNetworkHelper.crawl(conduit, ignore);
-		toReturn.addAllConduits(conduits, conduit);
+		MechanicalNetwork toReturn = new MechanicalNetwork(UUID.randomUUID().toString(), conduit.getWorldMC());
+		Set<IMechanicalConduit> conduits = MechanicalNetworkHelper.crawl(conduit, ignore);
+		toReturn.addAllConduits(conduits, conduits.iterator().next());
 
 		return toReturn;
 	}

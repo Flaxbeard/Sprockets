@@ -28,19 +28,23 @@ import net.minecraft.world.biome.BiomeGenHills;
 import net.minecraft.world.biome.BiomeGenOcean;
 import net.minecraft.world.biome.BiomeGenPlains;
 import net.minecraft.world.biome.BiomeGenStoneBeach;
-import flaxbeard.sprockets.api.IGyrometerable;
-import flaxbeard.sprockets.api.IWrenchable;
+import flaxbeard.sprockets.api.IMechanicalProducer;
+import flaxbeard.sprockets.api.tool.IGyrometerable;
+import flaxbeard.sprockets.api.tool.IWrenchable;
 import flaxbeard.sprockets.blocks.SprocketsBlocks;
 import flaxbeard.sprockets.lib.LibConstants;
 import flaxbeard.sprockets.multiparts.SprocketsMultiparts;
 
-public class TileEntityWindmillSmall extends TileEntitySprocketBase implements IWrenchable, IGyrometerable
+public class TileEntityWindmillSmall extends TileEntitySprocketBase implements IWrenchable, IGyrometerable, IMechanicalProducer
 {
 	private static final ArrayList<HashSet<Tuple<Vec3i, PartSlot>>> CIS;
 	public int facing = -1;
 	public byte canSpin = -1;
+	private byte lastCanSpin = -1;
 	public float speedMult = 1.0F;
+	private float lastSpeedMult = 1.0F;
 	public float blockedMult = 1.0F;
+	private float lastBlockedMult = 1.0F;
 	public byte connectedToTop = -1;
 	public boolean directionFlipped = false;
 	
@@ -74,12 +78,7 @@ public class TileEntityWindmillSmall extends TileEntitySprocketBase implements I
 			checkSurroundings();
 		}
 		
-		if (this.getNetwork() != null && canSpin == 1)
-		{
-			getNetwork().addSpeedFromBlock(this, LibConstants.SMALL_WINDMILL_SPEED * speedMult  * blockedMult * (directionFlipped ? -1 : 1), LibConstants.SMALL_WINDMILL_TORQUE * speedMult * blockedMult);
-		}
-		
-		
+
 		
 		if (this.worldObj.isRemote && canSpin == 1 && this.worldObj.getTotalWorldTime() % 10 == 0 && getNetwork() != null && !getNetwork().isJammed() && facing != -1)
 		{
@@ -102,9 +101,11 @@ public class TileEntityWindmillSmall extends TileEntitySprocketBase implements I
 
 	private void checkSurroundings()
 	{
+		lastCanSpin = canSpin;
+		lastSpeedMult = speedMult;
+		lastBlockedMult = blockedMult;
 		canSpin = 1;
 		speedMult = 1.0F;
-		
 		
 		
 		BiomeGenBase biome = worldObj.getBiomeGenForCoordsBody(getPosMC());
@@ -215,6 +216,11 @@ public class TileEntityWindmillSmall extends TileEntitySprocketBase implements I
 			this.canSpin = 3;
 		}
 		
+		if (canSpin != lastCanSpin || blockedMult != lastBlockedMult || speedMult != lastSpeedMult)
+		{
+			this.getNetwork().updateNetworkSpeedAndTorque();
+		}
+		
 	}
 
 
@@ -283,6 +289,10 @@ public class TileEntityWindmillSmall extends TileEntitySprocketBase implements I
 	{
 		NBTTagCompound data = pkt.getNbtCompound();
 		this.readFromNBT(data);
+		if (getNetwork() != null)
+		{
+			getNetwork().updateNetworkSpeedAndTorque();
+		}
 	}
 	
 	@Override
@@ -302,6 +312,7 @@ public class TileEntityWindmillSmall extends TileEntitySprocketBase implements I
 		if (player.isSneaking())
 		{
 			this.directionFlipped = !directionFlipped;
+			this.getNetwork().updateNetworkSpeedAndTorque();
 		}
 		return false;
 	}
@@ -362,6 +373,18 @@ public class TileEntityWindmillSmall extends TileEntitySprocketBase implements I
 			}
 		}
 			
+	}
+
+	@Override
+	public float torqueProduced()
+	{
+		return LibConstants.SMALL_WINDMILL_TORQUE * speedMult * blockedMult;
+	}
+
+	@Override
+	public float speedProduced()
+	{
+		return LibConstants.SMALL_WINDMILL_SPEED * speedMult  * blockedMult * (directionFlipped ? -1 : 1);
 	}
 
 }

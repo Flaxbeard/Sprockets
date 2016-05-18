@@ -17,6 +17,7 @@ public abstract class TileEntityMechanicalConduit extends TileEntity implements 
 {
 	public boolean initialized = false;
 	private boolean state = false;
+	private float multiplier = 1;
 	private MechanicalNetwork network = null;
 
 	@Override
@@ -72,6 +73,18 @@ public abstract class TileEntityMechanicalConduit extends TileEntity implements 
 	public boolean getState()
 	{
 		return this.state;
+	}
+	
+	@Override
+	public void setMultiplier(float multiplier)
+	{
+		this.multiplier = multiplier;
+	}
+
+	@Override
+	public float getMultiplier()
+	{
+		return this.multiplier;
 	}
 
 	@Override

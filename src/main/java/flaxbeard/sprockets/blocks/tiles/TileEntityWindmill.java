@@ -28,14 +28,14 @@ import net.minecraft.world.biome.BiomeGenHills;
 import net.minecraft.world.biome.BiomeGenOcean;
 import net.minecraft.world.biome.BiomeGenPlains;
 import net.minecraft.world.biome.BiomeGenStoneBeach;
-import flaxbeard.sprockets.api.IGyrometerable;
 import flaxbeard.sprockets.api.IMechanicalProducer;
-import flaxbeard.sprockets.api.IWrenchable;
+import flaxbeard.sprockets.api.tool.IGyrometerable;
+import flaxbeard.sprockets.api.tool.IWrenchable;
 import flaxbeard.sprockets.blocks.SprocketsBlocks;
 import flaxbeard.sprockets.lib.LibConstants;
 import flaxbeard.sprockets.multiparts.SprocketsMultiparts;
 
-public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenchable, IGyrometerable
+public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenchable, IGyrometerable, IMechanicalProducer
 {
 	private static final ArrayList<HashSet<Tuple<Vec3i, PartSlot>>> CIS;
 	public int facing = -1;
@@ -75,11 +75,6 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 		if ((this.worldObj.getTotalWorldTime() % LibConstants.WINDMILL_UPDATE_TICKS == 0 || canSpin == -1) && facing != -1)
 		{
 			checkSurroundings();
-		}
-		
-		if (this.getNetwork() != null && canSpin == 1)
-		{
-			getNetwork().addSpeedFromBlock(this, LibConstants.WINDMILL_SPEED * speedMult  * blockedMult * (directionFlipped ? -1 : 1), LibConstants.WINDMILL_TORQUE * speedMult * blockedMult);
 		}
 		
 		
@@ -139,6 +134,7 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 								if (d == 0 || (facing <= 3 && otherWindmill.facing > 3 || facing > 3 && otherWindmill.facing <= 3))
 								{
 									((TileEntityWindmill) worldObj.getTileEntity(pos2)).canSpin = 2;
+									((TileEntityWindmill) worldObj.getTileEntity(pos2)).getNetwork().updateNetworkSpeedAndTorque();
 									canSpin = 2;
 									return;
 								}
@@ -244,6 +240,11 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 		{
 			this.canSpin = 3;
 		}
+		
+		if (canSpin != lastCanSpin || blockedMult != lastBlockedMult || speedMult != lastSpeedMult)
+		{
+			this.getNetwork().updateNetworkSpeedAndTorque();
+		}
 	}
 
 
@@ -331,6 +332,7 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 		if (player.isSneaking())
 		{
 			this.directionFlipped = !directionFlipped;
+			this.getNetwork().updateNetworkSpeedAndTorque();
 		}
 		return false;
 	}
@@ -391,5 +393,17 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 			}
 		}
 			
+	}
+
+	@Override
+	public float torqueProduced()
+	{
+		return canSpin == 1 ? LibConstants.WINDMILL_TORQUE * speedMult * blockedMult : 0;
+	}
+
+	@Override
+	public float speedProduced()
+	{
+		return canSpin == 1 ? LibConstants.WINDMILL_SPEED * speedMult  * blockedMult * (directionFlipped ? -1 : 1) : 0;
 	}
 }

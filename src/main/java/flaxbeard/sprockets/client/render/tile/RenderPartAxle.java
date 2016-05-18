@@ -38,7 +38,7 @@ public class RenderPartAxle extends MultipartSpecialRenderer
 		MechanicalNetwork network = axle.getNetwork();
 		if (network != null)
 		{
-			rotate = (network.rotation + network.getSpeed() * partialTicks) * LibConstants.RENDER_ROTATION_SPEED_MULTIPLIER;
+			rotate = ClientUtils.getRotation(axle, partialTicks);
 		}
 		
 		int facing = axle.facing;

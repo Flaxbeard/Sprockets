@@ -16,12 +16,12 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import flaxbeard.sprockets.api.IGyrometerable;
 import flaxbeard.sprockets.api.IMechanicalConduit;
 import flaxbeard.sprockets.api.IMechanicalConsumer;
-import flaxbeard.sprockets.api.IWrench;
-import flaxbeard.sprockets.api.IWrenchable;
 import flaxbeard.sprockets.api.network.MechanicalNetwork;
+import flaxbeard.sprockets.api.tool.IGyrometerable;
+import flaxbeard.sprockets.api.tool.IWrench;
+import flaxbeard.sprockets.api.tool.IWrenchable;
 import flaxbeard.sprockets.items.ItemGyrometer;
 
 public class WrenchHandler
@@ -112,10 +112,12 @@ public class WrenchHandler
 		MechanicalNetwork network = part.getNetwork();
 		if (network != null)
 		{
-			float speed = Math.abs(network.getCachedSpeed());
-			float torque = (speed == 0 ? 0 : network.getTorque());
+			System.out.println(part.getMultiplier());
+			float speed = Math.abs(network.getSpeedForConduit(part));
+			float torque = (speed == 0 ? 0 : network.getTorqueForConduit(part));
 			list.add(new TextComponentString("This network has a torque of " + torque));
 			list.add(new TextComponentString("This network has a speed of " + speed));
+			list.add(new TextComponentString("Mult: " + part.getMultiplier()));
 			//list.add(new TextComponentString("CONSUMERS: " + network.networkConsumers.size()));
 			//for (IMechanicalConsumer consumer : network.networkConsumers.keySet())
 			//{
@@ -125,11 +127,11 @@ public class WrenchHandler
 				//}
 				//System.out.println(getNetwork().id.substring(0, 10) + " " + getNetwork().networkConsumers.get(consumer));
 			//}
-			if (network.isTorqueCapped() && part.maxTorque() == network.getMaxTorque())
+			if (network.isTorqueCapped() && part.maxTorque() * part.getMultiplier() == network.getMaxTorque())
 			{
 				list.add(new TextComponentString("This component seems to be throttling the torque of nearby components"));
 			}
-			if (network.isTorqueJammed() && ((network.getMinTorque() == part.minTorque() && network.getTorque() >= network.consumerTorqueNeeded)|| (part instanceof IMechanicalConsumer && network.getTorque() <= network.consumerTorqueNeeded)))
+			if (network.isTorqueJammed() && ((network.getMinTorque() == part.minTorque()  * part.getMultiplier() && network.getTorque() >= network.consumerTorqueNeeded)|| (part instanceof IMechanicalConsumer && network.getTorque() <= network.consumerTorqueNeeded)))
 			{
 				list.add(new TextComponentString("The torque seems too low to turn this component"));
 			}

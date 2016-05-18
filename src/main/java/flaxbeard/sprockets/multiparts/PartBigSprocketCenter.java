@@ -274,6 +274,9 @@ public class PartBigSprocketCenter extends PartSprocketBase implements ISlottedP
 	@Override
 	public void onRemoved()
 	{
+		super.onRemoved();
+
+		
 		for (int i = -1; i <= 1; i++)
 		{
 			for (int j = -1; j <= 1; j++)
@@ -308,7 +311,6 @@ public class PartBigSprocketCenter extends PartSprocketBase implements ISlottedP
 				}
 			}
 		}
-		super.onRemoved();
 		
 	}
 

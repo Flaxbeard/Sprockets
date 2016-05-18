@@ -1,4 +1,4 @@
-package flaxbeard.sprockets.api;
+package flaxbeard.sprockets.api.tool;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package flaxbeard.sprockets.api;
 
-public interface IMechanicalConsumer
+public interface IMechanicalConsumer extends IMechanicalConduit
 {
 	public float torqueCost();
 }

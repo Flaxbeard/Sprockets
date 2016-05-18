@@ -20,7 +20,7 @@ public class PartRedstoneSprocket extends PartSprocket implements ISlottedRedsto
 	{
 		super.update();
 
-		float speed = getNetwork().isJammed() ? 0 : Math.abs(getNetwork().getCachedSpeed());
+		float speed = getNetwork().isJammed() ? 0 : Math.abs(getNetwork().getSpeedForConduit(this));
 		if (cachedSpeed != speed)
 		{
 			cachedSpeed = speed;
@@ -33,7 +33,7 @@ public class PartRedstoneSprocket extends PartSprocket implements ISlottedRedsto
 	protected void initialize()
 	{
 		super.initialize();
-		cachedSpeed = getNetwork().isJammed() ? 0 : Math.abs(getNetwork().getCachedSpeed());
+		cachedSpeed = getNetwork().isJammed() ? 0 : Math.abs(getNetwork().getSpeedForConduit(this));
 		cachedValue = (int) Math.min((15F * (cachedSpeed / (this.maxSpeed()))), 15);
 	}
 

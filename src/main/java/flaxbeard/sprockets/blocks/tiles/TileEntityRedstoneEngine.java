@@ -15,13 +15,14 @@ import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
-import flaxbeard.sprockets.api.IWrenchable;
+import flaxbeard.sprockets.api.IMechanicalProducer;
+import flaxbeard.sprockets.api.tool.IWrenchable;
 import flaxbeard.sprockets.blocks.BlockRedstoneEngine;
 import flaxbeard.sprockets.blocks.SprocketsBlocks;
 import flaxbeard.sprockets.lib.LibConstants;
 import flaxbeard.sprockets.multiparts.SprocketsMultiparts;
 
-public class TileEntityRedstoneEngine extends TileEntitySprocketBase implements IWrenchable
+public class TileEntityRedstoneEngine extends TileEntitySprocketBase implements IWrenchable, IMechanicalProducer
 {
 	private static final ArrayList<HashSet<Tuple<Vec3i, PartSlot>>> CIS;
 	public int facing = -1;
@@ -42,11 +43,6 @@ public class TileEntityRedstoneEngine extends TileEntitySprocketBase implements 
 	public void update()
 	{
 		super.update();
-
-		if (this.getNetwork() != null && isOn())
-		{
-			getNetwork().addSpeedFromBlock(this, LibConstants.REDSTONE_ENGINE_SPEED * (directionFlipped ? -1 : 1), LibConstants.REDSTONE_ENGINE_TORQUE );
-		}
 		
 
 	}
@@ -146,5 +142,17 @@ public class TileEntityRedstoneEngine extends TileEntitySprocketBase implements 
 			worldObj.notifyBlockUpdate(pos, state, state.withProperty(BlockRedstoneEngine.REVERSED, directionFlipped), 2);
 		}
 		return false;
+	}
+
+	@Override
+	public float torqueProduced()
+	{
+		return isOn() ? LibConstants.REDSTONE_ENGINE_TORQUE : 0;
+	}
+
+	@Override
+	public float speedProduced()
+	{
+		return isOn() ? LibConstants.REDSTONE_ENGINE_SPEED * (directionFlipped ? -1 : 1) : 0;
 	}
 }

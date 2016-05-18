@@ -23,9 +23,10 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.ITextComponent;
-import flaxbeard.sprockets.api.IGyrometerable;
 import flaxbeard.sprockets.api.IMechanicalConsumer;
+import flaxbeard.sprockets.api.SprocketsAPI;
 import flaxbeard.sprockets.api.network.MechanicalNetwork;
+import flaxbeard.sprockets.api.tool.IGyrometerable;
 import flaxbeard.sprockets.lib.LibConstants;
 
 
@@ -33,7 +34,6 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 {
 	private static final HashSet<Tuple<Vec3i, PartSlot>> CISMP = new HashSet<Tuple<Vec3i, PartSlot>>();
 	private static final HashSet<Vec3i> CIS = new HashSet<Vec3i>();
-	private static final HashMap<ItemStack, ItemStack> GRIND_RECIPES = new HashMap<ItemStack, ItemStack>();
 	
 	private ItemStack[] contents = new ItemStack[2];
 	
@@ -45,25 +45,6 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 	{
 		CIS.add(new Vec3i(0, 1, 0));
 		CISMP.add(new Tuple(new Vec3i(0, 1, 0), PartSlot.DOWN));
-		GRIND_RECIPES.put(new ItemStack(Items.bone), new ItemStack(Items.dye, 3, 15));
-		GRIND_RECIPES.put(new ItemStack(Blocks.yellow_flower), new ItemStack(Items.dye, 2, 11));
-		GRIND_RECIPES.put(new ItemStack(Blocks.red_flower, 1, 0), new ItemStack(Items.dye, 2, 1));
-		GRIND_RECIPES.put(new ItemStack(Blocks.red_flower, 1, 1), new ItemStack(Items.dye, 2, 12));
-		GRIND_RECIPES.put(new ItemStack(Blocks.red_flower, 1, 2), new ItemStack(Items.dye, 2, 13));
-		GRIND_RECIPES.put(new ItemStack(Blocks.red_flower, 1, 3), new ItemStack(Items.dye, 2, 7));
-		GRIND_RECIPES.put(new ItemStack(Blocks.red_flower, 1, 4), new ItemStack(Items.dye, 2, 1));
-		GRIND_RECIPES.put(new ItemStack(Blocks.red_flower, 1, 5), new ItemStack(Items.dye, 2, 14));
-		GRIND_RECIPES.put(new ItemStack(Blocks.red_flower, 1, 6), new ItemStack(Items.dye, 2, 7));
-		GRIND_RECIPES.put(new ItemStack(Blocks.red_flower, 1, 7), new ItemStack(Items.dye, 2, 9));
-		GRIND_RECIPES.put(new ItemStack(Blocks.red_flower, 1, 8), new ItemStack(Items.dye, 2, 7));
-
-		GRIND_RECIPES.put(new ItemStack(Blocks.double_plant, 1, 0), new ItemStack(Items.dye, 3, 11));
-		GRIND_RECIPES.put(new ItemStack(Blocks.double_plant, 1, 1), new ItemStack(Items.dye, 3, 13));
-		GRIND_RECIPES.put(new ItemStack(Blocks.double_plant, 1, 4), new ItemStack(Items.dye, 3, 1));
-		GRIND_RECIPES.put(new ItemStack(Blocks.double_plant, 1, 5), new ItemStack(Items.dye, 3, 9));
-		
-		GRIND_RECIPES.put(new ItemStack(Blocks.reeds, 1, 0), new ItemStack(Items.sugar, 3, 0));
-
 	}
 	
 	@Override
@@ -91,23 +72,24 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 		
 		if (this.getNetwork() != null && !this.worldObj.isRemote)
 		{
-			isActive = this.contents[0] != null && isItemGrindable(this.contents[0]);
+			isActive = this.contents[0] != null && isItemGrindable(this.contents[0]) && (contents[1] == null || (canFit(contents[1], SprocketsAPI.getMillstoneResult(this.contents[0]))));
 
 			MechanicalNetwork network = this.getNetwork();
 			
 			if (isActive != wasActive)
 			{
-				network.updateConsumers();
+				network.updateNetworkSpeedAndTorque();
 				this.markDirty();
 				worldObj.notifyBlockUpdate(getPosMC(), worldObj.getBlockState(getPosMC()), worldObj.getBlockState(getPosMC()), 2);
 				wasActive = isActive;
 			}
-			
-			if (!network.isJammed() && isActive && getNetwork().getCachedSpeed() > LibConstants.MILLSTONE_MIN_SPEED)
+
+			if (!network.isJammed() && isActive && Math.abs(network.getSpeedForConduit(this)) > LibConstants.MILLSTONE_MIN_SPEED)
 			{
-				activeTicks += Math.abs(network.getCachedSpeed());
-				ItemStack output = getOutput(contents[0]);
-				if (output != null && activeTicks >= 200 && (contents[1] == null || (canFit(contents[1], output))))
+				activeTicks += Math.abs(network.getSpeedForConduit(this));
+				ItemStack output = SprocketsAPI.getMillstoneResult(contents[0]);
+				
+				if (output != null && activeTicks >= 10 && (contents[1] == null || (canFit(contents[1], output))))
 				{
 					activeTicks = 0;
 					this.decrStackSize(0, 1);
@@ -127,21 +109,12 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 	
 	private static boolean isItemGrindable(ItemStack stack)
 	{
-		for (ItemStack grind : GRIND_RECIPES.keySet())
-		{
-			if (stack != null && grind != null  && grind.getItem() != null 
-					&& grind.getItem().equals(stack.getItem()) 
-					&& grind.getItemDamage() == stack.getItemDamage())
-			{
-				return true;
-			}
-		}
-		return false;
+		return SprocketsAPI.getMillstoneResult(stack) != null && stack.stackSize > 0;
 	}
 	
 	private static boolean canFit(ItemStack outputStack, ItemStack output)
 	{
-		if (outputStack.stackSize - output.stackSize > 64)
+		if (outputStack.stackSize - output.stackSize > output.getMaxStackSize())
 		{
 			return false;
 		}
@@ -149,20 +122,6 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 		{
 			return outputStack.getItem().equals(output.getItem()) && outputStack.getItemDamage() == output.getItemDamage();
 		}
-	}
-	
-	private static ItemStack getOutput(ItemStack stack)
-	{
-		for (ItemStack grind : GRIND_RECIPES.keySet())
-		{
-			if (stack != null && grind != null  && grind.getItem() != null 
-					&& grind.getItem().equals(stack.getItem()) 
-					&& grind.getItemDamage() == stack.getItemDamage())
-			{
-				return GRIND_RECIPES.get(grind).copy();
-			}
-		}
-		throw new IllegalStateException("NO OUTPUT FOUND!");
 	}
 	
 	@Override
@@ -211,7 +170,7 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 		isActive = compound.getBoolean("isActive");
 		if (isActive != wasActive && this.getNetwork() != null)
 		{
-			this.getNetwork().updateConsumers();
+			this.getNetwork().updateNetworkSpeedAndTorque();
 		}
 		wasActive = isActive;
 		//wasActive = compound.getBoolean("wasActive");

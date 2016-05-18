@@ -1,6 +1,6 @@
 package flaxbeard.sprockets.blocks;
 
-import java.util.HashSet;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -12,23 +12,17 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import flaxbeard.sprockets.api.IMechanicalConduit;
-import flaxbeard.sprockets.api.IWrenchable;
 import flaxbeard.sprockets.api.network.MechanicalNetworkHelper;
 import flaxbeard.sprockets.api.network.MechanicalNetworkRegistry;
+import flaxbeard.sprockets.api.tool.IWrenchable;
 import flaxbeard.sprockets.blocks.tiles.TileEntityRedstoneEngine;
-import flaxbeard.sprockets.blocks.tiles.TileEntityWindmillSmall;
 
 public class BlockRedstoneEngine extends BlockSprocketBase implements ITileEntityProvider, IWrenchable
 {
@@ -119,6 +113,7 @@ public class BlockRedstoneEngine extends BlockSprocketBase implements ITileEntit
 				te = (TileEntityRedstoneEngine) worldIn.getTileEntity(pos);
 				te.isOn = 0;
 				te.directionFlipped = reversed;
+				te.getNetwork().updateNetworkSpeedAndTorque();
 				te.markDirty();
 			}
 			else if (worldIn.isBlockPowered(pos) && !state.getValue(POWERED)) 
@@ -131,6 +126,7 @@ public class BlockRedstoneEngine extends BlockSprocketBase implements ITileEntit
 				te = (TileEntityRedstoneEngine) worldIn.getTileEntity(pos);
 				te.isOn = 1;
 				te.directionFlipped = reversed;
+				te.getNetwork().updateNetworkSpeedAndTorque();
 				te.markDirty();
 			}
 		}
@@ -185,7 +181,7 @@ public class BlockRedstoneEngine extends BlockSprocketBase implements ITileEntit
 			{
 				TileEntityRedstoneEngine te = (TileEntityRedstoneEngine) world.getTileEntity(pos);
 
-				HashSet<IMechanicalConduit> neighbors = MechanicalNetworkHelper.getConnectedConduits(te);
+				Set<IMechanicalConduit> neighbors = MechanicalNetworkHelper.getConnectedConduits(te);
 				te.getNetwork().removeConduitTotal(te, neighbors);
 				te.setNetwork(null);
 				boolean reversed = te.directionFlipped;

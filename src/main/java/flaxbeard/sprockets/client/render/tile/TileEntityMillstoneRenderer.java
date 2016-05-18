@@ -35,7 +35,7 @@ public class TileEntityMillstoneRenderer extends TileEntitySpecialRenderer
 			MechanicalNetwork network = millstone.getNetwork();
 			if (network != null)
 			{
-				rotate = (network.rotation + network.getSpeed() * partialTicks) * LibConstants.RENDER_ROTATION_SPEED_MULTIPLIER;
+				rotate = ClientUtils.getRotation(millstone, partialTicks);
 			}
 			if (network != null && millstone.getState())
 			{

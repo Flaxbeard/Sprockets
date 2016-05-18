@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import mcmultipart.multipart.IMultipart;
 import mcmultipart.multipart.IMultipartContainer;
@@ -120,7 +121,7 @@ public class PartAxle extends PartSprocketBase implements ISlottedPart, IMechani
 		IMultipartContainer contain = this.getContainer();
 		if (contain != null)
 		{
-			HashSet<IMechanicalConduit> neighbors = MechanicalNetworkHelper.getConnectedConduits(this);
+			Set<IMechanicalConduit> neighbors = MechanicalNetworkHelper.getConnectedConduits(this);
 			boolean lastTop = top;
 			boolean lastBottom = bottom;
 			top = contain.getPartInSlot(TOP_SLOT.get(facing)) == null;
@@ -128,7 +129,7 @@ public class PartAxle extends PartSprocketBase implements ISlottedPart, IMechani
 			
 			if ((top != lastTop || bottom != lastBottom) )
 			{
-				HashSet<IMechanicalConduit> neighbors2 = MechanicalNetworkHelper.getConnectedConduits(this);
+				Set<IMechanicalConduit> neighbors2 = MechanicalNetworkHelper.getConnectedConduits(this);
 				
 				for (IMechanicalConduit neighbor : neighbors2)
 				{

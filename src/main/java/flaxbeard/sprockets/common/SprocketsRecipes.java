@@ -1,11 +1,15 @@
 package flaxbeard.sprockets.common;
 
+import mcmultipart.multipart.PartSlot;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Tuple;
+import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import flaxbeard.sprockets.api.SprocketsAPI;
 import flaxbeard.sprockets.blocks.SprocketsBlocks;
 import flaxbeard.sprockets.items.SprocketsItems;
 import flaxbeard.sprockets.multiparts.SprocketsMultiparts;
@@ -25,7 +29,7 @@ public class SprocketsRecipes
 				" I ",
 				"ISI",
 				" I ",
-				Character.valueOf('I'), new ItemStack(Blocks.hardened_clay), Character.valueOf('S'), "stickWood"
+				Character.valueOf('I'), "stone", Character.valueOf('S'), "stickWood"
 				));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SprocketsMultiparts.sprocket, 4, 2),
 				" I ",
@@ -84,7 +88,7 @@ public class SprocketsRecipes
 				"I",
 				"I",
 				"I",
-				Character.valueOf('I'), new ItemStack(Blocks.hardened_clay)
+				Character.valueOf('I'), "stone"
 				));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SprocketsMultiparts.axle, 4, 2),
 				"I",
@@ -155,5 +159,26 @@ public class SprocketsRecipes
 				"I  ",
 				Character.valueOf('I'), "ingotIron"
 				));
+		
+
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Items.bone), new ItemStack(Items.dye, 3, 15));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.yellow_flower), new ItemStack(Items.dye, 2, 11));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.red_flower, 1, 0), new ItemStack(Items.dye, 2, 1));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.red_flower, 1, 1), new ItemStack(Items.dye, 2, 12));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.red_flower, 1, 2), new ItemStack(Items.dye, 2, 13));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.red_flower, 1, 3), new ItemStack(Items.dye, 2, 7));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.red_flower, 1, 4), new ItemStack(Items.dye, 2, 1));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.red_flower, 1, 5), new ItemStack(Items.dye, 2, 14));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.red_flower, 1, 6), new ItemStack(Items.dye, 2, 7));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.red_flower, 1, 7), new ItemStack(Items.dye, 2, 9));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.red_flower, 1, 8), new ItemStack(Items.dye, 2, 7));
+
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.double_plant, 1, 0), new ItemStack(Items.dye, 3, 11));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.double_plant, 1, 1), new ItemStack(Items.dye, 3, 13));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.double_plant, 1, 4), new ItemStack(Items.dye, 3, 1));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.double_plant, 1, 5), new ItemStack(Items.dye, 3, 9));
+		
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Items.reeds, 1, 0), new ItemStack(Items.sugar, 3, 0));
+
 	}
 }

@@ -4,6 +4,9 @@ import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
+import flaxbeard.sprockets.api.IMechanicalConduit;
+import flaxbeard.sprockets.api.network.MechanicalNetwork;
+import flaxbeard.sprockets.lib.LibConstants;
 
 public class ClientUtils
 {
@@ -18,5 +21,11 @@ public class ClientUtils
 			System.out.println("[Sprockets] Registering new ResourceLocation: " + string);
 		}
 		Minecraft.getMinecraft().getTextureManager().bindTexture(textures.get(string));
+	}
+	
+	public static float getRotation(IMechanicalConduit conduit, float partialTicks)
+	{
+		MechanicalNetwork network = conduit.getNetwork();
+		return ((Minecraft.getMinecraft().thePlayer.ticksExisted + partialTicks) * network.getSpeed()) * conduit.getMultiplier() * LibConstants.RENDER_ROTATION_SPEED_MULTIPLIER;
 	}
 }

@@ -1,6 +1,6 @@
 package flaxbeard.sprockets.items;
 
-import flaxbeard.sprockets.api.IWrench;
+import flaxbeard.sprockets.api.tool.IWrench;
 
 public class ItemWrench extends ItemSprocketBase implements IWrench
 {

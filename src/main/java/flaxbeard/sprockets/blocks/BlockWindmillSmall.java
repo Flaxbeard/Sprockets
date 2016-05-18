@@ -1,6 +1,6 @@
 package flaxbeard.sprockets.blocks;
 
-import java.util.HashSet;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -14,7 +14,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -25,9 +24,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import flaxbeard.sprockets.api.IMechanicalConduit;
-import flaxbeard.sprockets.api.IWrenchable;
 import flaxbeard.sprockets.api.network.MechanicalNetworkHelper;
 import flaxbeard.sprockets.api.network.MechanicalNetworkRegistry;
+import flaxbeard.sprockets.api.tool.IWrenchable;
 import flaxbeard.sprockets.blocks.tiles.TileEntityWindmillSmall;
 
 public class BlockWindmillSmall extends BlockSprocketBase implements ITileEntityProvider, IWrenchable
@@ -65,7 +64,9 @@ public class BlockWindmillSmall extends BlockSprocketBase implements ITileEntity
 			te = (TileEntityWindmillSmall) worldIn.getTileEntity(pos);
 			te.connectedToTop = (byte) (ct ? 1 : 0);
 
+			te.directionFlipped = flipped;
 			te.markDirty();
+
 			// TODO test
 			//te.directionFlipped = flipped;
 			//worldIn.markBlockForUpdate(pos);
@@ -159,7 +160,7 @@ public class BlockWindmillSmall extends BlockSprocketBase implements ITileEntity
 			{
 				TileEntityWindmillSmall te = (TileEntityWindmillSmall) world.getTileEntity(pos);
 
-				HashSet<IMechanicalConduit> neighbors = MechanicalNetworkHelper.getConnectedConduits(te);
+				Set<IMechanicalConduit> neighbors = MechanicalNetworkHelper.getConnectedConduits(te);
 				te.getNetwork().removeConduitTotal(te, neighbors);
 				te.setNetwork(null);
 				MechanicalNetworkRegistry.newOrJoin(te);

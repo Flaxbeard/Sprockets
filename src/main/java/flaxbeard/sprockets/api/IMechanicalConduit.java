@@ -91,6 +91,10 @@ public interface IMechanicalConduit
 	
 	public boolean getState();
 	
+	public void setMultiplier(float multiplier);
+	
+	public float getMultiplier();
+	
 	public MechanicalNetwork getNetwork();
 	
 	public void setNetwork(MechanicalNetwork network);

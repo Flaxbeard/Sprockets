@@ -1,10 +1,7 @@
 package flaxbeard.sprockets.blocks;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashSet;
+import java.util.Set;
 
-import mcmultipart.multipart.PartSlot;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -15,23 +12,20 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Tuple;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import flaxbeard.sprockets.api.IMechanicalConduit;
-import flaxbeard.sprockets.api.IWrenchable;
 import flaxbeard.sprockets.api.network.MechanicalNetworkHelper;
 import flaxbeard.sprockets.api.network.MechanicalNetworkRegistry;
+import flaxbeard.sprockets.api.tool.IWrenchable;
 import flaxbeard.sprockets.blocks.tiles.TileEntityWindmill;
 import flaxbeard.sprockets.multiparts.SprocketsMultiparts;
 
@@ -119,15 +113,8 @@ public class BlockWindmill extends BlockSprocketBase implements ITileEntityProvi
 	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 	{
-		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+		return this.getDefaultState().withProperty(FACING, facing);
 	}
-	
-	@Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-    {
-		boolean ct = worldIn.getBlockState(pos.add(0, 1, 0)).getBlock() != Blocks.air;
-    	worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
-    }
 
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World worldIn, BlockPos pos)
@@ -187,14 +174,13 @@ public class BlockWindmill extends BlockSprocketBase implements ITileEntityProvi
 			{
 				TileEntityWindmill te = (TileEntityWindmill) world.getTileEntity(pos);
 
-				HashSet<IMechanicalConduit> neighbors = MechanicalNetworkHelper.getConnectedConduits(te);
+				Set<IMechanicalConduit> neighbors = MechanicalNetworkHelper.getConnectedConduits(te);
 				te.getNetwork().removeConduitTotal(te, neighbors);
 				te.setNetwork(null);
 				MechanicalNetworkRegistry.newOrJoin(te);
 				
 				world.setBlockState(pos, state.withProperty(FACING, side), 2);
 				te.facing = side.ordinal();
-				
 			}
 		}
 		return false;

@@ -21,7 +21,7 @@ public class PartLapisSprocket extends PartSprocket implements ISlottedRedstoneP
 		
 		if (initialized)
 		{
-			float torque = getNetwork().isJammed() ? 0 : getNetwork().getTorque();
+			float torque = getNetwork().isJammed() ? 0 : getNetwork().getTorqueForConduit(this);
 			if (cachedTorque != torque)
 			{
 				cachedTorque = torque;
@@ -36,7 +36,7 @@ public class PartLapisSprocket extends PartSprocket implements ISlottedRedstoneP
 	protected void initialize()
 	{
 		super.initialize();
-		cachedTorque = getNetwork().getTorque();
+		cachedTorque = getNetwork().isJammed() ? 0 : getNetwork().getTorqueForConduit(this);
 		cachedValue = (int) (15F * (cachedTorque / this.maxTorque()));
 	}
 

@@ -1,4 +1,4 @@
-package flaxbeard.sprockets.api;
+package flaxbeard.sprockets.api.tool;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;

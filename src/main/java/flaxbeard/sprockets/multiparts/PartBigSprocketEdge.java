@@ -405,6 +405,8 @@ public class PartBigSprocketEdge extends PartSprocketBase implements ISlottedPar
 	@Override
 	public void onRemoved()
 	{
+		super.onRemoved();
+
 		IMultipartContainer container = MultipartHelper.getPartContainer(getWorldMC(), getPosMC().subtract(parent));
 		if (container != null)
 		{
@@ -414,7 +416,6 @@ public class PartBigSprocketEdge extends PartSprocketBase implements ISlottedPar
 				container.removePart(part);
 			}
 		}
-		super.onRemoved();
 	}
 
 }
