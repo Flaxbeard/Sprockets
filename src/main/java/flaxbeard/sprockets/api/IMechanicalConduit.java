@@ -1,6 +1,6 @@
 package flaxbeard.sprockets.api;
 
-import java.util.HashSet;
+import java.util.Set;
 
 import mcmultipart.multipart.PartSlot;
 import net.minecraft.util.Tuple;
@@ -27,7 +27,7 @@ public interface IMechanicalConduit
 	 * 			otherwise it's the direction of the connecting block. The second element is the
 	 * 			slot of the object this conduit can connect to.
 	 */
-	public HashSet<Tuple<Vec3i, PartSlot>> multipartCisConnections();
+	public Set<Tuple<Vec3i, PartSlot>> multipartCisConnections();
 	
 	/**
 	 * All of the relative multipart positions this conduit can connect to in a trans connection
@@ -37,21 +37,21 @@ public interface IMechanicalConduit
 	 * 			otherwise it's the direction of the connecting block. The second element is the
 	 * 			slot of the object this conduit can connect to.
 	 */
-	public HashSet<Tuple<Vec3i, PartSlot>> multipartTransConnections();
+	public Set<Tuple<Vec3i, PartSlot>> multipartTransConnections();
 	
 	/**
 	 * All of the full blocks this conduit can connect to in a cis connection
 	 * 
 	 * @return An iterable representing the different directions this conduit can connect.
 	 */
-	public HashSet<Vec3i> cisConnections();
+	public Set<Vec3i> cisConnections();
 	
 	/**
 	 * All of the full blocks this conduit can connect to in a trans connection
 	 * 
 	 * @return An iterable representing the different directions this conduit can connect.
 	 */
-	public HashSet<Vec3i> transConnections();
+	public Set<Vec3i> transConnections();
 
 	/**
 	 * The maximum speed this conduit can rotate at.

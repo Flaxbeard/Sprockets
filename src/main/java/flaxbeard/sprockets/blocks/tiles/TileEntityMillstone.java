@@ -51,7 +51,7 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 	public void update()
 	{
 		super.update();
-		if (worldObj.isRemote && isActive && this.contents[0] != null && getNetwork() != null && !getNetwork().isJammed())
+		if (worldObj.isRemote && isActive && getNetwork() != null && !getNetwork().isJammed() && Math.abs(getNetwork().getSpeedForConduit(this)) > 0)
 		{
 			for (int i = 0; i < 3; i++)
 				worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, 
@@ -70,11 +70,11 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 						SoundEvents.weather_rain, SoundCategory.BLOCKS, 0.3f, 0.1f, false);
 		}
 		
-		if (this.getNetwork() != null && !this.worldObj.isRemote)
+		if (this.getNetwork() != null && !worldObj.isRemote)
 		{
-			isActive = this.contents[0] != null && isItemGrindable(this.contents[0]) && (contents[1] == null || (canFit(contents[1], SprocketsAPI.getMillstoneResult(this.contents[0]))));
-
 			MechanicalNetwork network = this.getNetwork();
+
+			isActive = this.contents[0] != null && isItemGrindable(this.contents[0]) && (contents[1] == null || (canFit(contents[1], SprocketsAPI.getMillstoneResult(this.contents[0]))));
 			
 			if (isActive != wasActive)
 			{
@@ -84,12 +84,13 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 				wasActive = isActive;
 			}
 
+	
 			if (!network.isJammed() && isActive && Math.abs(network.getSpeedForConduit(this)) > LibConstants.MILLSTONE_MIN_SPEED)
 			{
 				activeTicks += Math.abs(network.getSpeedForConduit(this));
 				ItemStack output = SprocketsAPI.getMillstoneResult(contents[0]);
-				
-				if (output != null && activeTicks >= 10 && (contents[1] == null || (canFit(contents[1], output))))
+
+				if (output != null && activeTicks >= 200 && (contents[1] == null || (canFit(contents[1], output))))
 				{
 					activeTicks = 0;
 					this.decrStackSize(0, 1);
@@ -102,6 +103,7 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 					this.setInventorySlotContents(1, output);
 				}
 			}
+			
 			
 			
 		}
@@ -164,8 +166,22 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 	public void readFromNBT(NBTTagCompound compound)
 	{
 		super.readFromNBT(compound);
-		this.contents[0] = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("item1"));
-		this.contents[1] = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("item2"));
+		if (compound.hasKey("item1"))
+		{
+			this.contents[0] = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("item1"));
+		}
+		else
+		{
+			this.contents[0] = null;
+		}
+		if (compound.hasKey("item2"))
+		{
+			this.contents[1] = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("item2"));
+		}
+		else
+		{
+			this.contents[1] = null;
+		}
 		
 		isActive = compound.getBoolean("isActive");
 		if (isActive != wasActive && this.getNetwork() != null)

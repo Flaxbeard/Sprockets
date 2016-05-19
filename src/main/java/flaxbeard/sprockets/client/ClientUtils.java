@@ -26,6 +26,12 @@ public class ClientUtils
 	public static float getRotation(IMechanicalConduit conduit, float partialTicks)
 	{
 		MechanicalNetwork network = conduit.getNetwork();
-		return ((Minecraft.getMinecraft().thePlayer.ticksExisted + partialTicks) * network.getSpeed()) * conduit.getMultiplier() * LibConstants.RENDER_ROTATION_SPEED_MULTIPLIER;
+		return getRotation(network.getSpeed(), partialTicks, conduit.getMultiplier(), network.rotation);
+	//	return (network.rotation + (partialTicks * network.getSpeed())) * conduit.getMultiplier() * LibConstants.RENDER_ROTATION_SPEED_MULTIPLIER;
+	}
+	
+	public static float getRotation(float speed, float partialTicks, float multiplier, float rotation)
+	{
+		return (rotation + (partialTicks * speed)) * multiplier * LibConstants.RENDER_ROTATION_SPEED_MULTIPLIER;
 	}
 }

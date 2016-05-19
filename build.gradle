@@ -20,7 +20,7 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 */
-version = "pre1.4"
+version = "pre2"
 group= "flaxbeard.sprockets" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "sprockets"
 

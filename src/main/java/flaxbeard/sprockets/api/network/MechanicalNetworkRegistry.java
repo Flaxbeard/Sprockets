@@ -33,6 +33,32 @@ public class MechanicalNetworkRegistry
 	}
 	
 	@SubscribeEvent
+	public void onTick(TickEvent.ClientTickEvent e)
+	{
+		if (e.phase == TickEvent.Phase.START)
+		{
+
+			
+			try
+			{
+				for (Integer dimension : networks.keySet())
+				{
+					
+					for (MechanicalNetwork network : networks.get(dimension).values())
+					{
+						network.clientTick();
+					}
+					
+				}
+			}
+			catch (ConcurrentModificationException e1)
+			{
+				
+			}
+		}
+	}
+	
+	@SubscribeEvent
 	public void onTick(TickEvent.ServerTickEvent e)
 	{
 		if (e.phase == TickEvent.Phase.END)

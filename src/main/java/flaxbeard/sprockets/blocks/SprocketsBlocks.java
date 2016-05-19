@@ -26,7 +26,6 @@ public class SprocketsBlocks
 		registerTileEntity(TileEntityWindmill.class);
 		registerTileEntity(TileEntityRedstoneEngine.class);
 		registerTileEntity(TileEntityMillstone.class);
-
 	}
 
 	

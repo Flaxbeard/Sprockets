@@ -3,6 +3,7 @@ package flaxbeard.sprockets.blocks.tiles;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import mcmultipart.multipart.PartSlot;
 import net.minecraft.block.state.IBlockState;
@@ -38,6 +39,8 @@ import flaxbeard.sprockets.multiparts.SprocketsMultiparts;
 public class TileEntityWindmillSmall extends TileEntitySprocketBase implements IWrenchable, IGyrometerable, IMechanicalProducer
 {
 	private static final ArrayList<HashSet<Tuple<Vec3i, PartSlot>>> CIS;
+	private static final List<Set<Vec3i>> BLOCK_CIS;
+	
 	public int facing = -1;
 	public byte canSpin = -1;
 	private byte lastCanSpin = -1;
@@ -47,17 +50,16 @@ public class TileEntityWindmillSmall extends TileEntitySprocketBase implements I
 	private float lastBlockedMult = 1.0F;
 	public byte connectedToTop = -1;
 	public boolean directionFlipped = false;
-	
-	public TileEntityWindmillSmall()
-	{
-	}
+	private static final Vec3i UP = EnumFacing.UP.getDirectionVec();
 	
 	static
 	{
 		CIS = new ArrayList<HashSet<Tuple<Vec3i, PartSlot>>>();
+		BLOCK_CIS = new ArrayList<Set<Vec3i>>();
 		for (int side = 0; side < 6; side++)
 		{
 			CIS.add(SprocketsMultiparts.rotatePartFacing(side, new Tuple(new Vec3i(0, 1, 0), PartSlot.DOWN)));
+			BLOCK_CIS.add(SprocketsMultiparts.rotateFacing(side, UP));
 		}
 		
 	}
@@ -253,9 +255,19 @@ public class TileEntityWindmillSmall extends TileEntitySprocketBase implements I
 	}
 
 	@Override
-	public HashSet<Vec3i> cisConnections()
+	public Set<Vec3i> cisConnections()
 	{
-		return new HashSet<Vec3i>();
+		if (facing == -1 && worldObj != null && worldObj.getBlockState(getPosMC()) != null && worldObj.getBlockState(getPosMC()).getBlock() == SprocketsBlocks.windmillSmall)
+		{
+			facing = SprocketsBlocks.windmillSmall.getMetaFromState(worldObj.getBlockState(getPosMC())) % 6;
+		}
+
+		
+		if (facing == -1)
+		{
+			return new HashSet<Vec3i>();
+		}
+		return BLOCK_CIS.get(facing);
 	}
 
 	@Override

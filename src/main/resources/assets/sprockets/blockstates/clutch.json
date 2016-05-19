@@ -1,0 +1,19 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "sprockets:dummy", 
+		"textures": {
+			"particle": "sprockets:blocks/axleSide"
+		}
+	},
+	"variants": {
+		"facing": {
+			"east": {},
+			"west": {},
+			"north": {},
+			"south": {},
+			"down": {},
+			"up": {}
+		}
+	}
+}

@@ -58,7 +58,6 @@ public class MechanicalNetwork
 		if (parent == null)
 		{
 			parent = conduits.iterator().next();
-			System.out.println("PARENT NUL");
 		}
 		return parent;
 	}
@@ -117,6 +116,11 @@ public class MechanicalNetwork
 
 		}
 		
+		if (consumerTorqueNeeded > torque)
+		{
+			powerJammed = true;
+		}
+				
 	}
 
 
@@ -221,10 +225,6 @@ public class MechanicalNetwork
 
 			resetAll();
 		}
-		else
-		{
-			System.out.println(conduit);
-		}
 	}
 	
 	public void resetAll()
@@ -257,10 +257,7 @@ public class MechanicalNetwork
 	{
 		BlockPos result = MechanicalNetworkHelper.lock(next, conduits);
 		jammed = result != null;
-		if (jammed)
-		{
-			System.out.println(result);
-		}
+
 		minTorque = 0.0F;
 		maxTorque = 99999999.0F;
 		
@@ -302,10 +299,7 @@ public class MechanicalNetwork
 		torqueJammed = (this.torque < this.minTorque);
 
 		
-		if (!isJammed())
-		{
-			this.rotation += speed;
-		}
+		
 //
 //		
 //		if ((this.torque < this.minTorque || this.torque < this.consumerTorqueNeeded)&& !torqueJammed)
@@ -425,6 +419,14 @@ public class MechanicalNetwork
 	public float getTorqueForConduit(IMechanicalConduit conduit)
 	{
 		return getTorque() / conduit.getMultiplier();
+	}
+
+	public void clientTick()
+	{
+		if (!isJammed())
+		{
+			this.rotation += speed;
+		}
 	}
 
 

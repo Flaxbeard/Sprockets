@@ -1,7 +1,6 @@
 package flaxbeard.sprockets.multiparts.items;
 
 
-import mcmultipart.microblock.IMicroblock.IFaceMicroblock;
 import mcmultipart.multipart.IMultipart;
 import mcmultipart.multipart.IMultipartContainer;
 import mcmultipart.multipart.MultipartHelper;
@@ -15,14 +14,15 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import flaxbeard.sprockets.Sprockets;
 import flaxbeard.sprockets.multiparts.PartAxle;
+import flaxbeard.sprockets.multiparts.PartClutch;
 
-public class ItemAxle extends ItemSprocketMultipart
+public class ItemClutch extends ItemSprocketMultipart
 {
 		
-	public ItemAxle()
+	public ItemClutch()
 	{
-		super("axle");
-		MultipartRegistry.registerPart(PartAxle.class, Sprockets.MODID + ":" + name);
+		super("clutch");
+		MultipartRegistry.registerPart(PartClutch.class, Sprockets.MODID + ":" + name);
 		setHasSubtypes(true);
 		subnames = new String[] {"wooden", "stone", "iron"};
 	}
@@ -31,17 +31,14 @@ public class ItemAxle extends ItemSprocketMultipart
 	public IMultipart createPart(World world, BlockPos pos, EnumFacing side,
 			Vec3d hit, ItemStack stack, EntityPlayer player)
 	{
-		PartAxle axle = new PartAxle();
-		axle.setFacing(side.ordinal());
+		PartClutch clutch = new PartClutch();
+		clutch.setFacing(side.ordinal());
 		
 		IMultipartContainer contain = MultipartHelper.getPartContainer(world, pos);
 		if (contain != null)
 		{
-			IMultipart topPart = contain.getPartInSlot(axle.TOP_SLOT.get(side.ordinal()));
-			axle.top = topPart == null || (topPart instanceof IFaceMicroblock && ((IFaceMicroblock) topPart).isFaceHollow());
-			
-			IMultipart bottomPart = contain.getPartInSlot(axle.BOTTOM_SLOT.get(side.ordinal()));
-			axle.bottom = bottomPart == null || (bottomPart instanceof IFaceMicroblock && ((IFaceMicroblock) bottomPart).isFaceHollow());
+			clutch.top = contain.getPartInSlot(PartAxle.TOP_SLOT.get(side.ordinal())) == null;
+			clutch.bottom = contain.getPartInSlot(PartAxle.BOTTOM_SLOT.get(side.ordinal())) == null;
 		}
 		
 		int damage = stack.getItemDamage();
@@ -49,10 +46,10 @@ public class ItemAxle extends ItemSprocketMultipart
 		{
 			damage = 0;
 		}
-		axle.setDamage(damage);
+		clutch.setDamage(damage);
 		
-		axle.markDirty();
-		return axle;
+		clutch.markDirty();
+		return clutch;
 	}
 
 	@Override

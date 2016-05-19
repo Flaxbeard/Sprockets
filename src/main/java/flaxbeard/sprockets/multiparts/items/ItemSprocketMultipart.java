@@ -31,8 +31,8 @@ public abstract class ItemSprocketMultipart extends ItemMultiPart
 		subnames = new String[0];
 	}
 	
-	private static final float EDGELOW = 4F / 16F;
-	private static final float EDGEHIGH = 12F / 16F;
+	private static final float EDGELOW = 3F / 16F;
+	private static final float EDGEHIGH = 13F / 16F;
 	
 	public abstract boolean hasBoundingBox();
 	

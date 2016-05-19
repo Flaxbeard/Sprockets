@@ -101,7 +101,7 @@ public class BlockWindmill extends BlockSprocketBase implements ITileEntityProvi
 	@Override
 	public boolean isSideSolid(IBlockState base, IBlockAccess worldIn, BlockPos pos, EnumFacing side)
     {
-        return side == EnumFacing.UP || side == EnumFacing.DOWN;
+        return false;
     }
 	
 	@Override

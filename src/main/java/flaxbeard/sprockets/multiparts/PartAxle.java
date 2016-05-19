@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import mcmultipart.microblock.IMicroblock.IFaceMicroblock;
 import mcmultipart.multipart.IMultipart;
 import mcmultipart.multipart.IMultipartContainer;
 import mcmultipart.multipart.ISlottedPart;
@@ -52,13 +53,13 @@ public class PartAxle extends PartSprocketBase implements ISlottedPart, IMechani
 	private static final ArrayList<HashSet<Tuple<Vec3i, PartSlot>>> PART_CIS_CONNECTIONS_BOTTOM;
 	private static final ArrayList<HashSet<Tuple<Vec3i, PartSlot>>> PART_CIS_CONNECTIONS_TOP_BOTTOM;
 	private static final ArrayList<HashSet<Tuple<Vec3i, PartSlot>>> PART_TRANS_CONNECTIONS;
-	private static final Vec3i HERE = new Vec3i(0, 0, 0);
-	private static final Vec3i NORTH = EnumFacing.NORTH.getDirectionVec();
-	private static final Vec3i SOUTH = EnumFacing.SOUTH.getDirectionVec();
-	private static final Vec3i EAST = EnumFacing.EAST.getDirectionVec();
-	private static final Vec3i WEST = EnumFacing.WEST.getDirectionVec();
-	private static final Vec3i UP = EnumFacing.UP.getDirectionVec();
-	private static final Vec3i DOWN = EnumFacing.DOWN.getDirectionVec();
+	protected static final Vec3i HERE = new Vec3i(0, 0, 0);
+	protected static final Vec3i NORTH = EnumFacing.NORTH.getDirectionVec();
+	protected static final Vec3i SOUTH = EnumFacing.SOUTH.getDirectionVec();
+	protected static final Vec3i EAST = EnumFacing.EAST.getDirectionVec();
+	protected static final Vec3i WEST = EnumFacing.WEST.getDirectionVec();
+	protected static final Vec3i UP = EnumFacing.UP.getDirectionVec();
+	protected static final Vec3i DOWN = EnumFacing.DOWN.getDirectionVec();
 	
 	
 	private int c = 0;
@@ -116,7 +117,7 @@ public class PartAxle extends PartSprocketBase implements ISlottedPart, IMechani
 		
 	}
 	
-	private void updateTopBottom()
+	protected void updateTopBottom()
 	{
 		IMultipartContainer contain = this.getContainer();
 		if (contain != null)
@@ -124,8 +125,12 @@ public class PartAxle extends PartSprocketBase implements ISlottedPart, IMechani
 			Set<IMechanicalConduit> neighbors = MechanicalNetworkHelper.getConnectedConduits(this);
 			boolean lastTop = top;
 			boolean lastBottom = bottom;
-			top = contain.getPartInSlot(TOP_SLOT.get(facing)) == null;
-			bottom = contain.getPartInSlot(BOTTOM_SLOT.get(facing)) == null;
+			IMultipart topPart = contain.getPartInSlot(TOP_SLOT.get(facing));
+			top = topPart == null || (topPart instanceof IFaceMicroblock && ((IFaceMicroblock) topPart).isFaceHollow());
+			
+			IMultipart bottomPart = contain.getPartInSlot(BOTTOM_SLOT.get(facing));
+			bottom = bottomPart == null || (bottomPart instanceof IFaceMicroblock && ((IFaceMicroblock) bottomPart).isFaceHollow());
+
 			
 			if ((top != lastTop || bottom != lastBottom) )
 			{

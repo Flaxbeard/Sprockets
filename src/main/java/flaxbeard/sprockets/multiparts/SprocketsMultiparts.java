@@ -11,6 +11,7 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.oredict.OreDictionary;
 import flaxbeard.sprockets.multiparts.items.ItemAxle;
 import flaxbeard.sprockets.multiparts.items.ItemBigSprocket;
+import flaxbeard.sprockets.multiparts.items.ItemClutch;
 import flaxbeard.sprockets.multiparts.items.ItemLapisSprocket;
 import flaxbeard.sprockets.multiparts.items.ItemRedstoneSprocket;
 import flaxbeard.sprockets.multiparts.items.ItemSprocket;
@@ -23,7 +24,8 @@ public class SprocketsMultiparts
 	public static ItemSprocketMultipart axle;
 	public static ItemSprocketMultipart bigSprocket;
 	public static ItemSprocketMultipart lapisSprocket;
-	
+	public static ItemSprocketMultipart clutch;
+
 	public static void preInit()
 	{
 		sprocket = new ItemSprocket();
@@ -31,6 +33,8 @@ public class SprocketsMultiparts
 		lapisSprocket = new ItemLapisSprocket();
 		
 		axle = new ItemAxle();
+		
+		clutch = new ItemClutch();
 		
 		bigSprocket = new ItemBigSprocket();
 	}

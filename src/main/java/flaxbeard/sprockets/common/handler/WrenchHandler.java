@@ -112,12 +112,10 @@ public class WrenchHandler
 		MechanicalNetwork network = part.getNetwork();
 		if (network != null)
 		{
-			System.out.println(part.getMultiplier());
 			float speed = Math.abs(network.getSpeedForConduit(part));
 			float torque = (speed == 0 ? 0 : network.getTorqueForConduit(part));
 			list.add(new TextComponentString("This network has a torque of " + torque));
 			list.add(new TextComponentString("This network has a speed of " + speed));
-			list.add(new TextComponentString("Mult: " + part.getMultiplier()));
 			//list.add(new TextComponentString("CONSUMERS: " + network.networkConsumers.size()));
 			//for (IMechanicalConsumer consumer : network.networkConsumers.keySet())
 			//{

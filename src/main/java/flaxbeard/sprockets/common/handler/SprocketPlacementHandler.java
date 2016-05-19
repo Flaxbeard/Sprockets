@@ -12,11 +12,14 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import flaxbeard.sprockets.multiparts.items.ItemSprocketMultipart;
 
 public class SprocketPlacementHandler
 {
 	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
 	public void handleRender(RenderWorldLastEvent event)
 	{
 		Minecraft mc = Minecraft.getMinecraft();

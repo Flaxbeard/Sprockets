@@ -141,12 +141,7 @@ public class BlockRedstoneEngine extends BlockSprocketBase implements ITileEntit
 			meta -= 6;
 		}
 	    EnumFacing enumfacing = EnumFacing.getFront(meta);
-	
-	    if (enumfacing.getAxis() == EnumFacing.Axis.Y)
-	    {
-	        enumfacing = EnumFacing.NORTH;
-	    }
-	
+
 	    return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(POWERED, conTop);
 	}
 	

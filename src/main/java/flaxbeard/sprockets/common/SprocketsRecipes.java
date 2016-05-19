@@ -97,6 +97,27 @@ public class SprocketsRecipes
 				Character.valueOf('I'), "ingotIron"
 				));
 		
+		// Clutches
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SprocketsMultiparts.clutch, 1, 0),
+				"A",
+				"L",
+				"A",
+				Character.valueOf('A'), new ItemStack(SprocketsMultiparts.axle, 1, 0), Character.valueOf('L'), new ItemStack(Blocks.lever)
+				));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SprocketsMultiparts.clutch, 1, 1),
+				"A",
+				"L",
+				"A",
+				Character.valueOf('A'), new ItemStack(SprocketsMultiparts.axle, 1, 1), Character.valueOf('L'), new ItemStack(Blocks.lever)
+				));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SprocketsMultiparts.clutch, 1, 2),
+				"A",
+				"L",
+				"A",
+				Character.valueOf('A'), new ItemStack(SprocketsMultiparts.axle, 1, 2), Character.valueOf('L'), new ItemStack(Blocks.lever)
+				));
+				
+		
 		// Windmill Blade
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SprocketsItems.resource, 1, 0),
 				"SW",

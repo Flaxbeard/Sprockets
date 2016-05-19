@@ -1,14 +1,13 @@
 package flaxbeard.sprockets.api.network;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import mcmultipart.microblock.IMicroblock.IFaceMicroblock;
 import mcmultipart.multipart.IMultipart;
 import mcmultipart.multipart.IMultipartContainer;
 import mcmultipart.multipart.ISlottedPart;
@@ -748,18 +747,21 @@ public class MechanicalNetworkHelper
 		IMultipart part = container.getPartInSlot(slot);
 		if (part != null)
 		{
-			return part;
-		}
-		else
-		{
-			for (IMultipart potentialPart : container.getParts())
+			if (!(part instanceof IFaceMicroblock) || !((IFaceMicroblock) part).isFaceHollow())
 			{
-				if (potentialPart instanceof IConditionalPart && ((IConditionalPart) potentialPart).getOccupiedSlots().contains(slot))
-				{
-					return potentialPart;
-				}
+				return part;
+			}
+
+		}
+
+		for (IMultipart potentialPart : container.getParts())
+		{
+			if (potentialPart instanceof IConditionalPart && ((IConditionalPart) potentialPart).getOccupiedSlots().contains(slot))
+			{
+				return potentialPart;
 			}
 		}
+		
 		return null;
 	}
 }
