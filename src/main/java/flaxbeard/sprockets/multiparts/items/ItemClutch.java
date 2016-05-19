@@ -1,6 +1,7 @@
 package flaxbeard.sprockets.multiparts.items;
 
 
+import mcmultipart.microblock.IMicroblock.IFaceMicroblock;
 import mcmultipart.multipart.IMultipart;
 import mcmultipart.multipart.IMultipartContainer;
 import mcmultipart.multipart.MultipartHelper;
@@ -37,8 +38,11 @@ public class ItemClutch extends ItemSprocketMultipart
 		IMultipartContainer contain = MultipartHelper.getPartContainer(world, pos);
 		if (contain != null)
 		{
-			clutch.top = contain.getPartInSlot(PartAxle.TOP_SLOT.get(side.ordinal())) == null;
-			clutch.bottom = contain.getPartInSlot(PartAxle.BOTTOM_SLOT.get(side.ordinal())) == null;
+			IMultipart topPart = contain.getPartInSlot(clutch.TOP_SLOT.get(side.ordinal()));
+			clutch.top = topPart == null || (topPart instanceof IFaceMicroblock && ((IFaceMicroblock) topPart).isFaceHollow());
+			
+			IMultipart bottomPart = contain.getPartInSlot(clutch.BOTTOM_SLOT.get(side.ordinal()));
+			clutch.bottom = bottomPart == null || (bottomPart instanceof IFaceMicroblock && ((IFaceMicroblock) bottomPart).isFaceHollow());
 		}
 		
 		int damage = stack.getItemDamage();
