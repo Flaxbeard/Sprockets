@@ -19,7 +19,7 @@ import flaxbeard.sprockets.lib.LibConstants;
 
 public abstract class PartSprocketBase extends PartMechanicalConduit
 {
-	private Material material = Material.wood;
+	private Material material = Material.WOOD;
 	private float hardness = 1.0F;
 	protected int damage;
 
@@ -55,7 +55,7 @@ public abstract class PartSprocketBase extends PartMechanicalConduit
 	@Override
 	public boolean isToolEffective(String type, int level)
 	{
-		if (material.equals(Material.iron) || material.equals(Material.rock))
+		if (material.equals(Material.IRON) || material.equals(Material.ROCK))
 		{
 			if (type == "pickaxe")
 			{
@@ -66,7 +66,7 @@ public abstract class PartSprocketBase extends PartMechanicalConduit
 				return false;
 			}
 		}
-		else if (material.equals(Material.wood))
+		else if (material.equals(Material.WOOD))
 		{
 			if (type == "axe")
 			{
@@ -91,10 +91,11 @@ public abstract class PartSprocketBase extends PartMechanicalConduit
 
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt)
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt)
 	{
-		super.writeToNBT(nbt);
+		nbt = super.writeToNBT(nbt);
 		nbt.setInteger("damage", damage);
+		return nbt;
 	}
 	
 	@Override
@@ -142,7 +143,7 @@ public abstract class PartSprocketBase extends PartMechanicalConduit
 			}
 		}
 		
-		float breakSpeed = player.getBreakSpeed(createBlockState().getBaseState(), getPosMC());
+		float breakSpeed = player.getDigSpeed(createBlockState().getBaseState(), getPosMC());
 		
 		if (!effective)
 		{
@@ -154,12 +155,7 @@ public abstract class PartSprocketBase extends PartMechanicalConduit
 		}
 	}
 	
-	
-	@Override
-	public ResourceLocation getModelPath()
-	{
-		return null;
-	}
+
 	
 	@Override
 	public boolean onActivated(EntityPlayer player, EnumHand hand, ItemStack heldItem, PartMOP hit)

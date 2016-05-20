@@ -133,10 +133,11 @@ public class PartSprocket extends PartSprocketBase implements ISlottedPart, IMec
 
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt)
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt)
 	{
-		super.writeToNBT(nbt);
+		nbt = super.writeToNBT(nbt);
 		nbt.setInteger("facing", facing);
+		return nbt;
 	}
 	
 	@Override
@@ -246,15 +247,15 @@ public class PartSprocket extends PartSprocketBase implements ISlottedPart, IMec
 		switch(damage)
 		{
 			case 0:
-				setMaterial(Material.wood);
+				setMaterial(Material.WOOD);
 				setHardness(LibConstants.MINE_TIME_WOODEN_SPROCKET);
 				break;
 			case 1:
-				setMaterial(Material.rock);
+				setMaterial(Material.ROCK);
 				setHardness(LibConstants.MINE_TIME_STONE_SPROCKET);
 				break;
 			case 2:
-				setMaterial(Material.iron);
+				setMaterial(Material.IRON);
 				setHardness(LibConstants.MINE_TIME_IRON_SPROCKET);
 				break;
 		}

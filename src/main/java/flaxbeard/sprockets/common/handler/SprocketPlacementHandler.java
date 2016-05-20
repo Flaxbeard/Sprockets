@@ -44,7 +44,7 @@ public class SprocketPlacementHandler
 						{	
 							BlockPos blockpos = mop.getBlockPos();
 							IBlockState iblockstate = mc.theWorld.getBlockState(blockpos);
-							if (iblockstate.getMaterial() != Material.air && mc.theWorld.getWorldBorder().contains(blockpos))
+							if (iblockstate.getMaterial() != Material.AIR && mc.theWorld.getWorldBorder().contains(blockpos))
 							{
 								EnumFacing facing = mop.sideHit;
 								Vec3i offset = facing.getDirectionVec();

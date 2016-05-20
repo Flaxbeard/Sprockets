@@ -321,15 +321,15 @@ public class PartBigSprocketEdge extends PartSprocketBase implements ISlottedPar
 		switch(damage)
 		{
 			case 0:
-				setMaterial(Material.wood);
+				setMaterial(Material.WOOD);
 				setHardness(LibConstants.MINE_TIME_WOODEN_SPROCKET * LibConstants.MINE_TIME_MULT_BIG_SPROCEKT);
 				break;
 			case 1:
-				setMaterial(Material.rock);
+				setMaterial(Material.ROCK);
 				setHardness(LibConstants.MINE_TIME_STONE_SPROCKET * LibConstants.MINE_TIME_MULT_BIG_SPROCEKT);
 				break;
 			case 2:
-				setMaterial(Material.iron);
+				setMaterial(Material.IRON);
 				setHardness(LibConstants.MINE_TIME_IRON_SPROCKET * LibConstants.MINE_TIME_MULT_BIG_SPROCEKT);
 				break;
 		}
@@ -365,14 +365,15 @@ public class PartBigSprocketEdge extends PartSprocketBase implements ISlottedPar
 
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt)
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt)
 	{
-		super.writeToNBT(nbt);
+		nbt = super.writeToNBT(nbt);
 		nbt.setInteger("facing", facing);
 		nbt.setInteger("x", parent.getX());
 		nbt.setInteger("y", parent.getY());
 		nbt.setInteger("z", parent.getZ());
 		nbt.setInteger("index", index);
+		return nbt;
 	}
 	
 	@Override

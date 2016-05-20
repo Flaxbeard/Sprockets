@@ -7,13 +7,8 @@
 		}
 	},
 	"variants": {
-		"facing": {
-			"east": {},
-			"west": {},
-			"north": {},
-			"south": {},
-			"down": {},
-			"up": {}
-		}
+		"normal": [{}],
+		"inventory": [{}],
+		"multipart": [{}]
 	}
 }

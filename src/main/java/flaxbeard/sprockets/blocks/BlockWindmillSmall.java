@@ -50,12 +50,12 @@ public class BlockWindmillSmall extends BlockSprocketBase implements ITileEntity
 	}
 	
 	@Override
-	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
     {
 		TileEntityWindmillSmall te = (TileEntityWindmillSmall) worldIn.getTileEntity(pos);
 		if (te != null)
 		{
-			boolean ct = worldIn.getBlockState(pos.add(0, 1, 0)).getBlock() != Blocks.air;
+			boolean ct = worldIn.getBlockState(pos.add(0, 1, 0)).getBlock() != Blocks.AIR;
 			boolean flipped = te.directionFlipped;
 			worldIn.setBlockState(pos, state.withProperty(CONNECT_TOP, ct));
 			//System.out.println(te.directionFlipped);
@@ -101,7 +101,7 @@ public class BlockWindmillSmall extends BlockSprocketBase implements ITileEntity
 	@Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-		boolean ct = worldIn.getBlockState(pos.add(0, 1, 0)).getBlock() != Blocks.air;
+		boolean ct = worldIn.getBlockState(pos.add(0, 1, 0)).getBlock() != Blocks.AIR;
     	worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
     }
 

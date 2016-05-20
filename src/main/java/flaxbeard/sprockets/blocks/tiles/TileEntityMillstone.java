@@ -67,7 +67,7 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 						getPosMC().getX() + .5F, 
 						getPosMC().getY() + .5F, 
 						getPosMC().getZ() + .5F, 
-						SoundEvents.weather_rain, SoundCategory.BLOCKS, 0.3f, 0.1f, false);
+						SoundEvents.WEATHER_RAIN, SoundCategory.BLOCKS, 0.3f, 0.1f, false);
 		}
 		
 		if (this.getNetwork() != null && !worldObj.isRemote)
@@ -194,9 +194,9 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 	}
 	
 	@Override
-	public void writeToNBT(NBTTagCompound compound)
+	public NBTTagCompound writeToNBT(NBTTagCompound compound)
 	{
-		super.writeToNBT(compound);
+		compound = super.writeToNBT(compound);
 		NBTTagCompound item1 = new NBTTagCompound();
 		
 		if (this.contents[0] != null)
@@ -211,6 +211,7 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 		compound.setBoolean("isActive", isActive);
 		compound.setBoolean("wasActive", wasActive);
 		compound.setFloat("activeTicks", activeTicks);
+		return compound;
 	}
 	
 	@Override
@@ -221,7 +222,7 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 	}
 	
 	@Override
-	public Packet getDescriptionPacket()
+	public SPacketUpdateTileEntity getUpdatePacket()
 	{
 		NBTTagCompound data = new NBTTagCompound();
 		this.writeToNBT(data);

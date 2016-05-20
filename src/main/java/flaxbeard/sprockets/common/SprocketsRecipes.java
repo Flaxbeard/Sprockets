@@ -102,19 +102,19 @@ public class SprocketsRecipes
 				"A",
 				"L",
 				"A",
-				Character.valueOf('A'), new ItemStack(SprocketsMultiparts.axle, 1, 0), Character.valueOf('L'), new ItemStack(Blocks.lever)
+				Character.valueOf('A'), new ItemStack(SprocketsMultiparts.axle, 1, 0), Character.valueOf('L'), new ItemStack(Blocks.LEVER)
 				));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SprocketsMultiparts.clutch, 1, 1),
 				"A",
 				"L",
 				"A",
-				Character.valueOf('A'), new ItemStack(SprocketsMultiparts.axle, 1, 1), Character.valueOf('L'), new ItemStack(Blocks.lever)
+				Character.valueOf('A'), new ItemStack(SprocketsMultiparts.axle, 1, 1), Character.valueOf('L'), new ItemStack(Blocks.LEVER)
 				));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SprocketsMultiparts.clutch, 1, 2),
 				"A",
 				"L",
 				"A",
-				Character.valueOf('A'), new ItemStack(SprocketsMultiparts.axle, 1, 2), Character.valueOf('L'), new ItemStack(Blocks.lever)
+				Character.valueOf('A'), new ItemStack(SprocketsMultiparts.axle, 1, 2), Character.valueOf('L'), new ItemStack(Blocks.LEVER)
 				));
 				
 		
@@ -123,7 +123,7 @@ public class SprocketsRecipes
 				"SW",
 				"SW",
 				"I ",
-				Character.valueOf('W'), new ItemStack(Blocks.wool), Character.valueOf('S'), "stickWood", Character.valueOf('I'), "ingotIron"
+				Character.valueOf('W'), new ItemStack(Blocks.WOOL), Character.valueOf('S'), "stickWood", Character.valueOf('I'), "ingotIron"
 				));
 		
 		// Small Windmill
@@ -163,7 +163,7 @@ public class SprocketsRecipes
 				"G",
 				"G",
 				"C",
-				Character.valueOf('G'), new ItemStack(SprocketsMultiparts.sprocket, 1, 0), Character.valueOf('C'), new ItemStack(Items.compass)
+				Character.valueOf('G'), new ItemStack(SprocketsMultiparts.sprocket, 1, 0), Character.valueOf('C'), new ItemStack(Items.COMPASS)
 				);
 		
 		// Crank
@@ -182,24 +182,24 @@ public class SprocketsRecipes
 				));
 		
 
-		SprocketsAPI.addMillstoneRecipe(new ItemStack(Items.bone), new ItemStack(Items.dye, 3, 15));
-		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.yellow_flower), new ItemStack(Items.dye, 2, 11));
-		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.red_flower, 1, 0), new ItemStack(Items.dye, 2, 1));
-		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.red_flower, 1, 1), new ItemStack(Items.dye, 2, 12));
-		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.red_flower, 1, 2), new ItemStack(Items.dye, 2, 13));
-		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.red_flower, 1, 3), new ItemStack(Items.dye, 2, 7));
-		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.red_flower, 1, 4), new ItemStack(Items.dye, 2, 1));
-		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.red_flower, 1, 5), new ItemStack(Items.dye, 2, 14));
-		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.red_flower, 1, 6), new ItemStack(Items.dye, 2, 7));
-		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.red_flower, 1, 7), new ItemStack(Items.dye, 2, 9));
-		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.red_flower, 1, 8), new ItemStack(Items.dye, 2, 7));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Items.BONE), new ItemStack(Items.DYE, 3, 15));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.YELLOW_FLOWER), new ItemStack(Items.DYE, 2, 11));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 0), new ItemStack(Items.DYE, 2, 1));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 1), new ItemStack(Items.DYE, 2, 12));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 2), new ItemStack(Items.DYE, 2, 13));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 3), new ItemStack(Items.DYE, 2, 7));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 4), new ItemStack(Items.DYE, 2, 1));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 5), new ItemStack(Items.DYE, 2, 14));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 6), new ItemStack(Items.DYE, 2, 7));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 7), new ItemStack(Items.DYE, 2, 9));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 8), new ItemStack(Items.DYE, 2, 7));
 
-		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.double_plant, 1, 0), new ItemStack(Items.dye, 3, 11));
-		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.double_plant, 1, 1), new ItemStack(Items.dye, 3, 13));
-		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.double_plant, 1, 4), new ItemStack(Items.dye, 3, 1));
-		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.double_plant, 1, 5), new ItemStack(Items.dye, 3, 9));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 0), new ItemStack(Items.DYE, 3, 11));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 1), new ItemStack(Items.DYE, 3, 13));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 4), new ItemStack(Items.DYE, 3, 1));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 5), new ItemStack(Items.DYE, 3, 9));
 		
-		SprocketsAPI.addMillstoneRecipe(new ItemStack(Items.reeds, 1, 0), new ItemStack(Items.sugar, 3, 0));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Items.REEDS, 1, 0), new ItemStack(Items.SUGAR, 3, 0));
 
 	}
 }

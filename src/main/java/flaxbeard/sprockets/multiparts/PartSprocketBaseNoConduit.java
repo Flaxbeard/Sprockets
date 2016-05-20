@@ -10,7 +10,7 @@ import net.minecraft.network.PacketBuffer;
 
 public abstract class PartSprocketBaseNoConduit extends Multipart
 {
-	private Material material = Material.wood;
+	private Material material = Material.WOOD;
 	private float hardness = 1.0F;
 	protected int damage;
 
@@ -46,7 +46,7 @@ public abstract class PartSprocketBaseNoConduit extends Multipart
 	@Override
 	public boolean isToolEffective(String type, int level)
 	{
-		if (material.equals(Material.iron) || material.equals(Material.rock))
+		if (material.equals(Material.IRON) || material.equals(Material.ROCK))
 		{
 			if (type == "pickaxe")
 			{
@@ -57,7 +57,7 @@ public abstract class PartSprocketBaseNoConduit extends Multipart
 				return false;
 			}
 		}
-		else if (material.equals(Material.wood))
+		else if (material.equals(Material.WOOD))
 		{
 			if (type == "axe")
 			{
@@ -82,10 +82,11 @@ public abstract class PartSprocketBaseNoConduit extends Multipart
 
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt)
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt)
 	{
-		super.writeToNBT(nbt);
+		nbt = super.writeToNBT(nbt);
 		nbt.setInteger("damage", damage);
+		return nbt;
 	}
 	
 	@Override
@@ -133,7 +134,7 @@ public abstract class PartSprocketBaseNoConduit extends Multipart
 			}
 		}
 		
-		float breakSpeed = player.getBreakSpeed(createBlockState().getBaseState(), getPos());
+		float breakSpeed = player.getDigSpeed(createBlockState().getBaseState(), getPos());
 		
 		if (!effective)
 		{

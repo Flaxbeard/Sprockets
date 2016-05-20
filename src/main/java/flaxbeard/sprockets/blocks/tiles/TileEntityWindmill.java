@@ -8,6 +8,7 @@ import java.util.Set;
 import mcmultipart.multipart.PartSlot;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -22,13 +23,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.biome.BiomeGenBeach;
-import net.minecraft.world.biome.BiomeGenDesert;
-import net.minecraft.world.biome.BiomeGenHills;
-import net.minecraft.world.biome.BiomeGenOcean;
-import net.minecraft.world.biome.BiomeGenPlains;
-import net.minecraft.world.biome.BiomeGenStoneBeach;
+import net.minecraft.world.biome.Biome;
 import flaxbeard.sprockets.api.IMechanicalProducer;
 import flaxbeard.sprockets.api.tool.IGyrometerable;
 import flaxbeard.sprockets.api.tool.IWrenchable;
@@ -102,12 +97,12 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 		canSpin = 1;
 		speedMult = 1.0F;
 		
-		BiomeGenBase biome = worldObj.getBiomeGenForCoordsBody(getPosMC());
-		if (biome instanceof BiomeGenOcean || biome instanceof BiomeGenBeach || biome instanceof BiomeGenStoneBeach)
+		Biome biome = worldObj.getBiomeForCoordsBody(getPosMC());
+		if (biome == Biomes.OCEAN|| biome == Biomes.BEACH || biome == Biomes.STONE_BEACH)
 		{
 			speedMult *= 1.5F;
 		}
-		else if (biome instanceof BiomeGenHills || biome instanceof BiomeGenPlains || biome instanceof BiomeGenDesert)
+		else if (biome == Biomes.PLAINS || biome == Biomes.DESERT || biome == Biomes.DESERT_HILLS || biome == Biomes.SAVANNA || biome == Biomes.SAVANNA_PLATEAU)
 		{
 			speedMult *= 1.25F;
 		}
@@ -204,7 +199,7 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 					
 					BlockPos pos2 = pos.add(facing <= 3 ? w : (facing == 5 ? d : -d), y, facing <= 3 ? (facing == 3 ? d : -d) : w);					
 					IBlockState statePos3 = worldObj.getBlockState(pos2);
-					if (statePos3.getBlock() == Blocks.air)
+					if (statePos3.getBlock() == Blocks.AIR)
 					{
 						airBlocks++;
 					}
@@ -312,13 +307,14 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 	}
 	
 	@Override
-	public void writeToNBT(NBTTagCompound compound)
+	public NBTTagCompound writeToNBT(NBTTagCompound compound)
 	{
-		super.writeToNBT(compound);
+		compound = super.writeToNBT(compound);
 		compound.setByte("canSpin", canSpin);
 		compound.setFloat("speedMult", speedMult);
 		compound.setFloat("blockedMult", blockedMult);
 		compound.setBoolean("directionFlipped", directionFlipped);
+		return compound;
 	}
 	
 	@Override
@@ -329,7 +325,7 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 	}
 	
 	@Override
-	public Packet getDescriptionPacket()
+	public SPacketUpdateTileEntity getUpdatePacket()
 	{
 		NBTTagCompound data = new NBTTagCompound();
 		this.writeToNBT(data);

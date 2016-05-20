@@ -18,10 +18,10 @@ public class SprocketsBlocks
 
 	public static void preInit()
 	{
-		windmillSmall = new BlockWindmillSmall("windmillSmall", Material.wood, 1.0f, 1.0f);
-		windmill = new BlockWindmill("windmill", Material.wood, 1.0f, 1.0f);
-		redEngine = new BlockRedstoneEngine("redstoneEngine", Material.rock, 1.5F, 10.0F);
-		millstone = new BlockMillstone("millstone", Material.rock, 1.5F, 10.0F);
+		windmillSmall = new BlockWindmillSmall("windmillSmall", Material.WOOD, 1.0f, 1.0f);
+		windmill = new BlockWindmill("windmill", Material.WOOD, 1.0f, 1.0f);
+		redEngine = new BlockRedstoneEngine("redstoneEngine", Material.ROCK, 1.5F, 10.0F);
+		millstone = new BlockMillstone("millstone", Material.ROCK, 1.5F, 10.0F);
 		registerTileEntity(TileEntityWindmillSmall.class);
 		registerTileEntity(TileEntityWindmill.class);
 		registerTileEntity(TileEntityRedstoneEngine.class);

@@ -105,15 +105,16 @@ public class PartClutch extends PartAxle
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-
+		this.engaged = nbt.getBoolean("engaged");
 	}
 
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt)
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt)
 	{
-		super.writeToNBT(nbt);
-
+		nbt = super.writeToNBT(nbt);
+		nbt.setBoolean("engaged", engaged);
+		return nbt;
 	}
 	
 	@Override

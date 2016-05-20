@@ -107,11 +107,12 @@ public class TileEntityRedstoneEngine extends TileEntitySprocketBase implements 
 	}
 	
 	@Override
-	public void writeToNBT(NBTTagCompound compound)
+	public NBTTagCompound writeToNBT(NBTTagCompound compound)
 	{
-		super.writeToNBT(compound);
+		compound = super.writeToNBT(compound);
 		compound.setBoolean("directionFlipped", directionFlipped);
 		compound.setByte("isOn", isOn);
+		return compound;
 	}
 	
 	@Override
@@ -122,7 +123,7 @@ public class TileEntityRedstoneEngine extends TileEntitySprocketBase implements 
 	}
 	
 	@Override
-	public Packet getDescriptionPacket()
+	public SPacketUpdateTileEntity getUpdatePacket()
 	{
 		NBTTagCompound data = new NBTTagCompound();
 		this.writeToNBT(data);
