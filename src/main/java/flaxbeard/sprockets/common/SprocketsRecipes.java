@@ -158,6 +158,14 @@ public class SprocketsRecipes
 				Character.valueOf('S'), "stoneDiorite", Character.valueOf('A'), new ItemStack(SprocketsMultiparts.axle, 1, 0)
 				));
 		
+		// Torsion Spring
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SprocketsBlocks.spring),
+				"III",
+				"IAI",
+				"III",
+				Character.valueOf('I'), "ingotIron", Character.valueOf('A'), new ItemStack(SprocketsMultiparts.axle, 1, 1)
+				));
+		
 		// Gyrometer
 		GameRegistry.addRecipe(new ItemStack(SprocketsItems.gyrometer),
 				"G",

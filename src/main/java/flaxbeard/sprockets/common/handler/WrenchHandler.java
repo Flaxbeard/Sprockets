@@ -39,8 +39,6 @@ public class WrenchHandler
 		EnumFacing face = event.getFace();
 		
 		this.handle(player, world, pos, state, face, itemStack, null);
-		
-		
 	}
 	
 	public static void handle(EntityPlayer player, World world, BlockPos pos, IBlockState state, EnumFacing face, ItemStack itemStack, IMultipart part)

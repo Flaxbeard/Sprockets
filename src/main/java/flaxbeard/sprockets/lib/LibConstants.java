@@ -55,6 +55,12 @@ public class LibConstants
 	
 	// Maximum speed for Redstone gear displays
 	public static final float MAX_SPEED_REDGEAR = 60.F;
+	
+	// How many "charge units" before torque needed increases
+	public static final float SPRING_CONSTANT = .002F;
+	
+	// Maximum torque a spring can hold
+	public static final float MAX_SPRING_STORAGE = 20.F / SPRING_CONSTANT;
 
 	public static void loadConfig(FMLPreInitializationEvent event)
 	{

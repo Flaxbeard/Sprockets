@@ -28,6 +28,7 @@ tile.sprockets.windmillSmall.name=Small Windmill
 tile.sprockets.windmill.name=Windmill
 tile.sprockets.redstoneEngine.name=Redstone Engine
 tile.sprockets.millstone.name=Millstone
+tile.sprockets.spring.name=Torsion Spring
 
 # MISC
 itemGroup.sprockets=Sprockets
@@ -50,3 +51,4 @@ sprockets.gyrometer.windmill.windBlockedLowSpeedLow=A gentle wind spins the blad
 sprockets.gyrometer.windmill.windSpeedHigh=A strong wind spins the blades of the windmill
 sprockets.gyrometer.windmill.windSpeedMed=A steady wind spins the blades of the windmill
 sprockets.gyrometer.windmill.windSpeedLow=A gentle wind spins the blades of the windmill
+sprockets.gyrometer.spring=% wound up

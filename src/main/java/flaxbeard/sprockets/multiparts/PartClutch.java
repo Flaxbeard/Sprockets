@@ -106,6 +106,7 @@ public class PartClutch extends PartAxle
 	{
 		super.readFromNBT(nbt);
 		this.engaged = nbt.getBoolean("engaged");
+		this.lastEngaged = nbt.getBoolean("lastEngaged");
 	}
 
 
@@ -114,6 +115,7 @@ public class PartClutch extends PartAxle
 	{
 		nbt = super.writeToNBT(nbt);
 		nbt.setBoolean("engaged", engaged);
+		nbt.setBoolean("lastEngaged", lastEngaged);
 		return nbt;
 	}
 	

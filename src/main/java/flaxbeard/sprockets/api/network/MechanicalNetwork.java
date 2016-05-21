@@ -1,7 +1,6 @@
 package flaxbeard.sprockets.api.network;
 
 import java.util.Collection;
-import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -9,10 +8,10 @@ import java.util.Set;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import flaxbeard.sprockets.api.IExcessTorqueConsumer;
 import flaxbeard.sprockets.api.IMechanicalConduit;
 import flaxbeard.sprockets.api.IMechanicalConsumer;
 import flaxbeard.sprockets.api.IMechanicalProducer;
-import flaxbeard.sprockets.lib.LibConstants;
 
 public class MechanicalNetwork
 {
@@ -33,12 +32,14 @@ public class MechanicalNetwork
 	private Map<IMechanicalConsumer, Float> consumers;
 	private Map<IMechanicalProducer, Float> producers;
 	private Map<IMechanicalProducer, Float> producerSpeed;
+	private Map<IExcessTorqueConsumer, Float> torqueConsumers;
 	public float consumerTorqueNeeded = 0.0F;
 	public String id;
 	
 	private float torque;
 
 	private IMechanicalConduit parent;
+	private float torqueSurplus;
 
 	
 	public MechanicalNetwork(String string, World world)
@@ -48,6 +49,7 @@ public class MechanicalNetwork
 		consumers = new HashMap<IMechanicalConsumer, Float>();
 		producers = new HashMap<IMechanicalProducer, Float>();
 		producerSpeed = new HashMap<IMechanicalProducer, Float>();
+		torqueConsumers = new HashMap<IExcessTorqueConsumer, Float>();
 		this.world = world;
 		parent = null;
 		MechanicalNetworkRegistry.getInstance().register(id, this, world);
@@ -90,9 +92,23 @@ public class MechanicalNetwork
 	{
 		powerJammed = false;
 		this.consumerTorqueNeeded = 0.0F;
+		float excessTorqueNeeded = 0.0F;
 		for (IMechanicalConsumer con : consumers.keySet())
 		{
+			if (con.torqueCost() == -1)
+			{
+				powerJammed = true;
+			}
 			consumerTorqueNeeded += con.torqueCost() * con.getMultiplier();
+		}
+		
+		for (IExcessTorqueConsumer con : torqueConsumers.keySet())
+		{
+			if (con.torqueCost() == -1)
+			{
+				powerJammed = true;
+			}
+			excessTorqueNeeded += con.torqueCost() * con.getMultiplier();
 		}
 		
 		this.torque = 0.0F;
@@ -100,23 +116,32 @@ public class MechanicalNetwork
 		for (IMechanicalProducer prod : producers.keySet())
 		{
 			float prodSpeed = prod.speedProduced() * (prod.getState() ? -1 : 1) / prod.getMultiplier();
-			if (speed == 0.0F)
+			
+			if (prodSpeed != 0.0F)
 			{
-				speed += prodSpeed ;
-				torque += prod.torqueProduced() * prod.getMultiplier();
-			}
-			else if (speed == prodSpeed)
-			{
-				torque += prod.torqueProduced() * prod.getMultiplier();
-			}
-			else
-			{
-				powerJammed = true;
+				if (speed == 0.0F)
+				{
+					speed += prodSpeed ;
+					torque += prod.torqueProduced() * prod.getMultiplier();
+				}
+				else if (speed == prodSpeed)
+				{
+					torque += prod.torqueProduced() * prod.getMultiplier();
+				}
+				else
+				{
+					powerJammed = true;
+				}
 			}
 
 		}
 		
-		if (consumerTorqueNeeded > torque)
+		this.torqueSurplus = torque - consumerTorqueNeeded;
+		float totalSurplus = torqueSurplus;
+		this.torqueSurplus /= this.torqueConsumers.size();
+		
+		
+		if (consumerTorqueNeeded > torque || excessTorqueNeeded >= totalSurplus)
 		{
 			powerJammed = true;
 		}
@@ -139,6 +164,11 @@ public class MechanicalNetwork
 			{
 				IMechanicalConsumer consumer = (IMechanicalConsumer) conduit;
 				consumers.put(consumer, consumer.torqueCost());
+			}
+			if (conduit instanceof IExcessTorqueConsumer)
+			{
+				IExcessTorqueConsumer consumer = (IExcessTorqueConsumer) conduit;
+				torqueConsumers.put(consumer, 1f);
 			}
 			if (conduit instanceof IMechanicalProducer)
 			{
@@ -170,6 +200,11 @@ public class MechanicalNetwork
 			IMechanicalProducer producer = (IMechanicalProducer) conduit;
 			producers.put(producer, producer.torqueProduced());
 			producerSpeed.put(producer, producer.speedProduced());
+		}
+		if (conduit instanceof IExcessTorqueConsumer)
+		{
+			IExcessTorqueConsumer consumer = (IExcessTorqueConsumer) conduit;
+			torqueConsumers.put(consumer, 1f);
 		}
 		
 
@@ -234,6 +269,7 @@ public class MechanicalNetwork
 		consumers = new HashMap<IMechanicalConsumer, Float>();
 		producers = new HashMap<IMechanicalProducer, Float>();
 		producerSpeed = new HashMap<IMechanicalProducer, Float>();
+		torqueConsumers = new HashMap<IExcessTorqueConsumer, Float>();
 	}
 	
 	public boolean isJammed()
@@ -429,5 +465,9 @@ public class MechanicalNetwork
 		}
 	}
 
+	public float getSurplusForConduit(IMechanicalConduit conduit)
+	{
+		return this.torqueSurplus / conduit.getMultiplier();
+	}
 
 }

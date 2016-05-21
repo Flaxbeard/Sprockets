@@ -7,12 +7,12 @@ import java.util.Set;
 
 import mcmultipart.multipart.PartSlot;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
@@ -21,9 +21,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import flaxbeard.sprockets.api.IMechanicalProducer;
 import flaxbeard.sprockets.api.tool.IGyrometerable;
 import flaxbeard.sprockets.api.tool.IWrenchable;
@@ -347,16 +348,17 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void addInfo(List<ITextComponent> list)
 	{
 		if (canSpin == 2)
 		{
 			
-			list.add(new TextComponentString(I18n.translateToLocal("sprockets.gyrometer.windmill.stuck")));
+			list.add(new TextComponentString(I18n.format("sprockets.gyrometer.windmill.stuck")));
 		}
 		else if (canSpin == 3)
 		{
-			list.add(new TextComponentString(I18n.translateToLocal("sprockets.gyrometer.windmill.windBlockedFull")));
+			list.add(new TextComponentString(I18n.format("sprockets.gyrometer.windmill.windBlockedFull")));
 		}
 		else if (canSpin == 1)
 		{
@@ -364,40 +366,40 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 			
 			if (blockedMult == 0.2F)
 			{
-				list.add(new TextComponentString(I18n.translateToLocal("sprockets.gyrometer.windmill.windBlockedHigh")));
+				list.add(new TextComponentString(I18n.format("sprockets.gyrometer.windmill.windBlockedHigh")));
 			}
 			else if (blockedMult == 0.5F)
 			{
-				list.add(new TextComponentString(I18n.translateToLocal("sprockets.gyrometer.windmill.windBlockedMed")));
+				list.add(new TextComponentString(I18n.format("sprockets.gyrometer.windmill.windBlockedMed")));
 			}
 			else if (blockedMult == 0.8F)
 			{
 				if (speedMult == 1.5F)
 				{
-					list.add(new TextComponentString(I18n.translateToLocal("sprockets.gyrometer.windmill.windBlockedLowSpeedHigh")));
+					list.add(new TextComponentString(I18n.format("sprockets.gyrometer.windmill.windBlockedLowSpeedHigh")));
 				}
 				else if (speedMult == 1.25F)
 				{
-					list.add(new TextComponentString(I18n.translateToLocal("sprockets.gyrometer.windmill.windBlockedLowSpeedMed")));
+					list.add(new TextComponentString(I18n.format("sprockets.gyrometer.windmill.windBlockedLowSpeedMed")));
 				}
 				else
 				{
-					list.add(new TextComponentString(I18n.translateToLocal("sprockets.gyrometer.windmill.windBlockedLowSpeedLow")));
+					list.add(new TextComponentString(I18n.format("sprockets.gyrometer.windmill.windBlockedLowSpeedLow")));
 				}
 			}
 			else
 			{
 				if (speedMult == 1.5F)
 				{
-					list.add(new TextComponentString(I18n.translateToLocal("sprockets.gyrometer.windmill.windSpeedHigh")));
+					list.add(new TextComponentString(I18n.format("sprockets.gyrometer.windmill.windSpeedHigh")));
 				}
 				else if (speedMult == 1.25F)
 				{
-					list.add(new TextComponentString(I18n.translateToLocal("sprockets.gyrometer.windmill.windSpeedMed")));
+					list.add(new TextComponentString(I18n.format("sprockets.gyrometer.windmill.windSpeedMed")));
 				}
 				else
 				{
-					list.add(new TextComponentString(I18n.translateToLocal("sprockets.gyrometer.windmill.windSpeedLow")));
+					list.add(new TextComponentString(I18n.format("sprockets.gyrometer.windmill.windSpeedLow")));
 				}
 			}
 		}
