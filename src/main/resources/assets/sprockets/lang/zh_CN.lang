@@ -1,0 +1,54 @@
+# MULTIPARTS
+item.sprockets.sprocket.wooden.name=木制链轮
+item.sprockets.redstoneSprocket.wooden.name=木制红石链轮
+item.sprockets.lapisSprocket.wooden.name=木制青金石链轮
+item.sprockets.bigSprocket.wooden.name=大型木制链轮
+item.sprockets.axle.wooden.name=木轴
+item.sprockets.clutch.wooden.name=木制离合器
+
+item.sprockets.sprocket.stone.name=石制链轮
+item.sprockets.redstoneSprocket.stone.name=石制红石链轮
+item.sprockets.lapisSprocket.stone.name=石制青金石链轮
+item.sprockets.bigSprocket.stone.name=大型石制链轮
+item.sprockets.axle.stone.name=石轴
+item.sprockets.clutch.stone.name=石制离合器
+
+item.sprockets.sprocket.iron.name=铁制链轮
+item.sprockets.redstoneSprocket.iron.name=铁制红石链轮
+item.sprockets.lapisSprocket.iron.name=铁制青金石链轮
+item.sprockets.bigSprocket.iron.name=大型铁制链轮
+item.sprockets.axle.iron.name=铁轴
+item.sprockets.clutch.iron.name=铁制离合器
+
+item.sprockets.sprocket.obsidian.name=黑曜石链轮
+item.sprockets.axle.obsidian.name=黑曜石轴
+
+# BLOCKS
+tile.sprockets.windmillSmall.name=小型风车
+tile.sprockets.windmill.name=风车
+tile.sprockets.redstoneEngine.name=红石引擎
+tile.sprockets.millstone.name=磨石
+tile.sprockets.spring.name=扭力弹簧
+
+# MISC - No translation
+# itemGroup.sprockets=Sprockets
+
+# ITEMS
+item.sprockets.wrench.name=链轮扳手
+item.sprockets.crank.name=曲柄
+item.sprockets.gyrometer.name=陀螺仪
+item.sprockets.resource.windmillBlade.name=风车扇叶
+
+
+# GYROMETER OUTPUT
+sprockets.gyrometer.windmill.stuck=风车好像被什么东西卡住了。
+sprockets.gyrometer.windmill.windBlockedFull=风力太弱，风车转不起来。
+sprockets.gyrometer.windmill.windBlockedHigh=风力太小，风车只能慢悠悠地转。
+sprockets.gyrometer.windmill.windBlockedMed=风似乎受到了阻碍，风车也因此转不太快。
+sprockets.gyrometer.windmill.windBlockedLowSpeedHigh=一阵狂风吹过，令风车转了起来，但好像什么地方卡住了。
+sprockets.gyrometer.windmill.windBlockedLowSpeedMed=一阵大风吹过，令风车转了起来，但好像什么地方卡住了。
+sprockets.gyrometer.windmill.windBlockedLowSpeedLow=一阵风吹过，风车转了起来，但好像卡在了什么地方。
+sprockets.gyrometer.windmill.windSpeedHigh=狂风吹过，风车转了起来。
+sprockets.gyrometer.windmill.windSpeedMed=大风吹过，风车转了起来。
+sprockets.gyrometer.windmill.windSpeedLow=阵风吹过，风车转了起来。
+sprockets.gyrometer.spring=%上紧了。
