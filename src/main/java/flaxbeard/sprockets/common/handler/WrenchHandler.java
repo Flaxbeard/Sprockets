@@ -18,10 +18,12 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import flaxbeard.sprockets.api.IMechanicalConduit;
 import flaxbeard.sprockets.api.IMechanicalConsumer;
+import flaxbeard.sprockets.api.IMultiblockBrain;
 import flaxbeard.sprockets.api.network.MechanicalNetwork;
 import flaxbeard.sprockets.api.tool.IGyrometerable;
 import flaxbeard.sprockets.api.tool.IWrench;
 import flaxbeard.sprockets.api.tool.IWrenchable;
+import flaxbeard.sprockets.common.SprocketsRecipes;
 import flaxbeard.sprockets.items.ItemGyrometer;
 
 public class WrenchHandler
@@ -50,6 +52,10 @@ public class WrenchHandler
 			if (block != null && block instanceof IWrenchable)
 			{
 				((IWrenchable) block).wrench(player, world, pos, state, face);
+			}
+			if (te != null && te instanceof IMultiblockBrain)
+			{
+				SprocketsRecipes.BIGMILLSTONE.multiblockExists(world, pos);
 			}
 			if (te != null && te instanceof IWrenchable)
 			{
@@ -110,8 +116,8 @@ public class WrenchHandler
 		MechanicalNetwork network = part.getNetwork();
 		if (network != null)
 		{
-			float speed = Math.abs(network.getSpeedForConduit(part));
-			float torque = (speed == 0 ? 0 : network.getTorqueForConduit(part));
+			float speed = Math.abs(part.getSpeed());
+			float torque = (speed == 0 ? 0 : part.getTorque());
 			list.add(new TextComponentString("This network has a torque of " + torque));
 			list.add(new TextComponentString("This network has a speed of " + speed));
 			//list.add(new TextComponentString("CONSUMERS: " + network.networkConsumers.size()));

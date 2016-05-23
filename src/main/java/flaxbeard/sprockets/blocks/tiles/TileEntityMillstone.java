@@ -1,13 +1,11 @@
 package flaxbeard.sprockets.blocks.tiles;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
 import mcmultipart.multipart.PartSlot;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
@@ -15,32 +13,45 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.Tuple;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.RangedWrapper;
 import flaxbeard.sprockets.api.IMechanicalConsumer;
+import flaxbeard.sprockets.api.IMultiblockBrain;
+import flaxbeard.sprockets.api.Multiblock;
 import flaxbeard.sprockets.api.SprocketsAPI;
 import flaxbeard.sprockets.api.network.MechanicalNetwork;
 import flaxbeard.sprockets.api.tool.IGyrometerable;
+import flaxbeard.sprockets.blocks.BlockMillstone;
+import flaxbeard.sprockets.blocks.SprocketsBlocks;
+import flaxbeard.sprockets.common.SprocketsRecipes;
 import flaxbeard.sprockets.lib.LibConstants;
 
 
-public class TileEntityMillstone extends TileEntitySprocketBase implements IMechanicalConsumer, ISidedInventory, IGyrometerable
+public class TileEntityMillstone extends TileEntitySprocketBase implements IMechanicalConsumer, IGyrometerable, IMultiblockBrain
 {
 	private static final HashSet<Tuple<Vec3i, PartSlot>> CISMP = new HashSet<Tuple<Vec3i, PartSlot>>();
 	private static final HashSet<Vec3i> CIS = new HashSet<Vec3i>();
-	
-	private ItemStack[] contents = new ItemStack[2];
-	
+		
 	private boolean isActive = false;
 	private boolean wasActive = false;
 	private float activeTicks = 0;
 	
+	public final ItemStackHandler slots = new ItemStackHandler(2);
+	private final RangedWrapper slotsSides = new RangedWrapper(slots, 0, 1);
+	private final RangedWrapper slotsBottom = new RangedWrapper(slots, 1, 2);
+
 	static
 	{
 		CIS.add(new Vec3i(0, 1, 0));
@@ -48,34 +59,92 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 	}
 	
 	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+	{
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+		{
+			return true;
+		}
+		return super.hasCapability(capability, facing);
+	}
+	
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+	{
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+		{
+			if (facing == EnumFacing.DOWN)
+			{
+				return (T) slotsBottom;
+			}
+			else
+			{
+				return (T) slotsSides;
+			}
+		}
+		return super.getCapability(capability, facing);
+	}
+	
+	@Override
 	public void update()
 	{
 		super.update();
-		if (worldObj.isRemote && isActive && getNetwork() != null && !getNetwork().isJammed() && Math.abs(getNetwork().getSpeedForConduit(this)) > 0)
-		{
-			for (int i = 0; i < 3; i++)
-				worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, 
-						getPosMC().getX() + .5F, 
-						getPosMC().getY() + .5F, 
-						getPosMC().getZ() + .5F, 
-						(getWorldMC().rand.nextFloat() -.5F) * 0.3F, 
-						(getWorldMC().rand.nextFloat()) * 0.1F, 
-						(getWorldMC().rand.nextFloat() -.5F) * 0.3F, 
-						new int[] { Item.getIdFromItem(this.contents[0].getItem()) } );
-			if (worldObj.getTotalWorldTime() % 60 == 0)
-				worldObj.playSound(
-						getPosMC().getX() + .5F, 
-						getPosMC().getY() + .5F, 
-						getPosMC().getZ() + .5F, 
-						SoundEvents.WEATHER_RAIN, SoundCategory.BLOCKS, 0.3f, 0.1f, false);
-		}
 		
+		if (isMultiblock)
+		{
+			if (worldObj.isRemote && isActive && getNetwork() != null && !getNetwork().isJammed() && Math.abs(getNetwork().getSpeedForConduit(this)) > 0)
+			{
+				for (int i = 0; i < 10; i++)
+					worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, 
+							getPosMC().getX() + .5F + 2.5F * (getWorldMC().rand.nextFloat() -.5F), 
+							getPosMC().getY() + .5F, 
+							getPosMC().getZ() + .5F + 2.5F  * (getWorldMC().rand.nextFloat() -.5F), 
+							(getWorldMC().rand.nextFloat() -.5F) * 0.3F, 
+							0, 
+							(getWorldMC().rand.nextFloat() -.5F) * 0.3F, 
+							new int[] { Item.getIdFromItem(this.slots.getStackInSlot(0).getItem()) } );
+			}
+			
+			if (worldObj.isRemote && getNetwork() != null && !getNetwork().isJammed() && Math.abs(getNetwork().getSpeedForConduit(this)) > 0)
+			{
+				if (worldObj.getTotalWorldTime() % 60 == 0)
+					worldObj.playSound(
+							getPosMC().getX() + .5F, 
+							getPosMC().getY() + .5F, 
+							getPosMC().getZ() + .5F, 
+							SoundEvents.WEATHER_RAIN, SoundCategory.BLOCKS, 0.3f, 0.1f, false);
+			}
+
+		}
+		else
+		{
+			if (worldObj.isRemote && isActive && getNetwork() != null && !getNetwork().isJammed() && Math.abs(getNetwork().getSpeedForConduit(this)) > 0)
+			{
+				for (int i = 0; i < 3; i++)
+					worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, 
+							getPosMC().getX() + .5F, 
+							getPosMC().getY() + .5F, 
+							getPosMC().getZ() + .5F, 
+							(getWorldMC().rand.nextFloat() -.5F) * 0.3F, 
+							(getWorldMC().rand.nextFloat()) * 0.1F, 
+							(getWorldMC().rand.nextFloat() -.5F) * 0.3F, 
+							new int[] { Item.getIdFromItem(this.slots.getStackInSlot(0).getItem()) } );
+				
+				if (worldObj.getTotalWorldTime() % 60 == 0)
+					worldObj.playSound(
+							getPosMC().getX() + .5F, 
+							getPosMC().getY() + .5F, 
+							getPosMC().getZ() + .5F, 
+							SoundEvents.WEATHER_RAIN, SoundCategory.BLOCKS, 0.3f, 0.1f, false);
+			}
+		}
+
+
 		if (this.getNetwork() != null && !worldObj.isRemote)
 		{
 			MechanicalNetwork network = this.getNetwork();
 
-			isActive = this.contents[0] != null && isItemGrindable(this.contents[0]) && (contents[1] == null || (canFit(contents[1], SprocketsAPI.getMillstoneResult(this.contents[0]))));
-			
+			isActive = !isEmpty(slots.getStackInSlot(0)) && isItemGrindable(this.slots.getStackInSlot(0)) && (isEmpty(slots.getStackInSlot(1)) || (canFit(slots.getStackInSlot(1), SprocketsAPI.getMillstoneResult(this.slots.getStackInSlot(0)))));
 			if (isActive != wasActive)
 			{
 				network.updateNetworkSpeedAndTorque();
@@ -88,19 +157,26 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 			if (!network.isJammed() && isActive && Math.abs(network.getSpeedForConduit(this)) > LibConstants.MILLSTONE_MIN_SPEED)
 			{
 				activeTicks += Math.abs(network.getSpeedForConduit(this));
-				ItemStack output = SprocketsAPI.getMillstoneResult(contents[0]);
+				ItemStack output = SprocketsAPI.getMillstoneResult(slots.getStackInSlot(0));
 
-				if (output != null && activeTicks >= 200 && (contents[1] == null || (canFit(contents[1], output))))
+				if (output != null && activeTicks >= (isMultiblock ? 20 : 200))
 				{
 					activeTicks = 0;
-					this.decrStackSize(0, 1);
 					
-					
-					if (contents[1] != null)
+					ItemStack temp = slots.getStackInSlot(0).copy();
+					temp.stackSize--;
+					if (temp.stackSize == 0)
 					{
-						output.stackSize += contents[1].stackSize;
+						temp = null;
 					}
-					this.setInventorySlotContents(1, output);
+					slots.setStackInSlot(0, temp);
+					
+					
+					if (slots.getStackInSlot(1) != null)
+					{
+						output.stackSize += slots.getStackInSlot(1).stackSize;
+					}
+					slots.setStackInSlot(1, output);
 				}
 			}
 			
@@ -109,6 +185,11 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 		}
 	}
 	
+	private boolean isEmpty(ItemStack stackInSlot)
+	{
+		return stackInSlot == null || stackInSlot.stackSize == 0;
+	}
+
 	private static boolean isItemGrindable(ItemStack stack)
 	{
 		return SprocketsAPI.getMillstoneResult(stack) != null && stack.stackSize > 0;
@@ -159,29 +240,22 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 	@Override
 	public float torqueCost()
 	{
-		return isActive ? LibConstants.MILLSTONE_TORQUE : 0.0F;
+		if (isMultiblock)
+		{
+			return LibConstants.MILLSTONE_TORQUE;
+		}
+		else
+		{
+			return isActive ? LibConstants.MILLSTONE_TORQUE : 0.0F;
+		}
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound compound)
 	{
 		super.readFromNBT(compound);
-		if (compound.hasKey("item1"))
-		{
-			this.contents[0] = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("item1"));
-		}
-		else
-		{
-			this.contents[0] = null;
-		}
-		if (compound.hasKey("item2"))
-		{
-			this.contents[1] = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("item2"));
-		}
-		else
-		{
-			this.contents[1] = null;
-		}
+		
+		slots.deserializeNBT(compound.getCompoundTag("inv"));
 		
 		isActive = compound.getBoolean("isActive");
 		if (isActive != wasActive && this.getNetwork() != null)
@@ -191,6 +265,12 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 		wasActive = isActive;
 		//wasActive = compound.getBoolean("wasActive");
 		activeTicks = compound.getFloat("activeTicks");
+		
+		isMultiblock = compound.getBoolean("isMultiblock");
+		swapXZ = compound.getBoolean("swapXZ");
+		flipX = compound.getBoolean("flipX");
+		flipZ = compound.getBoolean("flipZ");
+
 	}
 	
 	@Override
@@ -199,18 +279,17 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 		compound = super.writeToNBT(compound);
 		NBTTagCompound item1 = new NBTTagCompound();
 		
-		if (this.contents[0] != null)
-			this.contents[0].writeToNBT(item1);
-		compound.setTag("item1", item1);
-		
-		NBTTagCompound item2 = new NBTTagCompound();
-		if (this.contents[1] != null)
-			this.contents[1].writeToNBT(item2);
-		compound.setTag("item2", item2);
+		compound.setTag("inv", this.slots.serializeNBT());
 		
 		compound.setBoolean("isActive", isActive);
 		compound.setBoolean("wasActive", wasActive);
 		compound.setFloat("activeTicks", activeTicks);
+		
+		compound.setBoolean("isMultiblock", isMultiblock);
+		compound.setBoolean("swapXZ", swapXZ);
+		compound.setBoolean("flipX", flipX);
+		compound.setBoolean("flipZ", flipZ);
+
 		return compound;
 	}
 	
@@ -229,141 +308,6 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 		return new SPacketUpdateTileEntity(pos, 0, data);
 	}
 	
-	
-	@Override
-	public int getSizeInventory()
-	{
-		return 2;
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int index)
-	{
-		return contents[index];
-	}
-
-	@Override
-	public ItemStack decrStackSize(int index, int count)
-	{
-		return ItemStackHelper.getAndSplit(contents, index, count);
-	}
-
-	@Override
-	public ItemStack removeStackFromSlot(int index)
-	{
-		return ItemStackHelper.getAndRemove(contents, index);
-	}
-
-	@Override
-	public void setInventorySlotContents(int index, ItemStack stack)
-	{
-		contents[index] = stack;
-	}
-
-	@Override
-	public int getInventoryStackLimit()
-	{
-		return 64;
-	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer player)
-	{
-		return false;
-	}
-
-	@Override
-	public void openInventory(EntityPlayer player)
-	{
-	}
-
-	@Override
-	public void closeInventory(EntityPlayer player)
-	{		
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int index, ItemStack stack)
-	{
-		if (index == 1)
-		{
-			return false;
-		}
-		return true;
-	}
-
-	@Override
-	public int getField(int id)
-	{
-		return 0;
-	}
-
-	@Override
-	public void setField(int id, int value)
-	{		
-	}
-
-	@Override
-	public int getFieldCount()
-	{
-		return 0;
-	}
-
-	@Override
-	public void clear()
-	{
-		for (int i = 0; i < contents.length; i++)
-		{
-			contents[i] = null;
-		}
-	}
-
-	@Override
-	public String getName()
-	{
-		return "sprockets:container.millstone";
-	}
-
-	@Override
-	public boolean hasCustomName()
-	{
-		return false;
-	}
-
-	@Override
-	public ITextComponent getDisplayName()
-	{
-		return null;
-	}
-
-	@Override
-	public int[] getSlotsForFace(EnumFacing side)
-	{
-		switch (side)
-		{
-			case DOWN:
-				return new int[] { 1 };
-			case UP:
-				return new int[0];
-			default:
-				return new int[] { 0, 1 };
-		}
-	}
-
-	@Override
-	public boolean canInsertItem(int index, ItemStack itemStackIn,
-			EnumFacing direction)
-	{
-		return direction != EnumFacing.UP && this.isItemValidForSlot(index, itemStackIn) && direction != EnumFacing.DOWN && index == 0 && isItemGrindable(itemStackIn);
-	}
-
-	@Override
-	public boolean canExtractItem(int index, ItemStack stack,
-			EnumFacing direction)
-	{
-		return index == 1 && direction != EnumFacing.UP;
-	}
-
 	@Override
 	public void addInfo(List<ITextComponent> list)
 	{
@@ -372,5 +316,76 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 			
 		}
 	}
+	
+	private boolean swapXZ;
+	private boolean flipX;
+	private boolean flipZ;
+	public boolean isMultiblock = false;
 
+	@Override
+	public void addMultiblock(Multiblock mb, boolean swapXZ, boolean flipX,
+			boolean flipZ)
+	{
+		this.swapXZ = swapXZ;
+		this.flipX = flipX;
+		this.flipZ = flipZ;
+		this.isMultiblock = true;
+		this.worldObj.setBlockState(getPos(), worldObj.getBlockState(getPos()).withProperty(BlockMillstone.MULTIBLOCK, true), 2);
+	}
+
+	@Override
+	public void invalidate()
+	{
+		super.invalidate();
+		
+		if (isMultiblock)
+		{
+			destroy();
+		}
+	}
+
+	@Override
+	public void destroy()
+	{
+		if (worldObj.getBlockState(getPos()).getBlock() == SprocketsBlocks.millstone)
+		{
+			this.worldObj.setBlockState(getPos(), worldObj.getBlockState(getPos()).withProperty(BlockMillstone.MULTIBLOCK, false), 2);
+		}
+		SprocketsRecipes.BIGMILLSTONE.destroyMultiblock(worldObj, getPos(), swapXZ, flipX, flipZ);
+		isMultiblock = false;
+	}
+	
+	
+	@Override
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
+	{
+		return oldState.getBlock() != newState.getBlock();
+	}
+	
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing, int loc)
+	{
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && (loc >= 0 && loc < 18))
+		{
+			return true;
+		}
+		return super.hasCapability(capability, facing);
+	}
+	
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing, int loc)
+	{
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+		{
+			if (facing == EnumFacing.DOWN && (loc >= 0 && loc < 9))
+			{
+				return (T) slotsBottom;
+			}
+			else if (loc >= 9 && loc < 18)
+			{
+				return (T) slotsSides;
+			}
+		}
+		return super.getCapability(capability, facing);
+	}
 }

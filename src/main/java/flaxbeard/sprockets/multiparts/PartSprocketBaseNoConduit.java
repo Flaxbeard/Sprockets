@@ -1,6 +1,7 @@
 package flaxbeard.sprockets.multiparts;
 
 import mcmultipart.multipart.Multipart;
+import mcmultipart.multipart.MultipartRegistry;
 import mcmultipart.raytrace.PartMOP;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -134,7 +135,7 @@ public abstract class PartSprocketBaseNoConduit extends Multipart
 			}
 		}
 		
-		float breakSpeed = player.getDigSpeed(createBlockState().getBaseState(), getPos());
+		float breakSpeed = player.getDigSpeed(getExtendedState(MultipartRegistry.getDefaultState(this).getBaseState()), getPos());
 		
 		if (!effective)
 		{

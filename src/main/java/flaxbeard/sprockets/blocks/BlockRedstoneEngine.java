@@ -190,4 +190,10 @@ public class BlockRedstoneEngine extends BlockSprocketBase implements ITileEntit
 		}
 		return false;
 	}
+	
+	@Override
+	public boolean isSolid()
+	{
+		return true;
+	}
 }

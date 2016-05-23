@@ -71,7 +71,7 @@ public class BlockTorsionSpring extends BlockSprocketBase implements ITileEntity
 	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 	{
-		return this.getDefaultState().withProperty(FACING, facing.getOpposite());
+		return this.getDefaultState().withProperty(FACING, facing);
 	}
 
 	public IBlockState getStateFromMeta(int meta)
@@ -82,11 +82,10 @@ public class BlockTorsionSpring extends BlockSprocketBase implements ITileEntity
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state)
+	public boolean isSolid()
 	{
 		return false;
 	}
-	
 	@Override
 	public boolean isSideSolid(IBlockState base, IBlockAccess worldIn, BlockPos pos, EnumFacing side)
     {

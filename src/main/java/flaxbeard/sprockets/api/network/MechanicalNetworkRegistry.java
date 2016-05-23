@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Unload;
@@ -35,7 +36,7 @@ public class MechanicalNetworkRegistry
 	@SubscribeEvent
 	public void onTick(TickEvent.ClientTickEvent e)
 	{
-		if (e.phase == TickEvent.Phase.START)
+		if (e.phase == TickEvent.Phase.START && !Minecraft.getMinecraft().isGamePaused())
 		{
 
 			

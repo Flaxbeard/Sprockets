@@ -93,7 +93,7 @@ public class BlockWindmill extends BlockSprocketBase implements ITileEntityProvi
 	
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state)
+	public boolean isSolid()
 	{
 		return false;
 	}

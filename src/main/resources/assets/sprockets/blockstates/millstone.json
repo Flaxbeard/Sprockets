@@ -13,6 +13,12 @@
 		"normal": [{}],
 		"inventory": [{
 			"model" : "minecraft:cube_column"
-		}]
+		}],
+		"multiblock": {
+			"true": {
+				"model": "sprockets:dummy"
+			},
+			"false": {}
+		}
 	}
 }

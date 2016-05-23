@@ -75,7 +75,7 @@ public class BlockWindmillSmall extends BlockSprocketBase implements ITileEntity
 	
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state)
+	public boolean isSolid()
 	{
 		return false;
 	}

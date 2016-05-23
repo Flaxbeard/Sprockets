@@ -148,5 +148,19 @@ public abstract class PartMechanicalConduit extends Multipart implements IMechan
 	{
 		return getWorld();
 	}
+	
+	
+	@Override
+	public float getSpeed()
+	{
+		return getNetwork().getSpeedForConduit(this);
+	}
+
+	@Override
+	public float getTorque()
+	{
+		return getNetwork().getTorqueForConduit(this);
+	}
+
 
 }

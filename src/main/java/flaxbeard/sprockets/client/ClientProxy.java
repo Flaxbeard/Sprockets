@@ -89,6 +89,7 @@ public class ClientProxy extends CommonProxy
 		registerRenders(SprocketsBlocks.redEngine);
 		registerRenders(SprocketsBlocks.millstone);
 		registerRenders(SprocketsBlocks.spring);
+		registerRenders(SprocketsBlocks.mbBlock);
 
 		part = SprocketsMultiparts.sprocket;
 		for (int i = 0; i < part.subnames.length; i++)

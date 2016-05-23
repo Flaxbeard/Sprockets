@@ -2,9 +2,13 @@ package flaxbeard.sprockets.blocks;
 
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -17,13 +21,15 @@ import flaxbeard.sprockets.blocks.tiles.TileEntityMillstone;
 
 public class BlockMillstone extends BlockSprocketBase implements ITileEntityProvider
 {
-	
+	public static final PropertyBool MULTIBLOCK = PropertyBool.create("multiblock");
+
 	public BlockMillstone(String name, Material material, float hardness, float resistance)
 	{
 		super(material, name);
 		this.setHardness(hardness);
 		this.setResistance(resistance);
 		this.setLightOpacity(0);
+		this.setDefaultState(this.blockState.getBaseState().withProperty(MULTIBLOCK, false));
 	}
 
 	@Override
@@ -45,7 +51,7 @@ public class BlockMillstone extends BlockSprocketBase implements ITileEntityProv
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state)
+	public boolean isSolid()
 	{
 		return false;
 	}
@@ -62,13 +68,48 @@ public class BlockMillstone extends BlockSprocketBase implements ITileEntityProv
 	{ 
 		TileEntity tileentity = worldIn.getTileEntity(pos);
 
-		if (tileentity instanceof TileEntityMillstone)
+		if (tileentity instanceof TileEntityMillstone && !worldIn.isRemote)
 		{
-    		InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityMillstone) tileentity);
-			
+    		TileEntityMillstone ms = (TileEntityMillstone) tileentity;
+    		
+    		for (int i = 0; i < ms.slots.getSlots(); i++)
+    		{
+    			ItemStack stack = ms.slots.getStackInSlot(i);
+    			if (stack != null)
+    			{
+    				InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack);
+    			}
+    		}
 		}
 		super.breakBlock(worldIn, pos, state);
 
+	}
+	
+	public IBlockState getStateFromMeta(int meta)
+	{
+		boolean multi = false;
+		if (meta > 0)
+		{
+			multi = true;
+		}
+	    return this.getDefaultState().withProperty(MULTIBLOCK, multi);
+	}
+	
+	public int getMetaFromState(IBlockState state)
+	{
+		if (state.getBlock() == this)
+		{
+			return ((Boolean) state.getValue(MULTIBLOCK) ? 1 : 0);
+		}
+		else
+		{
+			return 0;
+		}
+	}
+	
+	protected BlockStateContainer createBlockState()
+	{
+	    return new BlockStateContainer(this, new IProperty[] {MULTIBLOCK});
 	}
 
 

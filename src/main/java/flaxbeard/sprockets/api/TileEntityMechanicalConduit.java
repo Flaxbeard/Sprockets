@@ -128,5 +128,17 @@ public abstract class TileEntityMechanicalConduit extends TileEntity implements 
 	{
 		return getWorld();
 	}
+	
+	@Override
+	public float getSpeed()
+	{
+		return getNetwork().getSpeedForConduit(this);
+	}
+
+	@Override
+	public float getTorque()
+	{
+		return getNetwork().getTorqueForConduit(this);
+	}
 
 }

@@ -1,8 +1,6 @@
 package flaxbeard.sprockets.multiparts;
 
-import java.util.List;
-
-import mcmultipart.multipart.INormallyOccludingPart;
+import mcmultipart.multipart.MultipartRegistry;
 import mcmultipart.raytrace.PartMOP;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,12 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
 import flaxbeard.sprockets.api.PartMechanicalConduit;
 import flaxbeard.sprockets.common.handler.WrenchHandler;
-import flaxbeard.sprockets.items.SprocketsItems;
-import flaxbeard.sprockets.lib.LibConstants;
 
 public abstract class PartSprocketBase extends PartMechanicalConduit
 {
@@ -143,7 +137,7 @@ public abstract class PartSprocketBase extends PartMechanicalConduit
 			}
 		}
 		
-		float breakSpeed = player.getDigSpeed(createBlockState().getBaseState(), getPosMC());
+		float breakSpeed = player.getDigSpeed(getExtendedState(MultipartRegistry.getDefaultState(this).getBaseState()), getPos());
 		
 		if (!effective)
 		{

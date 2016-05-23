@@ -102,4 +102,8 @@ public interface IMechanicalConduit
 	public boolean isNegativeDirection();
 
 	public void remove();
+
+	public float getSpeed();
+
+	public float getTorque();
 }

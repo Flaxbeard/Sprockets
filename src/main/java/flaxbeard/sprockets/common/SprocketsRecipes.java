@@ -1,23 +1,110 @@
 package flaxbeard.sprockets.common;
 
-import mcmultipart.multipart.PartSlot;
+import mcmultipart.block.TileMultipartContainer;
+import mcmultipart.multipart.IMultipart;
+import mcmultipart.multipart.IMultipartContainer;
+import mcmultipart.multipart.MultipartContainer;
+import mcmultipart.multipart.MultipartHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Tuple;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import flaxbeard.sprockets.api.IMultiblockComparator;
+import flaxbeard.sprockets.api.Multiblock;
 import flaxbeard.sprockets.api.SprocketsAPI;
 import flaxbeard.sprockets.blocks.SprocketsBlocks;
 import flaxbeard.sprockets.items.SprocketsItems;
+import flaxbeard.sprockets.multiblocks.MultiblockBigMillstone;
+import flaxbeard.sprockets.multiparts.PartAxle;
+import flaxbeard.sprockets.multiparts.PartSprocketBase;
 import flaxbeard.sprockets.multiparts.SprocketsMultiparts;
 
 public class SprocketsRecipes
 {
+	
+	private static class SprocketMultipartComparison<T extends PartSprocketBase> implements IMultiblockComparator
+	{
+		private int damage;
+		private Class<T> partClass;
+		
+		private SprocketMultipartComparison(Class<T> partClass, int damage)
+		{
+			this.partClass = partClass;
+			this.damage = damage;
+		}
+		
+		@Override
+		public boolean isEqual(IBlockAccess iba, BlockPos pos)
+		{
+			boolean result = false;
+			IMultipartContainer cont = MultipartHelper.getPartContainer(iba, pos);
+			
+			if (cont != null && cont instanceof TileMultipartContainer)
+			{
+				cont = ((TileMultipartContainer) cont).getPartContainer();	
+			}
+			if (cont != null && cont instanceof MultipartContainer)
+			{
+				for (IMultipart part : cont.getParts())
+				{
+					if (partClass == part.getClass())
+					{
+						if (((PartSprocketBase) part).getDamage() == damage)
+						{
+							result = true;
+						}
+						else
+						{
+							return false;
+						}
+					}
+					else
+					{
+						return false;
+					}
+				}
+			}
+			else
+			{
+				System.out.println(cont);
+			}
+			
+			return result;
+		}
+		
+	}
+	
+	public static Multiblock BIGMILLSTONE;
+	
 	public static void init()
 	{
+		
+		BIGMILLSTONE = new MultiblockBigMillstone(
+				"bigMillstone",
+				3, 3, 3,
+				1, 1, 1,
+				
+				"QQQ",
+				"QQQ",
+				"QQQ",
+				
+				"AAA",
+				"QMQ",
+				"AAA",
+				
+				"AAA",
+				"APA",
+				"AAA",
+				
+				Character.valueOf('M'), SprocketsBlocks.millstone,
+				Character.valueOf('Q'), Blocks.QUARTZ_BLOCK,
+				Character.valueOf('P'), new SprocketMultipartComparison(PartAxle.class, 0),
+				Character.valueOf('A'), Blocks.AIR);
+		
 		// Sprockets
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SprocketsMultiparts.sprocket, 4, 0),
 				" I ",
