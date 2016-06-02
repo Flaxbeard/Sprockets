@@ -15,17 +15,27 @@ public abstract class BlockSprocketBase extends Block
 	
 	public BlockSprocketBase(Material material, String name)
 	{
-		this(material, name, true);
+		this(material, name, true, true);
 	}
 	
 	public BlockSprocketBase(Material material, String name, boolean creativeTab)
 	{
+		this(material, name, creativeTab, true);
+	}
+
+
+	public BlockSprocketBase(Material material, String name, boolean creativeTab, boolean itemBlock)
+	{
 		super(material);
 		this.setRegistryName(name);
 		GameRegistry.register(this);
-		ItemBlock ib = new ItemBlock(this);
-		ib.setRegistryName(name);
-		GameRegistry.register(ib);
+		if (itemBlock)
+		{
+			ItemBlock ib = new ItemBlock(this);
+			ib.setRegistryName(name);
+			GameRegistry.register(ib);
+		}
+
 		this.setUnlocalizedName(Sprockets.MODID + "." + name);
 		if (creativeTab)
 		{

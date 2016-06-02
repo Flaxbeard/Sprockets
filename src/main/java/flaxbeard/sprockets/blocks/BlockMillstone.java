@@ -39,9 +39,10 @@ public class BlockMillstone extends BlockSprocketBase implements ITileEntityProv
     }
 
 	@SideOnly(Side.CLIENT)
-	public Item getItem(World worldIn, BlockPos pos)
+	@Override
+	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
 	{
-	    return Item.getItemFromBlock(SprocketsBlocks.millstone);
+	    return new ItemStack(Item.getItemFromBlock(SprocketsBlocks.millstone));
 	}
 	
 	@Override
@@ -85,6 +86,7 @@ public class BlockMillstone extends BlockSprocketBase implements ITileEntityProv
 
 	}
 	
+	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
 		boolean multi = false;
@@ -95,6 +97,7 @@ public class BlockMillstone extends BlockSprocketBase implements ITileEntityProv
 	    return this.getDefaultState().withProperty(MULTIBLOCK, multi);
 	}
 	
+	@Override
 	public int getMetaFromState(IBlockState state)
 	{
 		if (state.getBlock() == this)
@@ -107,6 +110,7 @@ public class BlockMillstone extends BlockSprocketBase implements ITileEntityProv
 		}
 	}
 	
+	@Override
 	protected BlockStateContainer createBlockState()
 	{
 	    return new BlockStateContainer(this, new IProperty[] {MULTIBLOCK});

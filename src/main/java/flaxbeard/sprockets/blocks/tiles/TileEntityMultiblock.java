@@ -26,13 +26,14 @@ import net.minecraftforge.common.capabilities.Capability;
 import flaxbeard.sprockets.api.IMechanicalConduit;
 import flaxbeard.sprockets.api.IMultiblockBrain;
 import flaxbeard.sprockets.api.Multiblock;
+import flaxbeard.sprockets.api.network.MechanicalNetworkHelper;
 
 public class TileEntityMultiblock extends TileEntitySprocketBase
 {
 	
 	private IBlockState block;
 	private Multiblock multiblock;
-	private int pos;
+	public int pos;
 	private BlockPos center;
 	public boolean isTurning = false;
 	private NBTTagCompound data = null;
@@ -147,6 +148,7 @@ public class TileEntityMultiblock extends TileEntitySprocketBase
 	@Override
 	public void invalidate()
 	{
+		System.out.println("INVALIDATE SIDE");
 		super.invalidate();
 		
 		if (!isTurning)
@@ -164,6 +166,7 @@ public class TileEntityMultiblock extends TileEntitySprocketBase
 	public void turnBack()
 	{
 		isTurning = true;
+		
 		this.worldObj.setBlockState(getPos(), block);
 		IMultipartContainer cont = MultipartHelper.getPartContainer(worldObj, getPos());
 		
@@ -191,7 +194,7 @@ public class TileEntityMultiblock extends TileEntitySprocketBase
 		{
 			return new HashSet<Tuple<Vec3i, PartSlot>>();
 		}
-		return multiblock.multipartCisConnections(pos);
+		return multiblock.multipartCisConnections(pos, center, worldObj);
 	}
 
 
@@ -202,7 +205,7 @@ public class TileEntityMultiblock extends TileEntitySprocketBase
 		{
 			return new HashSet<Tuple<Vec3i, PartSlot>>();
 		}
-		return multiblock.multipartTransConnections(pos);
+		return multiblock.multipartTransConnections(pos, center, worldObj);
 	}
 
 
@@ -213,7 +216,7 @@ public class TileEntityMultiblock extends TileEntitySprocketBase
 		{
 			return new HashSet<Vec3i>();
 		}
-		return multiblock.cisConnections(pos);
+		return multiblock.cisConnections(pos, center, worldObj);
 	}
 	
 	@Override
@@ -244,7 +247,7 @@ public class TileEntityMultiblock extends TileEntitySprocketBase
 		{
 			return new HashSet<Vec3i>();
 		}
-		return multiblock.transConnections(pos);
+		return multiblock.transConnections(pos, center, worldObj);
 	}
 
 

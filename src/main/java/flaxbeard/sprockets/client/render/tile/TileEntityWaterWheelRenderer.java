@@ -1,22 +1,21 @@
 package flaxbeard.sprockets.client.render.tile;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
 
 import flaxbeard.sprockets.api.network.MechanicalNetwork;
-import flaxbeard.sprockets.blocks.tiles.TileEntityWindmill;
+import flaxbeard.sprockets.blocks.tiles.TileEntityWaterWheel;
 import flaxbeard.sprockets.client.ClientUtils;
-import flaxbeard.sprockets.client.render.model.ModelWindmill;
-import flaxbeard.sprockets.lib.LibConstants;
+import flaxbeard.sprockets.client.render.model.ModelWaterWheel;
 
-public class TileEntityWindmillRenderer extends TileEntitySpecialRenderer
+public class TileEntityWaterWheelRenderer extends TileEntitySpecialRenderer
 {
 
-	private static ModelWindmill model = new ModelWindmill(false);
-	private static ModelWindmill modelReverse = new ModelWindmill(true);
-	private static String textureBase = "sprockets:textures/models/windmillLg";
+	private static ModelWaterWheel model = new ModelWaterWheel();
+	private static String textureBase = "sprockets:textures/models/waterwheel";
 
 		
 	@Override
@@ -27,31 +26,31 @@ public class TileEntityWindmillRenderer extends TileEntitySpecialRenderer
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glTranslated(x+.5, y+.5, z+.5);
 		
-		TileEntityWindmill windmill = (TileEntityWindmill) te;
+		TileEntityWaterWheel waterWheel = (TileEntityWaterWheel) te;
 		
 		float rotate = 0.0f;
 		
 		int facing = 3;
 		
-		if (windmill != null)
+		if (waterWheel != null)
 		{
-			MechanicalNetwork network = windmill.getNetwork();
+			MechanicalNetwork network = waterWheel.getNetwork();
 			if (network != null)
 			{
-				rotate = ClientUtils.getRotation(windmill, partialTicks);
+				rotate = ClientUtils.getRotation(waterWheel, partialTicks);
 			}
-			if (network != null && windmill.getState())
+			if (network != null && waterWheel.getState())
 			{
 				rotate *= -1;
 			}
 			
-			facing = windmill.facing;
+			facing = waterWheel.facing;
 		}
 		else
 		{
 			GL11.glRotatef(90, 0.0F, 1.0F, 0.0F);
 			
-			GL11.glScalef(0.2F, 0.2F, 0.2F);
+			GL11.glScalef(0.28F, 0.28F, 0.28F);
 			GL11.glTranslatef(0.0F, 0.0F, -0.2F);
 
 		}
@@ -65,13 +64,9 @@ public class TileEntityWindmillRenderer extends TileEntitySpecialRenderer
 				GL11.glRotatef(90F, -1.0F, 0.0F, 0.0F);
 				break;
 			case 2:
-				GL11.glRotatef(180F, 0.0F, 1.0F, 0.0F);
-				break;
 			case 3:
 				break;
 			case 4:
-				GL11.glRotatef(270F, 0.0F, 1.0F, 0.0F);
-				break;
 			case 5:
 				GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
 				break;
@@ -79,20 +74,17 @@ public class TileEntityWindmillRenderer extends TileEntitySpecialRenderer
 		
 		ClientUtils.bindTexture(textureBase + ".png");
 
-		ModelWindmill temp = model;
-		
-		if (windmill != null && !windmill.directionFlipped)
-		{
-			temp = modelReverse;
-		}
-
 		GL11.glRotatef(rotate, 0.0F, 0.0F, 1.0F);
 	
 
-		temp.render(null, 0, 0, 0, 0, 0, .0625f);
+		model.render(null, 0, 0, 0, 0, 0, .0625f);
 		
-		temp = null;
 
+		model.renderLeft(.0625f, waterWheel == null || !waterWheel.connLeft);
+
+
+		model.renderRight(.0625f, waterWheel == null || !waterWheel.connRight);
+		
 		
 		GL11.glPopMatrix();
 	}

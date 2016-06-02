@@ -65,9 +65,9 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 	{
 		super.update();
 		
-		if (facing == -1 && worldObj != null && worldObj.getBlockState(getPosMC()) != null && worldObj.getBlockState(getPosMC()).getBlock() == SprocketsBlocks.windmillSmall)
+		if (facing == -1 && worldObj != null && worldObj.getBlockState(getPosMC()) != null && worldObj.getBlockState(getPosMC()).getBlock() == SprocketsBlocks.windmill)
 		{
-			facing = SprocketsBlocks.windmillSmall.getMetaFromState(worldObj.getBlockState(getPosMC())) % 6;
+			facing = SprocketsBlocks.windmill.getMetaFromState(worldObj.getBlockState(getPosMC())) % 6;
 		}
 
 
@@ -78,7 +78,7 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 		
 		
 		
-		if (this.worldObj.isRemote && canSpin == 1 && getNetwork() != null && !getNetwork().isJammed() && facing != -1)
+		if (this.worldObj.isRemote && canSpin == 1 && getNetwork() != null && facing != -1)
 		{
 			
 			Vec3i dir = EnumFacing.VALUES[facing].getDirectionVec();

@@ -12,7 +12,9 @@ import flaxbeard.sprockets.Sprockets;
 import flaxbeard.sprockets.blocks.BlockSprocketBase;
 import flaxbeard.sprockets.blocks.SprocketsBlocks;
 import flaxbeard.sprockets.blocks.tiles.TileEntityMillstone;
+import flaxbeard.sprockets.blocks.tiles.TileEntityStampMill;
 import flaxbeard.sprockets.blocks.tiles.TileEntityTorsionSpring;
+import flaxbeard.sprockets.blocks.tiles.TileEntityWaterWheel;
 import flaxbeard.sprockets.blocks.tiles.TileEntityWindmill;
 import flaxbeard.sprockets.blocks.tiles.TileEntityWindmillSmall;
 import flaxbeard.sprockets.client.render.tile.RenderPartAxle;
@@ -20,7 +22,9 @@ import flaxbeard.sprockets.client.render.tile.RenderPartBigSprocket;
 import flaxbeard.sprockets.client.render.tile.RenderPartClutch;
 import flaxbeard.sprockets.client.render.tile.RenderPartSprocket;
 import flaxbeard.sprockets.client.render.tile.TileEntityMillstoneRenderer;
+import flaxbeard.sprockets.client.render.tile.TileEntityStampMillRenderer;
 import flaxbeard.sprockets.client.render.tile.TileEntityTorsionSpringRenderer;
+import flaxbeard.sprockets.client.render.tile.TileEntityWaterWheelRenderer;
 import flaxbeard.sprockets.client.render.tile.TileEntityWindmillRenderer;
 import flaxbeard.sprockets.client.render.tile.TileEntityWindmillSmallRenderer;
 import flaxbeard.sprockets.common.CommonProxy;
@@ -135,6 +139,10 @@ public class ClientProxy extends CommonProxy
 		
 		registerRenders(SprocketsBlocks.windmillSmall);
 		registerRenders(SprocketsBlocks.windmill);
+		registerRenders(SprocketsBlocks.waterwheel);
+		registerRenders(SprocketsBlocks.stampMill);
+		registerRenders(SprocketsBlocks.waterwheelComponent);
+
 	}
 	
 	@Override
@@ -153,10 +161,14 @@ public class ClientProxy extends CommonProxy
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindmill.class, new TileEntityWindmillRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMillstone.class, new TileEntityMillstoneRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTorsionSpring.class, new TileEntityTorsionSpringRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWaterWheel.class, new TileEntityWaterWheelRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityStampMill.class, new TileEntityStampMillRenderer());
 
 		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(SprocketsBlocks.windmillSmall), 0, TileEntityWindmillSmall.class);
 		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(SprocketsBlocks.windmill), 0, TileEntityWindmill.class);
 		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(SprocketsBlocks.spring), 0, TileEntityTorsionSpring.class);
+		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(SprocketsBlocks.waterwheel), 0, TileEntityWaterWheel.class);
+		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(SprocketsBlocks.stampMill), 0, TileEntityStampMill.class);
 
 	}
 	

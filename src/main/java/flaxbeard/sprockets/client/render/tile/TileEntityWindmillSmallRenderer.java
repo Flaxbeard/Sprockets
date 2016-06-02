@@ -80,7 +80,7 @@ public class TileEntityWindmillSmallRenderer extends TileEntitySpecialRenderer
 
 		ModelWindmillSmall temp = model;
 		
-		if (windmill != null && windmill.directionFlipped)
+		if (windmill != null && !windmill.directionFlipped)
 		{
 			temp = modelReverse;
 		}

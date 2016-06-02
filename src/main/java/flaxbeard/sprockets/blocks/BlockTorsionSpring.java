@@ -92,9 +92,7 @@ public class BlockTorsionSpring extends BlockSprocketBase implements ITileEntity
         return false;
     }
 	
-	/**
-	 * Convert the BlockState into the correct metadata value
-	 */
+	@Override
 	public int getMetaFromState(IBlockState state)
 	{
 		if (state.getBlock() == this)
@@ -107,6 +105,7 @@ public class BlockTorsionSpring extends BlockSprocketBase implements ITileEntity
 		}
 	}
 	
+	@Override
 	protected BlockStateContainer createBlockState()
 	{
 	    return new BlockStateContainer(this, new IProperty[] {FACING});

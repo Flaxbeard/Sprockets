@@ -106,12 +106,13 @@ public class BlockWindmillSmall extends BlockSprocketBase implements ITileEntity
     }
 
 	@SideOnly(Side.CLIENT)
-	public Item getItem(World worldIn, BlockPos pos)
+	@Override
+	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
 	{
-	    return Item.getItemFromBlock(SprocketsBlocks.windmillSmall);
+	    return new ItemStack(Item.getItemFromBlock(SprocketsBlocks.windmillSmall));
 	}
 	
-	
+	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
 		boolean conTop = false;
@@ -130,9 +131,7 @@ public class BlockWindmillSmall extends BlockSprocketBase implements ITileEntity
 	    return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(CONNECT_TOP, conTop);
 	}
 	
-	/**
-	 * Convert the BlockState into the correct metadata value
-	 */
+	@Override
 	public int getMetaFromState(IBlockState state)
 	{
 		if (state.getBlock() == this)
@@ -145,6 +144,7 @@ public class BlockWindmillSmall extends BlockSprocketBase implements ITileEntity
 		}
 	}
 	
+	@Override
 	protected BlockStateContainer createBlockState()
 	{
 	    return new BlockStateContainer(this, new IProperty[] {FACING, CONNECT_TOP});

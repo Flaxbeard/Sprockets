@@ -132,6 +132,7 @@ public class BlockRedstoneEngine extends BlockSprocketBase implements ITileEntit
 		}
 	}
 
+	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
 		boolean conTop = false;
@@ -145,9 +146,7 @@ public class BlockRedstoneEngine extends BlockSprocketBase implements ITileEntit
 	    return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(POWERED, conTop);
 	}
 	
-	/**
-	 * Convert the BlockState into the correct metadata value
-	 */
+	@Override
 	public int getMetaFromState(IBlockState state)
 	{
 		if (state.getBlock() == this)
@@ -160,6 +159,7 @@ public class BlockRedstoneEngine extends BlockSprocketBase implements ITileEntit
 		}
 	}
 	
+	@Override
 	protected BlockStateContainer createBlockState()
 	{
 	    return new BlockStateContainer(this, new IProperty[] {FACING, POWERED, REVERSED});

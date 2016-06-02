@@ -16,12 +16,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import flaxbeard.sprockets.lib.LibConstants;
 
-public class PartBigSprocketPlaceholder extends PartSprocketBaseNoConduit implements ISlottedPart
+public class PartBigSprocketPlaceholder extends PartSprocketBaseNoConduit implements ISlottedPart, ITickable
 {
 	public int facing = 0;
 	
@@ -184,6 +184,8 @@ public class PartBigSprocketPlaceholder extends PartSprocketBaseNoConduit implem
 	@Override
 	public void onRemoved()
 	{
+		super.onRemoved();
+
 		IMultipartContainer container = MultipartHelper.getPartContainer(getWorld(), getPos().subtract(parent));
 		if (container != null)
 		{
@@ -193,5 +195,14 @@ public class PartBigSprocketPlaceholder extends PartSprocketBaseNoConduit implem
 				container.removePart(part);
 			}
 		}
+		IMultipartContainer here = MultipartHelper.getPartContainer(getWorld(), getPos());
+
+	}
+
+	@Override
+	public void update()
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

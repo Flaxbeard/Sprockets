@@ -19,6 +19,7 @@ import flaxbeard.sprockets.api.SprocketsAPI;
 import flaxbeard.sprockets.blocks.SprocketsBlocks;
 import flaxbeard.sprockets.items.SprocketsItems;
 import flaxbeard.sprockets.multiblocks.MultiblockBigMillstone;
+import flaxbeard.sprockets.multiblocks.MultiblockStampMill;
 import flaxbeard.sprockets.multiparts.PartAxle;
 import flaxbeard.sprockets.multiparts.PartSprocketBase;
 import flaxbeard.sprockets.multiparts.SprocketsMultiparts;
@@ -70,7 +71,7 @@ public class SprocketsRecipes
 			}
 			else
 			{
-				System.out.println(cont);
+				//System.out.println(cont);
 			}
 			
 			return result;
@@ -79,7 +80,8 @@ public class SprocketsRecipes
 	}
 	
 	public static Multiblock BIGMILLSTONE;
-	
+	public static Multiblock STAMPMILL;
+
 	public static void init()
 	{
 		
@@ -104,6 +106,22 @@ public class SprocketsRecipes
 				Character.valueOf('Q'), Blocks.QUARTZ_BLOCK,
 				Character.valueOf('P'), new SprocketMultipartComparison(PartAxle.class, 0),
 				Character.valueOf('A'), Blocks.AIR);
+		
+		STAMPMILL = new MultiblockStampMill(
+				"stampMill",
+				3, 3, 1,
+				1, 1, 0,
+				
+				"F F",
+				
+				"FIF",
+				
+				"FPF",
+				
+				Character.valueOf('F'), Blocks.OAK_FENCE,
+				Character.valueOf('I'), Blocks.IRON_BLOCK,
+				Character.valueOf('P'), Blocks.PISTON);
+		
 		
 		// Sprockets
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SprocketsMultiparts.sprocket, 4, 0),
@@ -277,7 +295,7 @@ public class SprocketsRecipes
 				));
 		
 
-		SprocketsAPI.addMillstoneRecipe(new ItemStack(Items.BONE), new ItemStack(Items.DYE, 3, 15));
+		SprocketsAPI.addMillstoneRecipe(new ItemStack(Items.BONE), new ItemStack(Items.DYE, 4, 15));
 		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.YELLOW_FLOWER), new ItemStack(Items.DYE, 2, 11));
 		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 0), new ItemStack(Items.DYE, 2, 1));
 		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 1), new ItemStack(Items.DYE, 2, 12));
@@ -293,6 +311,8 @@ public class SprocketsRecipes
 		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 1), new ItemStack(Items.DYE, 3, 13));
 		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 4), new ItemStack(Items.DYE, 3, 1));
 		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 5), new ItemStack(Items.DYE, 3, 9));
+		
+		SprocketsAPI.addStampMillRecipe(Blocks.IRON_ORE.getDefaultState(), new ItemStack(Items.IRON_INGOT, 2, 0));
 		
 		SprocketsAPI.addMillstoneRecipe(new ItemStack(Items.REEDS, 1, 0), new ItemStack(Items.SUGAR, 3, 0));
 

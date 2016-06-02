@@ -51,6 +51,7 @@ public class Multiblock
 		this.name = name;
 		Character[][][] structure = new Character[height][zD][xD];
 		
+		System.out.println(xD + " " + height + " " + zD);
 		ySize = height;
 		zSize = zD;
 		xSize = xD;
@@ -141,8 +142,9 @@ public class Multiblock
 			{
 				Character[] row = layer[z];
 				
+				String s = "";
 				
-				for (int x = 0; x < layer.length; x++)
+				for (int x = 0; x < row.length; x++)
 				{
 					Character value = row[x];
 					
@@ -156,8 +158,12 @@ public class Multiblock
 					
 					mb[y][z][x] = val;
 					mbLong[x + z * xD + y * xD * zD] = val;
+					s = s + value;
 				}
+				
+				System.out.println(s);
 			}
+			System.out.println();
 		}
 		multiblocks.put(name, this);
 
@@ -243,7 +249,6 @@ public class Multiblock
 	
 	public boolean multiblockExists(World iba, BlockPos pos)
 	{
-		pos = pos.add(-centerX, -centerY, -centerZ);
 		
 		return 
 				multiblockExists(iba, pos, false, false, false) || multiblockExists(iba, pos, true, false, false)
@@ -254,6 +259,8 @@ public class Multiblock
 	
 	public boolean multiblockExists(World iba, BlockPos pos, boolean swapXZ, boolean flipXo, boolean flipZo)
 	{
+		pos = pos.add(swapXZ ? -centerZ : -centerX, -centerY, swapXZ ? -centerX : -centerZ);
+
 		boolean temp = flipXo;
 		boolean flipX = swapXZ ? flipZo : flipXo;
 		boolean flipZ = swapXZ ? temp : flipZo;
@@ -274,14 +281,15 @@ public class Multiblock
 				}
 			}
 		}
-		
 		createMultiblock(iba, pos, swapXZ, flipXo, flipZo);
 		return true;
 	}
 	
 	public void destroyMultiblock(World world, BlockPos centerPos, boolean swapXZ, boolean flipXo, boolean flipZo)
 	{
-		BlockPos pos = centerPos.add(-centerX, -centerY, -centerZ);
+		BlockPos pos = centerPos.add(swapXZ ? -centerZ : -centerX, -centerY, swapXZ ? -centerX : -centerZ);
+
+		
 		boolean temp = flipXo;
 		boolean flipX = swapXZ ? flipZo : flipXo;
 		boolean flipZ = swapXZ ? temp : flipZo;
@@ -296,7 +304,7 @@ public class Multiblock
 					int z = swapXZ ? fx : fz;
 					int x = swapXZ ? fz : fx;
 
-					if (y != centerY || fz != centerZ || fx != centerX)
+					if ((y != centerY || fz != centerZ || fx != centerX) && mb[y][fz][fx] != null)
 					{
 						BlockPos pos2 = pos.add(flipX ? -x : x, y, flipZ ? -z : z);
 
@@ -330,7 +338,7 @@ public class Multiblock
 					int z = swapXZ ? fx : fz;
 					int x = swapXZ ? fz : fx;
 
-					if (y != centerY || fz != centerZ || fx != centerX)
+					if ((y != centerY || fz != centerZ || fx != centerX) && mb[y][fz][fx] != null)
 					{
 				
 						BlockPos pos2 = pos.add(flipX ? -x : x, y, flipZ ? -z : z);
@@ -372,31 +380,34 @@ public class Multiblock
 				}
 			}
 		}
+		setCenter(world, centerPos);
 		((IMultiblockBrain) world.getTileEntity(centerPos)).addMultiblock(this, swapXZ, flipXo, flipZo);
 
 	}
+	
+	public void setCenter(World world, BlockPos pos) {};
 
 	public float getHardness()
 	{
 		return 1.0F;
 	}
 
-	public Set<Tuple<Vec3i, PartSlot>> multipartCisConnections(int pos)
+	public Set<Tuple<Vec3i, PartSlot>> multipartCisConnections(int pos, BlockPos center, World world)
 	{
 		return new HashSet<Tuple<Vec3i, PartSlot>>();
 	}
 
-	public Set<Tuple<Vec3i, PartSlot>> multipartTransConnections(int pos)
+	public Set<Tuple<Vec3i, PartSlot>> multipartTransConnections(int pos, BlockPos center, World world)
 	{
 		return new HashSet<Tuple<Vec3i, PartSlot>>();
 	}
 
-	public Set<Vec3i> cisConnections(int pos)
+	public Set<Vec3i> cisConnections(int pos, BlockPos center, World world)
 	{
 		return new HashSet<Vec3i>();
 	}
 
-	public Set<Vec3i> transConnections(int pos)
+	public Set<Vec3i> transConnections(int pos, BlockPos center, World world)
 	{
 		return new HashSet<Vec3i>();
 	}

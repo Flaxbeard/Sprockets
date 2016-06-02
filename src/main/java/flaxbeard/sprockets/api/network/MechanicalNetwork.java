@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import flaxbeard.sprockets.api.IExcessTorqueConsumer;
@@ -24,9 +25,11 @@ public class MechanicalNetwork
 	World world;
 	
 	private float minTorque = 0.0F;
+	private BlockPos minTorqueLoc = null;
 	private boolean torqueJammed = false;
 	private boolean torqueCapped = false;
 	private float maxTorque = 99999.0F;
+	private boolean hasPower = false;
 	
 	public Set<IMechanicalConduit> conduits;
 	private Map<IMechanicalConsumer, Float> consumers;
@@ -35,6 +38,8 @@ public class MechanicalNetwork
 	private Map<IExcessTorqueConsumer, Float> torqueConsumers;
 	public float consumerTorqueNeeded = 0.0F;
 	public String id;
+	
+	private BlockPos jam;
 	
 	private float torque;
 
@@ -98,6 +103,7 @@ public class MechanicalNetwork
 			if (con.torqueCost() == -1)
 			{
 				powerJammed = true;
+				jam = con.getPosMC();
 			}
 			consumerTorqueNeeded += con.torqueCost() * con.getMultiplier();
 		}
@@ -107,12 +113,14 @@ public class MechanicalNetwork
 			if (con.torqueCost() == -1)
 			{
 				powerJammed = true;
+				jam = con.getPosMC();
 			}
 			excessTorqueNeeded += con.torqueCost() * con.getMultiplier();
 		}
 		
 		this.torque = 0.0F;
 		this.speed = 0.0F;
+		hasPower = false;
 		for (IMechanicalProducer prod : producers.keySet())
 		{
 			float prodSpeed = prod.speedProduced() * (prod.getState() ? -1 : 1) / prod.getMultiplier();
@@ -123,27 +131,44 @@ public class MechanicalNetwork
 				{
 					speed += prodSpeed ;
 					torque += prod.torqueProduced() * prod.getMultiplier();
+					hasPower = true;
 				}
 				else if (speed == prodSpeed)
 				{
 					torque += prod.torqueProduced() * prod.getMultiplier();
 				}
-				else
+				else /*if (speed < 0 && prodSpeed > 0 || speed > 0 && prodSpeed < 0)*/
 				{
 					powerJammed = true;
+					jam = prod.getPosMC();
 				}
+				/*else
+				{
+					if (Math.abs(prodSpeed) < Math.abs(speed))
+					{
+						speed = prodSpeed;
+						torque += prod.torqueProduced() * prod.getMultiplier();
+					}
+				}*/
 			}
 
 		}
-		
 		this.torqueSurplus = torque - consumerTorqueNeeded;
 		float totalSurplus = torqueSurplus;
 		this.torqueSurplus /= this.torqueConsumers.size();
 		
 		
-		if (consumerTorqueNeeded > torque || excessTorqueNeeded >= totalSurplus)
+		if ((consumerTorqueNeeded > 0 || excessTorqueNeeded > 0) && (consumerTorqueNeeded > torque || excessTorqueNeeded >= totalSurplus))
 		{
 			powerJammed = true;
+			if (consumers.size() > 0)
+			{
+				jam = consumers.keySet().iterator().next().getPosMC();
+			}
+			else if (torqueConsumers.size() > 0)
+			{
+				jam = torqueConsumers.keySet().iterator().next().getPosMC();
+			}
 		}
 				
 	}
@@ -292,6 +317,7 @@ public class MechanicalNetwork
 	private void recalculateStates(IMechanicalConduit next)
 	{
 		BlockPos result = MechanicalNetworkHelper.lock(next, conduits);
+		jam = result;
 		jammed = result != null;
 
 		minTorque = 0.0F;
@@ -305,6 +331,7 @@ public class MechanicalNetwork
 			if (cMinTorque > minTorque)
 			{
 				minTorque = cMinTorque;
+				minTorqueLoc = conduit.getPosMC();
 			}
 			if (cMaxTorque <= maxTorque)
 			{
@@ -333,7 +360,10 @@ public class MechanicalNetwork
 	public boolean tick()
 	{
 		torqueJammed = (this.torque < this.minTorque);
-
+		if (torqueJammed)
+		{
+			jam = minTorqueLoc;
+		}
 		
 		
 //
@@ -462,6 +492,21 @@ public class MechanicalNetwork
 		if (!isJammed())
 		{
 			this.rotation += speed;
+		}
+		else
+		{
+	
+			if (jam != null && world.isRemote && hasPower)
+			{
+				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, 
+						jam.getX() + world.rand.nextFloat(), 
+						jam.getY() + world.rand.nextFloat(), 
+						jam.getZ() + world.rand.nextFloat(), 
+						0.0F, 
+						0.0F, 
+						0.0F, 
+						new int[] { 5, 255, 255 });
+			}
 		}
 	}
 

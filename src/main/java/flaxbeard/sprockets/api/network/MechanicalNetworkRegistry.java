@@ -7,14 +7,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import mcmultipart.event.PartEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Unload;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import flaxbeard.sprockets.api.IMechanicalConduit;
+import flaxbeard.sprockets.api.PartMechanicalConduit;
 
 public class MechanicalNetworkRegistry
 {
@@ -26,12 +29,14 @@ public class MechanicalNetworkRegistry
 	public static void initialize()
 	{
 		FMLCommonHandler.instance().bus().register(INSTANCE);
+		MinecraftForge.EVENT_BUS.register(INSTANCE);
     }
 	
 	public static MechanicalNetworkRegistry getInstance()
 	{
 		return INSTANCE;
 	}
+
 	
 	@SubscribeEvent
 	public void onTick(TickEvent.ClientTickEvent e)

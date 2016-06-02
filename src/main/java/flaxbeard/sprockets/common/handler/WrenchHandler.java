@@ -7,6 +7,7 @@ import mcmultipart.multipart.IMultipart;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -56,6 +57,10 @@ public class WrenchHandler
 			if (te != null && te instanceof IMultiblockBrain)
 			{
 				SprocketsRecipes.BIGMILLSTONE.multiblockExists(world, pos);
+			}
+			if (block != null && block == Blocks.IRON_BLOCK)
+			{
+				SprocketsRecipes.STAMPMILL.multiblockExists(world, pos);
 			}
 			if (te != null && te instanceof IWrenchable)
 			{

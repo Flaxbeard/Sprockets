@@ -7,6 +7,7 @@ import flaxbeard.sprockets.blocks.SprocketsBlocks;
 import flaxbeard.sprockets.book.BookData;
 import flaxbeard.sprockets.common.handler.SprocketsGuiHandler;
 import flaxbeard.sprockets.common.handler.SprocketsHandlers;
+import flaxbeard.sprockets.common.integration.SprocketsIntegration;
 import flaxbeard.sprockets.common.network.SprocketsNetwork;
 import flaxbeard.sprockets.items.SprocketsItems;
 import flaxbeard.sprockets.multiparts.SprocketsMultiparts;
@@ -36,6 +37,7 @@ public class CommonProxy
 	
 	public void postInit()
 	{
+		SprocketsIntegration.postInit();
 		BookData.postInit();
 	}
 }

@@ -128,7 +128,6 @@ public abstract class PartMechanicalConduit extends Multipart implements IMechan
 					getWorldMC().spawnEntityInWorld(item);
 				}
 				this.getContainer().removePart(this);
-				System.out.println("REMOVING");
 
 			}
 			

@@ -84,13 +84,7 @@ public class PartBigSprocketCenter extends PartSprocketBase implements ISlottedP
 		//BLOCK_CONNECTIONS = (ArrayList<EnumFacing>[]) temp.toArray();
 		
 	}
-	
-	@Override
-	public boolean onActivated(EntityPlayer player, EnumHand hand, ItemStack heldItem, PartMOP hit)
-	{
 
-		return false;
-	}
 	
 	@Override
 	public EnumSet<PartSlot> getSlotMask()
@@ -304,9 +298,10 @@ public class PartBigSprocketCenter extends PartSprocketBase implements ISlottedP
 					if (container != null)
 					{
 						IMultipart part = container.getPartInSlot(FACING.get(facing));
-						if (part != null)
+						if (part != null && !getWorld().isRemote)
 						{
 							container.removePart(part);
+							//System.out.println(container.getParts().size());
 						}
 					}
 				}

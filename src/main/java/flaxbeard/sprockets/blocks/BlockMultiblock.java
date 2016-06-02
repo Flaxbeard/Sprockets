@@ -32,12 +32,14 @@ public class BlockMultiblock extends BlockSprocketBase implements ITileEntityPro
 		super(Material.ROCK, "multiblock", false);
 	}
 	
+	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
-		System.out.println(getIndex(worldIn, pos));
-		return true;
+		System.out.println(((TileEntityMultiblock) worldIn.getTileEntity(pos)).pos);
+		return super.onBlockActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
 	}
 	
+
 	@Override
 	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
 	{
@@ -66,7 +68,7 @@ public class BlockMultiblock extends BlockSprocketBase implements ITileEntityPro
 			}
 		}
 		IBlockState stat = getState(worldIn, pos);
-		if (stat != null)
+		if (stat != null && stat.getBlock() != this)
 		{
 			return stat.getCollisionBoundingBox(worldIn, pos);
 		}
@@ -87,7 +89,7 @@ public class BlockMultiblock extends BlockSprocketBase implements ITileEntityPro
 			}
 		}
 		IBlockState stat = getState(source, pos);
-		if (stat != null)
+		if (stat != null && stat.getBlock() != this)
 		{
 			return stat.getBoundingBox(source, pos);
 		}
@@ -132,6 +134,7 @@ public class BlockMultiblock extends BlockSprocketBase implements ITileEntityPro
 		}
 		return new ArrayList<ItemStack>();
 	}
+	
 	
 	public Multiblock getMultiblock(IBlockAccess world, BlockPos pos)
 	{
