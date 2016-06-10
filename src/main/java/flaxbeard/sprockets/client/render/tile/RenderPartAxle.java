@@ -9,7 +9,7 @@ import flaxbeard.sprockets.api.network.MechanicalNetwork;
 import flaxbeard.sprockets.client.ClientUtils;
 import flaxbeard.sprockets.client.render.model.ModelAxle;
 import flaxbeard.sprockets.lib.LibConstants;
-import flaxbeard.sprockets.multiparts.PartAxle;
+import flaxbeard.sprockets.multiparts.PartAxleBase;
 import flaxbeard.sprockets.multiparts.SprocketsMultiparts;
 
 public class RenderPartAxle extends MultipartSpecialRenderer
@@ -31,7 +31,7 @@ public class RenderPartAxle extends MultipartSpecialRenderer
 		GL11.glTranslated(x+.5, y+.5, z+.5);
 		
 
-		PartAxle axle = (PartAxle) te;
+		PartAxleBase axle = (PartAxleBase) te;
 		
 		float rotate = 0.0f;
 		

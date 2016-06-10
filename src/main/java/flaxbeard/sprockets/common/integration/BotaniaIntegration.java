@@ -12,7 +12,7 @@ public class BotaniaIntegration
 	{
 		for(int i = 0; i < 16; i++)
 		{
-			//SprocketsAPI.addMillstoneRecipe(new ItemStack(ModItems.petal, 1, i), new ItemStack(ModItems.dye, 1, i));
+			SprocketsAPI.addMillstoneRecipe(new ItemStack(ModItems.petal, 1, i), new ItemStack(ModItems.dye, 1, i));
 		}
 	}
 

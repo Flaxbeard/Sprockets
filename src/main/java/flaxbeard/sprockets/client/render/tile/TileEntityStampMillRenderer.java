@@ -90,10 +90,8 @@ public class TileEntityStampMillRenderer extends TileEntitySpecialRenderer
 		GL11.glPushMatrix();
 		GL11.glTranslatef(0.0F, 2.0F / 16F, 0.0F);
 		float modRot = Math.abs(rotate);
-
 		if (modRot % 360 > 100 && modRot % 360 < 360)
 		{
-
 			modRot = modRot - 70;
 			GL11.glTranslated(0.0F, Math.max(0F, Math.sin(Math.toRadians(modRot - 10) * -1) * 7.7F / 16F), 0.0F);
 			 

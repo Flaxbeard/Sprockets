@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import mcmultipart.multipart.PartSlot;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -40,39 +41,67 @@ public class MultiblockStampMill extends Multiblock
 	}
 	
 	@Override
-	public AxisAlignedBB getSpecialBounds(int index)
+	public AxisAlignedBB getSpecialBounds(int index, boolean swapXZ, boolean flipX, boolean flipZ)
 	{
+		switch (index)
+		{
+			case 8:
+				if (swapXZ)
+					return new AxisAlignedBB(5. / 16, 0, 0, 11. / 16, 1, 8. / 16);
+				else
+					return new AxisAlignedBB(0, 0, 5. / 16, 8. / 16, 1, 11. / 16);
+			case 6:
+				if (swapXZ)
+					return new AxisAlignedBB(5. / 16, 0, 8. / 16, 11. / 16, 1, 1);
+				else
+					return new AxisAlignedBB(0, 8. / 16, 5. / 16, 1,  1, 11. / 16);
+			case 7:
+				if (swapXZ)
+					return new AxisAlignedBB(5. / 16, 0, 0, 11. / 16, 1, 1);
+				else
+					return new AxisAlignedBB(0, 0, 5. / 16, 1,  1, 11. / 16);
+			case 0:
+				if (swapXZ)
+					return new AxisAlignedBB(0, 0, 7. / 16, 1, 1, 15. / 16);
+				else
+					return new AxisAlignedBB(0, 7. / 16, 0, 15. / 16, 1, 1);
+			case 2:
+				if (swapXZ)
+					return new AxisAlignedBB(0, 0, 1. / 16, 1, 1, 9. / 16);
+				else
+					return new AxisAlignedBB(0, 1. / 16, 0, 9. / 16, 1, 1);
+		}
 		return new AxisAlignedBB(0, 0, 0, 1, 1, 1);
 	}
 	
 	@Override
-	public Set<Tuple<Vec3i, PartSlot>> multipartCisConnections(int pos, BlockPos center, World world)
+	public Set<Tuple<Vec3i, PartSlot>> multipartCisConnections(int pos, BlockPos center, World world, boolean swapXZ, boolean flipX, boolean flipZ)
 	{
-		if ((pos == 5 || pos == 3) && world.getBlockState(center).getBlock() == SprocketsBlocks.stampMill)
+		if (pos == 5 || pos == 3)
 		{
-			return TileEntityStampMill.CIS.get(world.getBlockState(center).getValue(BlockStampMill.FACING).ordinal());
+			return TileEntityStampMill.CIS.get((swapXZ ? EnumFacing.NORTH : EnumFacing.EAST).ordinal());
 		}
 		return new HashSet<Tuple<Vec3i, PartSlot>>();
 	}
 
 	@Override
-	public Set<Tuple<Vec3i, PartSlot>> multipartTransConnections(int pos, BlockPos center, World world)
+	public Set<Tuple<Vec3i, PartSlot>> multipartTransConnections(int pos, BlockPos center, World world, boolean swapXZ, boolean flipX, boolean flipZ)
 	{
 		return new HashSet<Tuple<Vec3i, PartSlot>>();
 	}
 
 	@Override
-	public Set<Vec3i> cisConnections(int pos, BlockPos center, World world)
+	public Set<Vec3i> cisConnections(int pos, BlockPos center, World world, boolean swapXZ, boolean flipX, boolean flipZ)
 	{
-		if ((pos == 5 || pos == 3) && world.getBlockState(center).getBlock() == SprocketsBlocks.stampMill)
+		if (pos == 5 || pos == 3)
 		{
-			return TileEntityStampMill.BLOCK_CIS.get(world.getBlockState(center).getValue(BlockStampMill.FACING).ordinal());
+			return TileEntityStampMill.BLOCK_CIS.get((swapXZ ? EnumFacing.NORTH : EnumFacing.EAST).ordinal());
 		}
 		return new HashSet<Vec3i>();
 	}
 
 	@Override
-	public Set<Vec3i> transConnections(int pos, BlockPos center, World world)
+	public Set<Vec3i> transConnections(int pos, BlockPos center, World world, boolean swapXZ, boolean flipX, boolean flipZ)
 	{
 		return new HashSet<Vec3i>();
 	}

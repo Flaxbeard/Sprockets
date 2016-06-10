@@ -17,6 +17,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.Tuple;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.ITextComponent;
@@ -89,6 +90,15 @@ public class TileEntityWindmill extends TileEntitySprocketBase implements IWrenc
 					-dir.getX() * speedMult * 0.1F, 0, -dir.getZ() * speedMult * 0.1F, 0);
 		}
 	}
+	
+	@SideOnly(Side.CLIENT)
+	@Override
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+		return new AxisAlignedBB(
+				pos.add(facing <= 3 ? -3 : 0, -3, facing <= 3 ? 0 : -3),
+				pos.add(facing <= 3 ? 4 : 0, 4, facing <= 3 ? 0 : 4));
+    }
 
 	private void checkSurroundings()
 	{

@@ -19,6 +19,8 @@ public class CommonProxy
 		SprocketsBlocks.preInit();
 		SprocketsMultiparts.preInit();
 		SprocketsItems.preInit();
+		
+		SprocketsSounds.preInit();
 	}
 	
 	public void init()
@@ -33,11 +35,13 @@ public class CommonProxy
 		SprocketsItems.init();
 		
 		SprocketsRecipes.init();
+		
 	}
 	
 	public void postInit()
 	{
 		SprocketsIntegration.postInit();
 		BookData.postInit();
+		SprocketsItems.postInit();
 	}
 }

@@ -1,0 +1,38 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "minecraft:orientable_vertical", 
+        "textures": {
+            "front": "sprockets:blocks/creativeEngine",
+            "side": "sprockets:blocks/creativeEngine2",
+            "frontOff": "sprockets:blocks/creativeEngineOff",
+            "sideOff": "sprockets:blocks/creativeEngine2Off"
+        }
+    },
+    "variants": {
+        "facing": {
+            "east": { "y": 90, "x": 270 },
+            "west": { "y": 90, "x": 90 },
+            "north": { "y": 0, "x": 270 },
+            "south": { "y": 0, "x": 90 },
+            "up": { "x": 180 },
+            "down": {}
+        },
+        "powered": {
+            "true": {},
+            "false": {
+                "model" : "sprockets:orientable_vertical_off"
+            }
+        },
+        "reversed": {
+            "true": {
+                "textures": {
+                    "front": "sprockets:blocks/creativeEngineReversed",
+                    "frontOff": "sprockets:blocks/creativeEngineReversedOff"
+                }
+            },
+            "false": {}
+        },
+        "inventory": [{}]
+    }
+}

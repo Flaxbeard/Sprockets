@@ -19,7 +19,7 @@ import flaxbeard.sprockets.api.IMechanicalConduit;
 import flaxbeard.sprockets.api.network.MechanicalNetworkHelper;
 import flaxbeard.sprockets.api.network.MechanicalNetworkRegistry;
 
-public class PartClutch extends PartAxle
+public class PartClutch extends PartAxleBase
 {
 	public IMechanicalConduit upConduit = null;
 	public IMechanicalConduit downConduit = null;

@@ -102,6 +102,7 @@ public class MechanicalNetworkHelper
 					if (!isFloatingEqual(cr.getMult(connectedConduit), visited.getMult(connectedConduit)))
 					{
 						result = connectedConduit.getPosMC();
+
 					}
 				}
 			}
@@ -571,11 +572,11 @@ public class MechanicalNetworkHelper
 						{
 							if (conduit.isNegativeDirection() == base.isNegativeDirection())
 							{
-								output.add(conduit, state, mult  * (base.sizeMultiplier() / conduit.sizeMultiplier()));
+								output.add(conduit, state, mult);
 							}
 							else
 							{
-								output.add(conduit, !state, mult  * (base.sizeMultiplier() / conduit.sizeMultiplier()));
+								output.add(conduit, !state, mult);
 							}
 	
 							continue outerLoop;

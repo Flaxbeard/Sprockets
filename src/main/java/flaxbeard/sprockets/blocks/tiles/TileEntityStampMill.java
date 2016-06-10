@@ -19,10 +19,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.Tuple;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import flaxbeard.sprockets.api.IMechanicalConsumer;
@@ -34,6 +37,8 @@ import flaxbeard.sprockets.blocks.BlockStampMill;
 import flaxbeard.sprockets.blocks.SprocketsBlocks;
 import flaxbeard.sprockets.common.SprocketsRecipes;
 import flaxbeard.sprockets.common.util.ItemStackHandlerLimited;
+import flaxbeard.sprockets.items.SprocketsItems;
+import flaxbeard.sprockets.lib.LibConstants;
 import flaxbeard.sprockets.multiparts.SprocketsMultiparts;
 
 public class TileEntityStampMill extends TileEntitySprocketBase implements IMechanicalConsumer, IMultiblockBrain
@@ -111,6 +116,15 @@ public class TileEntityStampMill extends TileEntitySprocketBase implements IMech
 		return super.getCapability(capability, facing);
 	}
 	
+	@SideOnly(Side.CLIENT)
+	@Override
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+		return new AxisAlignedBB(
+				pos.add(facing > 3 ? -1 : 0, -1, facing > 3 ? 0 : -1),
+				pos.add(facing > 3 ? 2 : 0, 2, facing > 3 ? 0 : 2));
+    }
+	
 	@Override
 	public void update()
 	{
@@ -149,27 +163,42 @@ public class TileEntityStampMill extends TileEntitySprocketBase implements IMech
 			{
 				activeTicks += Math.abs(network.getSpeedForConduit(this));
 				
-				if (activeTicks > 250)
+				if (activeTicks > LibConstants.STAMP_MILL_ROTATION_NEEDED)
 				{
 					IBlockState state = worldObj.getBlockState(pos.add(0, -1, 0));
-					ItemStack s = SprocketsAPI.getStampMillRecipeItem(state);
 					
+					ItemStack s = SprocketsAPI.getStampMillRecipeRand(state);
 					if (s != null)
 					{
+						if (s.getItem() != null && s.getItem() == SprocketsItems.heap)
+						{
+							//s.setTagCompound(new NBTTagCompound());
+							///s.getTagCompound().setString("oreName", state.getBlock().getUnlocalizedName());
+						}
 						InventoryHelper.spawnItemStack(worldObj, pos.getX(), pos.getY() - 1, pos.getZ(), s);
 						worldObj.setBlockToAir(pos.add(0, -1, 0));
 					}
 					else
 					{
-						IBlockState state2 = SprocketsAPI.getStampMillRecipeBlock(state);
-						
-						if (state2 != null)
+						s = SprocketsAPI.getStampMillRecipeItem(state);
+					
+						if (s != null)
 						{
-							worldObj.setBlockState(pos, state2, 2);
+							InventoryHelper.spawnItemStack(worldObj, pos.getX(), pos.getY() - 1, pos.getZ(), s);
+							worldObj.setBlockToAir(pos.add(0, -1, 0));
 						}
-						else if (state.getBlockHardness(worldObj, pos.add(0, -1, 0)) >= 0 && state.getBlockHardness(worldObj,  pos.add(0, -1, 0)) < 25.0)
+						else
 						{
-							worldObj.destroyBlock(pos.add(0, -1, 0), true);
+							IBlockState state2 = SprocketsAPI.getStampMillRecipeBlock(state);
+							
+							if (state2 != null)
+							{
+								worldObj.setBlockState(pos, state2, 2);
+							}
+							else if (state.getBlockHardness(worldObj, pos.add(0, -1, 0)) >= 0 && state.getBlockHardness(worldObj,  pos.add(0, -1, 0)) < 25.0)
+							{
+								worldObj.destroyBlock(pos.add(0, -1, 0), true);
+							}
 						}
 					}
 					activeTicks = 0;
@@ -181,17 +210,28 @@ public class TileEntityStampMill extends TileEntitySprocketBase implements IMech
 				activeTicks = 0;
 			}
 		}
-		
-		if (worldObj.isRemote && doEffect && !air)
-		{
-			IBlockState stat = worldObj.getBlockState(pos.add(0, -1, 0));
-			worldObj.playSound(pos.getX() + .5F, pos.getY() + .5F, pos.getZ() + .5F, stat.getBlock().getSoundType().getBreakSound(), SoundCategory.BLOCKS, 0.7F, 0.5F + worldObj.rand.nextFloat() * .25F, false);
 
-			for (int i = 0; i < 10; i++)
+				
+		if (worldObj.isRemote && doEffect)
+		{
+			
+			if (air)
 			{
-				worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, pos.getX() + .5F, pos.getY(), pos.getZ()  + .5F, 0F, 0.1F, 0F, new int[] {Block.getStateId(stat)});
+				worldObj.playSound(pos.getX() + .5F, pos.getY() + .5F, pos.getZ() + .5F, Blocks.PLANKS.getSoundType().getBreakSound(), SoundCategory.BLOCKS, 0.3F, 0.5F + worldObj.rand.nextFloat() * .25F, false);
+
+			}
+			else
+			{
+				IBlockState stat = worldObj.getBlockState(pos.add(0, -1, 0));
+				worldObj.playSound(pos.getX() + .5F, pos.getY() + .5F, pos.getZ() + .5F, stat.getBlock().getSoundType().getBreakSound(), SoundCategory.BLOCKS, 0.7F, 0.5F + worldObj.rand.nextFloat() * .25F, false);
+
+				for (int i = 0; i < 10; i++)
+				{
+					worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, pos.getX() + .5F, pos.getY(), pos.getZ()  + .5F, 0F, 0.1F, 0F, new int[] {Block.getStateId(stat)});
+				}
 			}
 			doEffect = false;
+
 
 		}
 		
@@ -312,7 +352,7 @@ public class TileEntityStampMill extends TileEntitySprocketBase implements IMech
 			}
 		}
 		SprocketsRecipes.STAMPMILL.destroyMultiblock(worldObj, getPos(), swapXZ, flipX, flipZ);
-		if (!worldObj.isRemote)
+		if (!worldObj.isRemote && !breaking)
 		{
 			this.worldObj.setBlockState(getPos(), Blocks.IRON_BLOCK.getDefaultState(), 2);
 		}
@@ -327,7 +367,7 @@ public class TileEntityStampMill extends TileEntitySprocketBase implements IMech
 	@Override
 	public float torqueCost()
 	{
-		return 0F;
+		return LibConstants.STAMP_MILL_TORQUE;
 	}
 
 
@@ -338,8 +378,7 @@ public class TileEntityStampMill extends TileEntitySprocketBase implements IMech
 
 
 	@Override
-	public void addMultiblock(Multiblock mb, boolean swapXZ, boolean flipX,
-			boolean flipZ)
+	public void addMultiblock(Multiblock mb, boolean swapXZ, boolean flipX,	boolean flipZ)
 	{
 		this.swapXZ = swapXZ;
 		this.flipX = flipX;
@@ -351,17 +390,19 @@ public class TileEntityStampMill extends TileEntitySprocketBase implements IMech
 
 
 
-	
+	private boolean breaking = false;
 	@Override
 	public void invalidate()
 	{
-		//System.out.println(worldObj.isRemote);
-		destroy();
-
-		super.invalidate();
-		
-		System.out.println("INVALIDATE CENTER");
-
+		if (!breaking)
+		{
+			breaking = true;
+			//System.out.println(worldObj.isRemote);
+			destroy();
+	
+			super.invalidate();
+			
+		}
 	}
 	
 }

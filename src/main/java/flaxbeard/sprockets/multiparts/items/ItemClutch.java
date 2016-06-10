@@ -14,7 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import flaxbeard.sprockets.Sprockets;
-import flaxbeard.sprockets.multiparts.PartAxle;
+import flaxbeard.sprockets.multiparts.PartAxleBase;
 import flaxbeard.sprockets.multiparts.PartClutch;
 
 public class ItemClutch extends ItemSprocketMultipart

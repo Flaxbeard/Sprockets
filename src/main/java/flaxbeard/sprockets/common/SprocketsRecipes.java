@@ -17,10 +17,11 @@ import flaxbeard.sprockets.api.IMultiblockComparator;
 import flaxbeard.sprockets.api.Multiblock;
 import flaxbeard.sprockets.api.SprocketsAPI;
 import flaxbeard.sprockets.blocks.SprocketsBlocks;
+import flaxbeard.sprockets.common.util.SimpleWeightedRandom;
 import flaxbeard.sprockets.items.SprocketsItems;
 import flaxbeard.sprockets.multiblocks.MultiblockBigMillstone;
 import flaxbeard.sprockets.multiblocks.MultiblockStampMill;
-import flaxbeard.sprockets.multiparts.PartAxle;
+import flaxbeard.sprockets.multiparts.PartAxleBase;
 import flaxbeard.sprockets.multiparts.PartSprocketBase;
 import flaxbeard.sprockets.multiparts.SprocketsMultiparts;
 
@@ -104,7 +105,7 @@ public class SprocketsRecipes
 				
 				Character.valueOf('M'), SprocketsBlocks.millstone,
 				Character.valueOf('Q'), Blocks.QUARTZ_BLOCK,
-				Character.valueOf('P'), new SprocketMultipartComparison(PartAxle.class, 0),
+				Character.valueOf('P'), new SprocketMultipartComparison(PartAxleBase.class, 0),
 				Character.valueOf('A'), Blocks.AIR);
 		
 		STAMPMILL = new MultiblockStampMill(
@@ -247,6 +248,14 @@ public class SprocketsRecipes
 				Character.valueOf('B'), new ItemStack(SprocketsItems.resource, 1, 0), Character.valueOf('A'), new ItemStack(SprocketsMultiparts.axle, 1, 0)
 				));
 		
+		// Water Wheel
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SprocketsBlocks.windmill),
+				" B ",
+				"BAB",
+				" B ",
+				Character.valueOf('B'), new ItemStack(SprocketsItems.resource, 1, 0), Character.valueOf('A'), new ItemStack(SprocketsMultiparts.axle, 1, 0)
+				));
+		
 		// Redstone Engine
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SprocketsBlocks.redEngine),
 				"SAS",
@@ -312,9 +321,8 @@ public class SprocketsRecipes
 		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 4), new ItemStack(Items.DYE, 3, 1));
 		SprocketsAPI.addMillstoneRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 5), new ItemStack(Items.DYE, 3, 9));
 		
-		SprocketsAPI.addStampMillRecipe(Blocks.IRON_ORE.getDefaultState(), new ItemStack(Items.IRON_INGOT, 2, 0));
-		
 		SprocketsAPI.addMillstoneRecipe(new ItemStack(Items.REEDS, 1, 0), new ItemStack(Items.SUGAR, 3, 0));
+
 
 	}
 }

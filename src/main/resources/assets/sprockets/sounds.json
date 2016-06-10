@@ -1,0 +1,11 @@
+{
+	"woodGear": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "sprockets:woodGear",
+                "stream": false
+            }
+        ]
+    }
+}

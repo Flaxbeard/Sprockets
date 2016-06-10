@@ -38,15 +38,20 @@ public class TileEntityMultiblock extends TileEntitySprocketBase
 	public boolean isTurning = false;
 	private NBTTagCompound data = null;
 	private List<ItemStack> drops = new ArrayList<ItemStack>();
+	public boolean swapXZ;
+	public boolean flipX;
+	public boolean flipZ;
 
-
-	public void init(Multiblock mb, IBlockState bs, int pos, BlockPos centerPos, List<ItemStack> drops)
+	public void init(Multiblock mb, IBlockState bs, int pos, BlockPos centerPos, boolean swapXZ, boolean flipX,	boolean flipZ, List<ItemStack> drops)
 	{
 		this.multiblock = mb;
 		this.block = bs;
 		this.pos = pos;
 		this.center = centerPos;
 		this.drops = drops;
+		this.swapXZ = swapXZ;
+		this.flipX = flipX;
+		this.flipZ = flipZ;
 	}
 	
 	public List<ItemStack> getDrops()
@@ -92,6 +97,10 @@ public class TileEntityMultiblock extends TileEntitySprocketBase
 			{
 				drops.add(ItemStack.loadItemStackFromNBT(dropsTag.getCompoundTagAt(i)));
 			}
+			
+			swapXZ = compound.getBoolean("swapXZ");
+			flipX = compound.getBoolean("flipX");
+			flipZ = compound.getBoolean("flipZ");
 		}
 		
 		if (compound.hasKey("mpdata"))
@@ -113,6 +122,9 @@ public class TileEntityMultiblock extends TileEntitySprocketBase
 			compound.setInteger("centerX", center.getX());
 			compound.setInteger("centerY", center.getY());
 			compound.setInteger("centerZ", center.getZ());
+			compound.setBoolean("swapXZ", swapXZ);
+			compound.setBoolean("flipX", flipX);
+			compound.setBoolean("flipZ", flipZ);
 			
 			if (data != null)
 			{
@@ -148,7 +160,6 @@ public class TileEntityMultiblock extends TileEntitySprocketBase
 	@Override
 	public void invalidate()
 	{
-		System.out.println("INVALIDATE SIDE");
 		super.invalidate();
 		
 		if (!isTurning)
@@ -194,7 +205,7 @@ public class TileEntityMultiblock extends TileEntitySprocketBase
 		{
 			return new HashSet<Tuple<Vec3i, PartSlot>>();
 		}
-		return multiblock.multipartCisConnections(pos, center, worldObj);
+		return multiblock.multipartCisConnections(pos, center, worldObj, swapXZ, flipX,  flipZ);
 	}
 
 
@@ -205,7 +216,7 @@ public class TileEntityMultiblock extends TileEntitySprocketBase
 		{
 			return new HashSet<Tuple<Vec3i, PartSlot>>();
 		}
-		return multiblock.multipartTransConnections(pos, center, worldObj);
+		return multiblock.multipartTransConnections(pos, center, worldObj, swapXZ, flipX,  flipZ);
 	}
 
 
@@ -216,7 +227,7 @@ public class TileEntityMultiblock extends TileEntitySprocketBase
 		{
 			return new HashSet<Vec3i>();
 		}
-		return multiblock.cisConnections(pos, center, worldObj);
+		return multiblock.cisConnections(pos, center, worldObj, swapXZ, flipX,  flipZ);
 	}
 	
 	@Override
@@ -247,7 +258,7 @@ public class TileEntityMultiblock extends TileEntitySprocketBase
 		{
 			return new HashSet<Vec3i>();
 		}
-		return multiblock.transConnections(pos, center, worldObj);
+		return multiblock.transConnections(pos, center, worldObj, swapXZ, flipX,  flipZ);
 	}
 
 

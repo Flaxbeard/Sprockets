@@ -20,12 +20,12 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 */
-version = "pre4"
+version = "pre5"
 group= "flaxbeard.sprockets" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "sprockets"
 
 minecraft {
-    version = "1.9.4-12.17.0.1922-1.9.4"
+    version = "1.9.4-12.17.0.1954"
     runDir = "run"
 
     replace "@VERSION@", project.version
@@ -40,6 +40,10 @@ minecraft {
 }
 
 dependencies {
+    compile files(
+        'Baubles.jar',
+        'Botania.jar'
+    )
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"

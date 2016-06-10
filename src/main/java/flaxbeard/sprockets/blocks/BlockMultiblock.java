@@ -61,10 +61,15 @@ public class BlockMultiblock extends BlockSprocketBase implements ITileEntityPro
 		
 		if (mb != null)
 		{
-			AxisAlignedBB special = mb.getSpecialBounds(index);
+			TileEntityMultiblock te = (TileEntityMultiblock) worldIn.getTileEntity(pos);
+			AxisAlignedBB special = mb.getSpecialBounds(index, te.swapXZ, te.flipX, te.flipZ);
 			if (special != null)
 			{
 				return special;
+			}
+			else
+			{
+				return NULL_AABB;
 			}
 		}
 		IBlockState stat = getState(worldIn, pos);
@@ -82,10 +87,15 @@ public class BlockMultiblock extends BlockSprocketBase implements ITileEntityPro
 		int index = getIndex(source, pos);
 		if (mb != null)
 		{
-			AxisAlignedBB special = mb.getSpecialBounds(index);
+			TileEntityMultiblock te = (TileEntityMultiblock) source.getTileEntity(pos);
+			AxisAlignedBB special = mb.getSpecialBounds(index, te.swapXZ, te.flipX, te.flipZ);
 			if (special != null)
 			{
 				return special;
+			}
+			else
+			{
+				return new AxisAlignedBB(0, 0, 0, 0, 0, 0);
 			}
 		}
 		IBlockState stat = getState(source, pos);

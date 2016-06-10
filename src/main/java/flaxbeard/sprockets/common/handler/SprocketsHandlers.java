@@ -10,6 +10,5 @@ public class SprocketsHandlers
 	{
 		MinecraftForge.EVENT_BUS.register(new WrenchHandler());
 		MinecraftForge.EVENT_BUS.register(new SprocketPlacementHandler());
-		MinecraftForge.EVENT_BUS.register(SprocketsBlocks.stampMill);
 	}
 }

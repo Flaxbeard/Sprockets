@@ -27,7 +27,6 @@ public class PartBigSprocketPlaceholder extends PartSprocketBaseNoConduit implem
 	
 	private static final ArrayList<EnumSet<PartSlot>> MASK;
 	private static final AxisAlignedBB[] BOUNDS;
-	private static final AxisAlignedBB[] RENDER_BOUNDS;
 	private static final ArrayList<PartSlot> FACING;
 	
 	private BlockPos parent;
@@ -35,13 +34,11 @@ public class PartBigSprocketPlaceholder extends PartSprocketBaseNoConduit implem
 	static
 	{
 		BOUNDS = new AxisAlignedBB[6];
-		RENDER_BOUNDS = new AxisAlignedBB[6];
 		MASK = new ArrayList<EnumSet<PartSlot>>();
 		FACING = new ArrayList<PartSlot>();
 		for (int side = 0; side < 6; side++)
 		{
 			BOUNDS[side] = SprocketsMultiparts.rotateAxis(side, 0F / 16F, 15F / 16F, 0F / 16F, 16F / 16F, 16F / 16F, 16F / 16F);
-			RENDER_BOUNDS[side] = SprocketsMultiparts.rotateAxis(side, -16F / 16F, 15F / 16F, -16F / 16F, 32F / 16F, 16F / 16F, 32F / 16F);
 			MASK.add(EnumSet.of(
 					SprocketsMultiparts.rotatePartSlot(side, PartSlot.UP),
 					SprocketsMultiparts.rotatePartSlot(side, PartSlot.EAST),

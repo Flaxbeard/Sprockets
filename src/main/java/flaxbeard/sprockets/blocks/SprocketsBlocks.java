@@ -4,6 +4,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import flaxbeard.sprockets.Sprockets;
+import flaxbeard.sprockets.blocks.tiles.TileEntityCreativeEngine;
 import flaxbeard.sprockets.blocks.tiles.TileEntityMillstone;
 import flaxbeard.sprockets.blocks.tiles.TileEntityMultiblock;
 import flaxbeard.sprockets.blocks.tiles.TileEntityPump;
@@ -20,6 +21,7 @@ public class SprocketsBlocks
 	public static BlockWindmillSmall windmillSmall;
 	public static BlockWindmill windmill;
 	public static BlockRedstoneEngine redEngine;
+	public static BlockCreativeEngine creativeEngine;
 	public static BlockMillstone millstone;
 	public static BlockTorsionSpring spring;
 	public static BlockMultiblock mbBlock;
@@ -33,6 +35,7 @@ public class SprocketsBlocks
 		windmillSmall = new BlockWindmillSmall("windmillSmall", Material.WOOD, 1.0f, 1.0f);
 		windmill = new BlockWindmill("windmill", Material.WOOD, 1.0f, 1.0f);
 		redEngine = new BlockRedstoneEngine("redstoneEngine", Material.ROCK, 1.5F, 10.0F);
+		creativeEngine = new BlockCreativeEngine("creativeEngine", Material.ROCK, 1.5F, 10.0F);
 		millstone = new BlockMillstone("millstone", Material.ROCK, 1.5F, 10.0F);
 		spring = new BlockTorsionSpring("spring", Material.ROCK, 1.5F, 10.0F);
 		mbBlock = new BlockMultiblock();
@@ -44,6 +47,7 @@ public class SprocketsBlocks
 		registerTileEntity(TileEntityWindmillSmall.class);
 		registerTileEntity(TileEntityWindmill.class);
 		registerTileEntity(TileEntityRedstoneEngine.class);
+		registerTileEntity(TileEntityCreativeEngine.class);
 		registerTileEntity(TileEntityMillstone.class);
 		registerTileEntity(TileEntityTorsionSpring.class);
 		registerTileEntity(TileEntityMultiblock.class);

@@ -180,7 +180,7 @@ public class Multiblock
 		return name;
 	}
 	
-	public AxisAlignedBB getSpecialBounds(int index)
+	public AxisAlignedBB getSpecialBounds(int index, boolean swapXZ, boolean flipX, boolean flipZ)
 	{
 		return null;
 	}
@@ -367,7 +367,7 @@ public class Multiblock
 						}
 						
 						world.setBlockState(pos2, SprocketsBlocks.mbBlock.getDefaultState());
-						((TileEntityMultiblock) world.getTileEntity(pos2)).init(this, state, x + z * zSize + y * zSize * ySize, centerPos, drops);
+						((TileEntityMultiblock) world.getTileEntity(pos2)).init(this, state, x + z * zSize + y * zSize * ySize, centerPos, swapXZ, flipXo, flipZo, drops);
 				
 						if (mpc != null && mpc instanceof MultipartContainer)
 						{
@@ -392,22 +392,22 @@ public class Multiblock
 		return 1.0F;
 	}
 
-	public Set<Tuple<Vec3i, PartSlot>> multipartCisConnections(int pos, BlockPos center, World world)
+	public Set<Tuple<Vec3i, PartSlot>> multipartCisConnections(int pos, BlockPos center, World world, boolean swapXZ, boolean flipX, boolean flipZ)
 	{
 		return new HashSet<Tuple<Vec3i, PartSlot>>();
 	}
 
-	public Set<Tuple<Vec3i, PartSlot>> multipartTransConnections(int pos, BlockPos center, World world)
+	public Set<Tuple<Vec3i, PartSlot>> multipartTransConnections(int pos, BlockPos center, World world, boolean swapXZ, boolean flipX, boolean flipZ)
 	{
 		return new HashSet<Tuple<Vec3i, PartSlot>>();
 	}
 
-	public Set<Vec3i> cisConnections(int pos, BlockPos center, World world)
+	public Set<Vec3i> cisConnections(int pos, BlockPos center, World world, boolean swapXZ, boolean flipX, boolean flipZ)
 	{
 		return new HashSet<Vec3i>();
 	}
 
-	public Set<Vec3i> transConnections(int pos, BlockPos center, World world)
+	public Set<Vec3i> transConnections(int pos, BlockPos center, World world, boolean swapXZ, boolean flipX, boolean flipZ)
 	{
 		return new HashSet<Vec3i>();
 	}

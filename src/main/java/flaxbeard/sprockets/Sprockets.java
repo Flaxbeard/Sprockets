@@ -14,7 +14,7 @@ import flaxbeard.sprockets.common.CommonProxy;
 import flaxbeard.sprockets.lib.LibConstants;
 import flaxbeard.sprockets.multiparts.SprocketsMultiparts;
 
-@Mod(modid = Sprockets.MODID, version = Sprockets.VERSION, dependencies = "required-after:mcmultipart")
+@Mod(modid = Sprockets.MODID, version = Sprockets.VERSION, dependencies = "required-after:mcmultipart;after:Botania;after:tconstruct")
 public class Sprockets
 {
     public static final String MODID = "sprockets";

@@ -113,7 +113,10 @@ public class BlockRedstoneEngine extends BlockSprocketBase implements ITileEntit
 				te = (TileEntityRedstoneEngine) worldIn.getTileEntity(pos);
 				te.isOn = 0;
 				te.directionFlipped = reversed;
-				te.getNetwork().updateNetworkSpeedAndTorque();
+				if (te.getNetwork() != null)
+				{
+					te.getNetwork().updateNetworkSpeedAndTorque();
+				}
 				te.markDirty();
 			}
 			else if (worldIn.isBlockPowered(pos) && !state.getValue(POWERED)) 
@@ -126,7 +129,10 @@ public class BlockRedstoneEngine extends BlockSprocketBase implements ITileEntit
 				te = (TileEntityRedstoneEngine) worldIn.getTileEntity(pos);
 				te.isOn = 1;
 				te.directionFlipped = reversed;
-				te.getNetwork().updateNetworkSpeedAndTorque();
+				if (te.getNetwork() != null)
+				{
+					te.getNetwork().updateNetworkSpeedAndTorque();
+				}
 				te.markDirty();
 			}
 		}

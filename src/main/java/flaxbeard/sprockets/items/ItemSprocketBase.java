@@ -22,6 +22,8 @@ public class ItemSprocketBase extends Item
 		this.setCreativeTab(Sprockets.creativeTab);
 		this.name = name;
 		subnames = new String[0];
+        this.setMaxDamage(0);
+
 	}
 	
 	@Override

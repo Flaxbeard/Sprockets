@@ -34,13 +34,22 @@ public class MultiblockBigMillstone extends Multiblock
 	}
 	
 	@Override
-	public AxisAlignedBB getSpecialBounds(int index)
+	public AxisAlignedBB getSpecialBounds(int index, boolean swapXZ, boolean flipX, boolean flipZ)
 	{
+		if (index == 22)
+		{
+			return new AxisAlignedBB(5.5 / 16, 0, 5.5 / 16, 10.5 / 16, 1, 10.5 / 16);
+
+		}
+		if (index >= 9)
+		{
+			return null;
+		}
 		return new AxisAlignedBB(0, 0, 0, 1, 1, 1);
 	}
 	
 	@Override
-	public Set<Tuple<Vec3i, PartSlot>> multipartCisConnections(int pos, BlockPos center, World world)
+	public Set<Tuple<Vec3i, PartSlot>> multipartCisConnections(int pos, BlockPos center, World world, boolean swapXZ, boolean flipX, boolean flipZ)
 	{
 		if (pos == 22)
 		{
@@ -50,13 +59,13 @@ public class MultiblockBigMillstone extends Multiblock
 	}
 
 	@Override
-	public Set<Tuple<Vec3i, PartSlot>> multipartTransConnections(int pos, BlockPos center, World world)
+	public Set<Tuple<Vec3i, PartSlot>> multipartTransConnections(int pos, BlockPos center, World world, boolean swapXZ, boolean flipX, boolean flipZ)
 	{
 		return new HashSet<Tuple<Vec3i, PartSlot>>();
 	}
 
 	@Override
-	public Set<Vec3i> cisConnections(int pos, BlockPos center, World world)
+	public Set<Vec3i> cisConnections(int pos, BlockPos center, World world, boolean swapXZ, boolean flipX, boolean flipZ)
 	{
 		if (pos == 22)
 		{
@@ -66,7 +75,7 @@ public class MultiblockBigMillstone extends Multiblock
 	}
 
 	@Override
-	public Set<Vec3i> transConnections(int pos, BlockPos center, World world)
+	public Set<Vec3i> transConnections(int pos, BlockPos center, World world, boolean swapXZ, boolean flipX, boolean flipZ)
 	{
 		return new HashSet<Vec3i>();
 	}

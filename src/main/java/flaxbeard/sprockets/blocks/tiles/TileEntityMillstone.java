@@ -159,7 +159,7 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 				activeTicks += Math.abs(network.getSpeedForConduit(this));
 				ItemStack output = SprocketsAPI.getMillstoneResult(slots.getStackInSlot(0));
 
-				if (output != null && activeTicks >= (isMultiblock ? 20 : 200))
+				if (output != null && activeTicks >= (isMultiblock ? LibConstants.MILLSTONE_BIG_ROTATION_NEEDED : LibConstants.MILLSTONE_ROTATION_NEEDED ))
 				{
 					activeTicks = 0;
 					
@@ -242,7 +242,7 @@ public class TileEntityMillstone extends TileEntitySprocketBase implements IMech
 	{
 		if (isMultiblock)
 		{
-			return LibConstants.MILLSTONE_TORQUE;
+			return LibConstants.BIG_MILLSTONE_TORQUE;
 		}
 		else
 		{

@@ -20,6 +20,8 @@ import flaxbeard.sprockets.blocks.tiles.TileEntityWindmillSmall;
 import flaxbeard.sprockets.client.render.tile.RenderPartAxle;
 import flaxbeard.sprockets.client.render.tile.RenderPartBigSprocket;
 import flaxbeard.sprockets.client.render.tile.RenderPartClutch;
+import flaxbeard.sprockets.client.render.tile.RenderPartFlywheel;
+import flaxbeard.sprockets.client.render.tile.RenderPartFlywheelFrictionPad;
 import flaxbeard.sprockets.client.render.tile.RenderPartSprocket;
 import flaxbeard.sprockets.client.render.tile.TileEntityMillstoneRenderer;
 import flaxbeard.sprockets.client.render.tile.TileEntityStampMillRenderer;
@@ -33,6 +35,8 @@ import flaxbeard.sprockets.items.SprocketsItems;
 import flaxbeard.sprockets.multiparts.PartAxle;
 import flaxbeard.sprockets.multiparts.PartBigSprocketCenter;
 import flaxbeard.sprockets.multiparts.PartClutch;
+import flaxbeard.sprockets.multiparts.PartFlywheel;
+import flaxbeard.sprockets.multiparts.PartFlywheelFrictionPad;
 import flaxbeard.sprockets.multiparts.PartLapisSprocket;
 import flaxbeard.sprockets.multiparts.PartRedstoneSprocket;
 import flaxbeard.sprockets.multiparts.PartSprocket;
@@ -68,6 +72,12 @@ public class ClientProxy extends CommonProxy
 		{
 			registerItemRendersPre(part, part.subnames[i]);
 		}
+
+		part = SprocketsMultiparts.flywheel;
+		for (int i = 0; i < part.subnames.length; i++)
+		{
+			registerItemRendersPre(part, part.subnames[i]);
+		}
 		
 		part = SprocketsMultiparts.clutch;
 		for (int i = 0; i < part.subnames.length; i++)
@@ -87,10 +97,21 @@ public class ClientProxy extends CommonProxy
 			registerItemRendersPre(resource, resource.subnames[i]);
 		}
 		
+		resource = SprocketsItems.heap;
+		for (int i = 0; i < resource.subnames.length; i++)
+		{
+			registerItemRendersPre(resource, "heap", resource.subnames[i]);
+		}
 		
+		resource = SprocketsMultiparts.belt;
+		for (int i = 0; i < resource.subnames.length; i++)
+		{
+			registerItemRendersPre(resource, resource.subnames[i]);
+		}
 		
 		
 		registerRenders(SprocketsBlocks.redEngine);
+		registerRenders(SprocketsBlocks.creativeEngine);
 		registerRenders(SprocketsBlocks.millstone);
 		registerRenders(SprocketsBlocks.spring);
 		registerRenders(SprocketsBlocks.mbBlock);
@@ -101,6 +122,11 @@ public class ClientProxy extends CommonProxy
 			registerItemRenders(part, i, part.subnames[i]);
 		}
 		part = SprocketsMultiparts.axle;
+		for (int i = 0; i < part.subnames.length; i++)
+		{
+			registerItemRenders(part, i, part.subnames[i]);
+		}
+		part = SprocketsMultiparts.flywheel;
 		for (int i = 0; i < part.subnames.length; i++)
 		{
 			registerItemRenders(part, i, part.subnames[i]);
@@ -132,6 +158,19 @@ public class ClientProxy extends CommonProxy
 			registerItemRenders(resource, i, resource.subnames[i]);
 		}
 		
+		resource = SprocketsItems.heap;
+		for (int i = 0; i < resource.subnames.length; i++)
+		{
+			registerItemRenders(resource, "heap", i, resource.subnames[i]);
+		}
+		
+		resource = SprocketsMultiparts.belt;
+		for (int i = 0; i < resource.subnames.length; i++)
+		{
+			registerItemRenders(resource, i, resource.subnames[i]);
+		}
+		
+		
 		registerItemRenders(SprocketsItems.wrench);
 		registerItemRenders(SprocketsItems.crank);
 		registerItemRenders(SprocketsItems.gyrometer);
@@ -144,7 +183,8 @@ public class ClientProxy extends CommonProxy
 		registerRenders(SprocketsBlocks.waterwheelComponent);
 
 	}
-	
+
+
 	@Override
 	public void init()
 	{
@@ -155,6 +195,10 @@ public class ClientProxy extends CommonProxy
 		MultipartRegistryClient.bindMultipartSpecialRenderer(PartLapisSprocket.class, new RenderPartSprocket());
 		MultipartRegistryClient.bindMultipartSpecialRenderer(PartBigSprocketCenter.class, new RenderPartBigSprocket());
 		MultipartRegistryClient.bindMultipartSpecialRenderer(PartAxle.class, new RenderPartAxle());
+		
+		MultipartRegistryClient.bindMultipartSpecialRenderer(PartFlywheel.class, new RenderPartFlywheel());
+		MultipartRegistryClient.bindMultipartSpecialRenderer(PartFlywheelFrictionPad.class, new RenderPartFlywheelFrictionPad());
+
 		MultipartRegistryClient.bindMultipartSpecialRenderer(PartClutch.class, new RenderPartClutch());
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWindmillSmall.class, new TileEntityWindmillSmallRenderer());
@@ -193,6 +237,12 @@ public class ClientProxy extends CommonProxy
 				meta, new ModelResourceLocation(Sprockets.MODID + ":" + item.name + "_" + mod, "inventory"));
 	}
 	
+	
+	private void registerItemRendersPre(ItemSprocketBase resource, String folder, String mod)
+	{
+		ModelBakery.registerItemVariants(resource, new ResourceLocation(Sprockets.MODID + ":" + folder + "/" + resource.name + "_" + mod));
+	}
+	
 	private void registerItemRendersPre(ItemSprocketMultipart item, String mod)
 	{
 		ModelBakery.registerItemVariants(item, new ResourceLocation(Sprockets.MODID + ":" + item.name + "_" + mod));
@@ -208,6 +258,12 @@ public class ClientProxy extends CommonProxy
 	{
 		ModelLoader.setCustomModelResourceLocation(item, 
 				meta, new ModelResourceLocation(Sprockets.MODID + ":" + item.name + "_" + mod, "inventory"));
+	}
+	
+	private void registerItemRenders(ItemSprocketBase item, String folder, int meta, String mod)
+	{
+		ModelLoader.setCustomModelResourceLocation(item, 
+				meta, new ModelResourceLocation(Sprockets.MODID + ":" + folder + "/" + item.name + "_" + mod, "inventory"));
 	}
 	
 	private void registerItemRendersPre(ItemSprocketBase item, String mod)

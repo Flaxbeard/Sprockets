@@ -153,6 +153,13 @@ public class MechanicalNetwork
 			}
 
 		}
+		
+		if (this.torque > this.maxTorque)
+		{
+			this.torque = this.maxTorque;
+			this.torqueCapped = true;
+		}
+		
 		this.torqueSurplus = torque - consumerTorqueNeeded;
 		float totalSurplus = torqueSurplus;
 		this.torqueSurplus /= this.torqueConsumers.size();
@@ -299,6 +306,7 @@ public class MechanicalNetwork
 	
 	public boolean isJammed()
 	{
+
 		return jammed || torqueJammed || powerJammed;
 	}
 	

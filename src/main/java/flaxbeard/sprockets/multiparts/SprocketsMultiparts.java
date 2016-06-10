@@ -9,9 +9,12 @@ import net.minecraft.util.Tuple;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.oredict.OreDictionary;
+import flaxbeard.sprockets.items.ItemSprocketBase;
 import flaxbeard.sprockets.multiparts.items.ItemAxle;
+import flaxbeard.sprockets.multiparts.items.ItemBelt;
 import flaxbeard.sprockets.multiparts.items.ItemBigSprocket;
 import flaxbeard.sprockets.multiparts.items.ItemClutch;
+import flaxbeard.sprockets.multiparts.items.ItemFlywheel;
 import flaxbeard.sprockets.multiparts.items.ItemLapisSprocket;
 import flaxbeard.sprockets.multiparts.items.ItemRedstoneSprocket;
 import flaxbeard.sprockets.multiparts.items.ItemSprocket;
@@ -22,9 +25,11 @@ public class SprocketsMultiparts
 	public static ItemSprocketMultipart sprocket;
 	public static ItemSprocketMultipart redstoneSprocket;
 	public static ItemSprocketMultipart axle;
+	public static ItemSprocketMultipart flywheel;
 	public static ItemSprocketMultipart bigSprocket;
 	public static ItemSprocketMultipart lapisSprocket;
 	public static ItemSprocketMultipart clutch;
+	public static ItemSprocketBase belt;
 
 	public static void preInit()
 	{
@@ -34,9 +39,13 @@ public class SprocketsMultiparts
 		
 		axle = new ItemAxle();
 		
+		flywheel = new ItemFlywheel();
+
 		clutch = new ItemClutch();
 		
 		bigSprocket = new ItemBigSprocket();
+		
+		belt = new ItemBelt();
 	}
 	
 	

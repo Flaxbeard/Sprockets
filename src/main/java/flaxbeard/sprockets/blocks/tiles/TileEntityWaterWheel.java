@@ -16,6 +16,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Tuple;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
@@ -175,7 +176,7 @@ public class TileEntityWaterWheel extends TileEntitySprocketBase implements IGyr
 				checked.add(res);
 				int k = 0;
 				
-				while (num < 100 && k < 1000 && toCheck.size() > 0)
+				while (num < LibConstants.WATERWHEEL_NUM_WATER && k < 1000 && toCheck.size() > 0)
 				{
 					res = toCheck.iterator().next();
 					toCheck.remove(res);
@@ -204,7 +205,7 @@ public class TileEntityWaterWheel extends TileEntitySprocketBase implements IGyr
 					k++;
 				}
 				
-				torque = Math.min(100, num);
+				torque = Math.min(LibConstants.WATERWHEEL_NUM_WATER, num);
 				
 			}
 		}
@@ -370,14 +371,23 @@ public class TileEntityWaterWheel extends TileEntitySprocketBase implements IGyr
 	@Override
 	public float torqueProduced()
 	{
-		return torque / 10F;
+		return (torque * 1F / LibConstants.WATERWHEEL_NUM_WATER) * LibConstants.WATERWHEEL_TORQUE;
 	}
 
 	@Override
 	public float speedProduced()
 	{
-		return torque > 0 ? (dir ? -5F : 5F) : 0F;
+		return torque > 0 ? (dir ? -LibConstants.WATERWHEEL_SPEED : LibConstants.WATERWHEEL_SPEED) : 0F;
 	}
+	
+	@SideOnly(Side.CLIENT)
+	@Override
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+		return new AxisAlignedBB(
+				pos.add(facing <= 3 ? -3 : 0, -3, facing <= 3 ? 0 : -3),
+				pos.add(facing <= 3 ? 4 : 0, 4, facing <= 3 ? 0 : 4));
+    }
 	
 	public void destroy()
 	{
