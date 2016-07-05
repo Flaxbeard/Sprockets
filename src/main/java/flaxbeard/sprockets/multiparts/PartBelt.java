@@ -39,7 +39,7 @@ public class PartBelt extends PartSprocketBaseNoConduit implements ISlottedPart,
 	private static final AxisAlignedBB[] BOUNDS;
 	private static final ArrayList<PartSlot> FACING;
 	
-	private BlockPos parent;
+	protected BlockPos parent;
 	
 	static
 	{
@@ -50,7 +50,7 @@ public class PartBelt extends PartSprocketBaseNoConduit implements ISlottedPart,
 		{
 			if (side % 2 == 0)
 			{
-				BOUNDS[side] = SprocketsMultiparts.rotateAxis(side, 0F / 16F, 7F / 16F, 4F / 16F, 16F / 16F, 9F / 16F, 12F / 16F);
+				BOUNDS[side] = SprocketsMultiparts.rotateAxis(side, 0F / 16F, 7F / 16F, 5.5F / 16F, 16F / 16F, 9F / 16F, 10.5F / 16F);
 			
 				MASK.add(EnumSet.of(
 						SprocketsMultiparts.rotatePartSlot(side, PartSlot.CENTER),
@@ -60,7 +60,7 @@ public class PartBelt extends PartSprocketBaseNoConduit implements ISlottedPart,
 			}
 			else
 			{
-				BOUNDS[side] = SprocketsMultiparts.rotateAxis(side, 4F / 16F, 7F / 16F, 0F / 16F, 12F / 16F, 9F / 16F, 16F / 16F);
+				BOUNDS[side] = SprocketsMultiparts.rotateAxis(side, 5.5F / 16F, 7F / 16F, 0F / 16F, 10.5F / 16F, 9F / 16F, 16F / 16F);
 
 				MASK.add(EnumSet.of(
 						SprocketsMultiparts.rotatePartSlot(side, PartSlot.CENTER),
@@ -73,6 +73,12 @@ public class PartBelt extends PartSprocketBaseNoConduit implements ISlottedPart,
 		}				
 	}
 	
+	public PartBelt()
+	{
+		setMaterial(Material.CLOTH);
+		setHardness(LibConstants.MINE_TIME_BELT);
+	}
+	
 	@Override
 	public EnumSet<PartSlot> getSlotMask()
 	{
@@ -82,7 +88,6 @@ public class PartBelt extends PartSprocketBaseNoConduit implements ISlottedPart,
 	public void setSlot(int side)
 	{
 		this.facing = side;
-		System.out.println(facing);
 	}
 	
 	public void setParent(BlockPos pos)
@@ -113,12 +118,6 @@ public class PartBelt extends PartSprocketBaseNoConduit implements ISlottedPart,
 	}
 	
 
-	@Override
-	public ItemStack getPickBlock(EntityPlayer player, PartMOP hit)
-	{
-		return new ItemStack(SprocketsMultiparts.bigSprocket, 1, damage);
-	}
-	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
@@ -170,10 +169,27 @@ public class PartBelt extends PartSprocketBaseNoConduit implements ISlottedPart,
 	
 
 	@Override
+	public ItemStack getPickBlock(EntityPlayer player, PartMOP hit)
+	{
+		return new ItemStack(SprocketsMultiparts.belt, 1, damage);
+	}
+	
+
+	@Override
 	public List<ItemStack> getDrops()
 	{
 		ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
-		drops.add(new ItemStack(SprocketsMultiparts.bigSprocket, 1, damage));
+		IMultipartContainer container = MultipartHelper.getPartContainer(getWorld(), parent);
+		int size = 1;
+		if (container != null)
+		{
+			IMultipart part = container.getPartInSlot(PartSlot.CENTER);
+			if (part != null && part instanceof PartAxleBelt)
+			{
+				size = ((PartAxleBelt) part).size + 1;
+			}
+		}
+		drops.add(new ItemStack(SprocketsMultiparts.belt, size, damage));
 		return drops;
 	}
 	
@@ -207,16 +223,16 @@ public class PartBelt extends PartSprocketBaseNoConduit implements ISlottedPart,
 		if (container != null)
 		{
 			IMultipart part = container.getPartInSlot(PartSlot.CENTER);
-			if (part != null && part instanceof PartAxle)
+			if (part != null && part instanceof PartAxleBelt && !((PartAxleBelt) part).isRemovingBelt)
 			{
-				((PartAxle) part).removeBelt();
+				((PartAxleBelt) part).removeBelt(parent);
 			}
 		}
 
 	}
 	
 	@Override
-	public IBlockState getExtendedState(IBlockState state)
+	public IBlockState getActualState(IBlockState state)
 	{
 		return state.withProperty(DIR, facing);
 	}

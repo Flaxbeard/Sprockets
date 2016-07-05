@@ -59,10 +59,10 @@ public class SprocketPlacementHandler
 								GlStateManager.disableTexture2D();
 								GlStateManager.depthMask(false);
 					            
-								mc.renderGlobal.drawSelectionBoundingBox(item.boundingBox(mc.theWorld, blockpos, facing.getOpposite(), mop.hitVec.subtract(blockpos.getX(), blockpos.getY(), blockpos.getZ())).contract(0.0020000000949949026D)
+								/*mc.renderGlobal.drawSelectionBoundingBox(item.boundingBox(mc.theWorld, blockpos, facing.getOpposite(), mop.hitVec.subtract(blockpos.getX(), blockpos.getY(), blockpos.getZ())).contract(0.0020000000949949026D)
 										.offset(blockpos)
 										.offset(-d0, -d1, -d2)
-										.offset(offset.getX(), offset.getY(), offset.getZ()));
+										.offset(offset.getX(), offset.getY(), offset.getZ()));*/ //TODO
 								
 								GlStateManager.depthMask(true);
 								GlStateManager.enableTexture2D();

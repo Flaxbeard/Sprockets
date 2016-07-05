@@ -14,9 +14,11 @@ import flaxbeard.sprockets.multiparts.items.ItemAxle;
 import flaxbeard.sprockets.multiparts.items.ItemBelt;
 import flaxbeard.sprockets.multiparts.items.ItemBigSprocket;
 import flaxbeard.sprockets.multiparts.items.ItemClutch;
+import flaxbeard.sprockets.multiparts.items.ItemConveyorBelt;
 import flaxbeard.sprockets.multiparts.items.ItemFlywheel;
 import flaxbeard.sprockets.multiparts.items.ItemLapisSprocket;
 import flaxbeard.sprockets.multiparts.items.ItemRedstoneSprocket;
+import flaxbeard.sprockets.multiparts.items.ItemScotchYoke;
 import flaxbeard.sprockets.multiparts.items.ItemSprocket;
 import flaxbeard.sprockets.multiparts.items.ItemSprocketMultipart;
 
@@ -29,7 +31,9 @@ public class SprocketsMultiparts
 	public static ItemSprocketMultipart bigSprocket;
 	public static ItemSprocketMultipart lapisSprocket;
 	public static ItemSprocketMultipart clutch;
+	public static ItemSprocketMultipart scotchYoke;
 	public static ItemSprocketBase belt;
+	public static ItemSprocketBase conveyorBelt;
 
 	public static void preInit()
 	{
@@ -43,9 +47,14 @@ public class SprocketsMultiparts
 
 		clutch = new ItemClutch();
 		
+		scotchYoke = new ItemScotchYoke();
+
 		bigSprocket = new ItemBigSprocket();
 		
 		belt = new ItemBelt();
+		
+		conveyorBelt = new ItemConveyorBelt();
+
 	}
 	
 	

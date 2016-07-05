@@ -15,7 +15,8 @@ public class LibConstants
 	public static float MINE_TIME_STONE_SPROCKET 	= 0.2F;
 	public static float MINE_TIME_IRON_SPROCKET 	= 0.3F;
 	public static float MINE_TIME_MULT_BIG_SPROCEKT	= 2.0F;
-	
+	public static float MINE_TIME_BELT				= 0.1F;
+
 	// Multiplier that affects how fast gears/axles/other things appear to spin
 	public static float RENDER_ROTATION_SPEED_MULTIPLIER = 1.0F;
 	
@@ -25,9 +26,9 @@ public class LibConstants
 	public static float MIN_TORQUE_IRON_SPROCKET	= 6.0F;
 	
 	// Maximum torque various gear types can handle
-	public static float MAX_TORQUE_WOODEN_SPROCKET	= 20.0F;
-	public static float MAX_TORQUE_STONE_SPROCKET	= 40.0F;
-	public static float MAX_TORQUE_IRON_SPROCKET	= 60.0F;
+	public static float MAX_TORQUE_WOODEN_SPROCKET	= 30.0F;
+	public static float MAX_TORQUE_STONE_SPROCKET	= 60.0F;
+	public static float MAX_TORQUE_IRON_SPROCKET	= 90.0F;
 	
 	// Maximum speed various gear types can handle
 	public static float MAX_SPEED_WOODEN_SPROCKET	= 40.0F;
@@ -51,10 +52,12 @@ public class LibConstants
 	
 	// Power consumption
 	public static float MILLSTONE_TORQUE		= 30F;
-	public static float BIG_MILLSTONE_TORQUE	= 90F;
+	public static float BIG_MILLSTONE_TORQUE	= 80F;
 	public static float MILLSTONE_MIN_SPEED		= 0.75F;
 	public static float STAMP_MILL_TORQUE 		= 15F;
-	
+	public static float FRICTION_HEATER_TORQUE	= 3F;
+	public static float BELLOWS_TORQUE	= 3F;
+
 	// Water wheel radius
 	public static final int WATER_WHEEL_RAIDUS	= 1;
 	
@@ -79,6 +82,8 @@ public class LibConstants
 	public static float STAMP_MILL_ROTATION_NEEDED = 2500F;
 	public static float MILLSTONE_ROTATION_NEEDED = 200F;
 	public static float MILLSTONE_BIG_ROTATION_NEEDED = 50F;
+	
+	public static float CONVEYOR_SPEED_MULT	= 0.008F;
 
 	public static void loadConfig(FMLPreInitializationEvent event)
 	{
@@ -119,8 +124,12 @@ public class LibConstants
 		BIG_MILLSTONE_TORQUE = config.getFloat("Big millstone torque requirement", "Consumption", BIG_MILLSTONE_TORQUE, 0F, 999F, "");
 		STAMP_MILL_TORQUE = config.getFloat("Stamp mill torque requirement", "Consumption", STAMP_MILL_TORQUE, 0F, 999F, "");
 		MILLSTONE_MIN_SPEED = config.getFloat("Millstone minimum speed", "Consumption", MILLSTONE_MIN_SPEED, 0F, 999F, "");
+		BELLOWS_TORQUE = config.getFloat("Bellows torque requirement", "Consumption", BELLOWS_TORQUE, 0F, 999F, "");	
+		FRICTION_HEATER_TORQUE = config.getFloat("Friction heater torque requirement", "Consumption", FRICTION_HEATER_TORQUE, 0F, 999F, "");
 
 
+		CONVEYOR_SPEED_MULT = config.getFloat("Conveyor speed multiplier", "Consumption", CONVEYOR_SPEED_MULT, 0F, 1F, "");
+		
 		config.save();
 	}
 }

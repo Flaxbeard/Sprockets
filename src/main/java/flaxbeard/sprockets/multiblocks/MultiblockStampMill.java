@@ -54,7 +54,7 @@ public class MultiblockStampMill extends Multiblock
 				if (swapXZ)
 					return new AxisAlignedBB(5. / 16, 0, 8. / 16, 11. / 16, 1, 1);
 				else
-					return new AxisAlignedBB(0, 8. / 16, 5. / 16, 1,  1, 11. / 16);
+					return new AxisAlignedBB(8. / 16, 0, 5. / 16, 1,  1, 11. / 16);
 			case 7:
 				if (swapXZ)
 					return new AxisAlignedBB(5. / 16, 0, 0, 11. / 16, 1, 1);
@@ -64,12 +64,12 @@ public class MultiblockStampMill extends Multiblock
 				if (swapXZ)
 					return new AxisAlignedBB(0, 0, 7. / 16, 1, 1, 15. / 16);
 				else
-					return new AxisAlignedBB(0, 7. / 16, 0, 15. / 16, 1, 1);
+					return new AxisAlignedBB(7. / 16, 0, 0, 15. / 16, 1, 1);
 			case 2:
 				if (swapXZ)
 					return new AxisAlignedBB(0, 0, 1. / 16, 1, 1, 9. / 16);
 				else
-					return new AxisAlignedBB(0, 1. / 16, 0, 9. / 16, 1, 1);
+					return new AxisAlignedBB(1. / 16, 0, 0, 9. / 16, 1, 1);
 		}
 		return new AxisAlignedBB(0, 0, 0, 1, 1, 1);
 	}

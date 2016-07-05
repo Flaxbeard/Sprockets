@@ -1,0 +1,22 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "sprockets:conveyorBelt", 
+        "textures": {
+            "particle": "sprockets:blocks/leatherBelt"
+        }
+    },
+    "variants": {
+        "dir": {
+            "0": { "model": "sprockets:conveyorBelt2", "y": 90 },
+            "1": { "model": "sprockets:conveyorBelt2" },
+            "2": { "y": 90, "x": 90 },
+            "3": { "y": 90, "x": 0 },
+            "4": { "y": 0, "x": 0 },
+            "5": { "y": 0, "x": 90 },
+            "6": {}
+        },
+        "normal": [{}],
+        "multipart": [{}]
+    }
+}

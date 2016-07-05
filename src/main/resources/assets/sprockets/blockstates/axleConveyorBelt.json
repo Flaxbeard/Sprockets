@@ -1,0 +1,29 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "sprockets:dummy", 
+		"textures": {
+			"particle": "sprockets:blocks/axleSide"
+		}
+	},
+	"variants": {
+	     "dir": {
+                  "0": { "model": "sprockets:conveyorBelt2Axle", "y": 270 },
+                  "1": { "model": "sprockets:conveyorBelt2Axle" },
+                  "2": { "model": "sprockets:conveyorBeltAxle", "y": 90, "x": 90 },
+                  "3": { "model": "sprockets:conveyorBeltAxle", "y": 90, "x": 0 },
+                  "4": { "model": "sprockets:conveyorBeltAxle", "y": 0, "x": 0 },
+                  "5": { "model": "sprockets:conveyorBeltAxle", "y": 0, "x": 270 },
+                  "6": { "model": "sprockets:conveyorBelt2Axle", "y": 90 },
+                  "7": { "model": "sprockets:conveyorBelt2Axle", "y": 180 },
+                  "8": { "model": "sprockets:conveyorBeltAxle", "y": 90, "x": 270 },
+                  "9": { "model": "sprockets:conveyorBeltAxle", "y": 90, "x": 180 },
+                  "10": { "model": "sprockets:conveyorBeltAxle", "y": 0, "x": 180 },
+                  "11": { "model": "sprockets:conveyorBeltAxle", "y": 0, "x": 90 },
+                  "12": {}
+            },
+		"normal": [{}],
+		"inventory": [{}],
+		"multipart": [{}]
+	}
+}

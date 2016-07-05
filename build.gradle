@@ -71,7 +71,7 @@ repositories {
     maven { url "http://maven.amadornes.com/" }
 }
 dependencies {
-    deobfCompile "MCMultiPart:MCMultiPart-experimental:1.2.0_70:universal"
+    deobfCompile "MCMultiPart:MCMultiPart-experimental:1.2.0_74:universal"
 }
 
 processResources

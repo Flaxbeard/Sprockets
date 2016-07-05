@@ -69,7 +69,7 @@ public class MechanicalNetworkRegistry
 	{
 		if (e.phase == TickEvent.Phase.END)
 		{
-
+			
 			
 			Set<MechanicalNetwork> toRemove = new HashSet<MechanicalNetwork>();
 			try
@@ -92,7 +92,10 @@ public class MechanicalNetworkRegistry
 						}
 					}
 
-					
+					if (dimension == 0)
+					{
+						//System.out.println(networks.get(dimension).size());
+					}
 				}
 			}
 			catch (ConcurrentModificationException e1)
@@ -151,6 +154,7 @@ public class MechanicalNetworkRegistry
 		{
 			toReturn = new MechanicalNetwork(UUID.randomUUID().toString(), conduit.getWorldMC());
 			toReturn.addConduit(conduit);
+			//toReturn.rotation = conduit.savedRotation()
 		}
 		
 		

@@ -48,8 +48,15 @@ public class BlockMultiblock extends BlockSprocketBase implements ITileEntityPro
 		{
 			return mb.getHardness();
 		}
+		System.out.println("A");
 		return super.getBlockHardness(blockState, worldIn, pos);
 	}
+	
+	@Override
+	public boolean isToolEffective(String type, IBlockState state)
+    {
+		return ("pickaxe".equals(type) || "axe".equals(type));
+    }
 
 	
 	@Override

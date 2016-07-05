@@ -135,7 +135,7 @@ public abstract class PartSprocketBaseNoConduit extends Multipart
 			}
 		}
 		
-		float breakSpeed = player.getDigSpeed(getExtendedState(MultipartRegistry.getDefaultState(this).getBaseState()), getPos());
+		float breakSpeed = 1; //player.getDigSpeed(getExtendedState(MultipartRegistry.getDefaultState(this).getBaseState()), getPos());
 		
 		if (!effective)
 		{

@@ -129,7 +129,11 @@ public class TileEntityStampMill extends TileEntitySprocketBase implements IMech
 	public void update()
 	{
 		super.update();
-
+		
+		if (getNetwork() != null)
+		{
+			System.out.println(getNetwork().rotation * getMultiplier() * (getState() ? 1 : -1));
+		}
 
 		if (facing == -1 && worldObj != null && worldObj.getBlockState(getPosMC()) != null && worldObj.getBlockState(getPosMC()).getBlock() == SprocketsBlocks.stampMill)
 		{

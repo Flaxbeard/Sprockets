@@ -137,7 +137,7 @@ public abstract class PartSprocketBase extends PartMechanicalConduit
 			}
 		}
 		
-		float breakSpeed = player.getDigSpeed(getExtendedState(MultipartRegistry.getDefaultState(this).getBaseState()), getPos());
+		float breakSpeed = 1; //player.getDigSpeed(getExtendedState(MultipartRegistry.getDefaultState(this).getBaseState()), getPos());
 		
 		if (!effective)
 		{

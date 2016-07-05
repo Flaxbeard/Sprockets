@@ -1,8 +1,15 @@
 package flaxbeard.sprockets.api;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import mcmultipart.multipart.PartSlot;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import flaxbeard.sprockets.api.network.MechanicalNetwork;
 import flaxbeard.sprockets.api.network.MechanicalNetworkRegistry;
@@ -140,5 +147,21 @@ public abstract class TileEntityMechanicalConduit extends TileEntity implements 
 	{
 		return getNetwork().getTorqueForConduit(this);
 	}
-
+	
+	private static final Set<Tuple<Vec3i, PartSlot>> emptyMultipart = new HashSet<Tuple<Vec3i, PartSlot>>();
+	
+	@Override
+	public Set<Tuple<Vec3i, PartSlot>> multipartLinearConnections()
+	{
+		return emptyMultipart;
+	}
+	
+	private static final Set<Vec3i> empty = new HashSet<Vec3i>();
+	
+	@Override
+	public Set<Vec3i> linearConnections()
+	{
+		return empty;
+	}
+	
 }

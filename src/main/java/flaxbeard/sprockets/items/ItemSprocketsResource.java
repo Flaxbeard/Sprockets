@@ -6,7 +6,7 @@ public class ItemSprocketsResource extends ItemSprocketBase
 	public ItemSprocketsResource()
 	{
 		super("resource");
-		this.subnames = new String[] { "windmillBlade" };
+		this.subnames = new String[] { "windmillBlade", "waterwheelPart" };
         this.setHasSubtypes(true);
 	}
 

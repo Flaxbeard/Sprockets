@@ -4,7 +4,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import flaxbeard.sprockets.Sprockets;
+import flaxbeard.sprockets.blocks.tiles.TileEntityBellows;
 import flaxbeard.sprockets.blocks.tiles.TileEntityCreativeEngine;
+import flaxbeard.sprockets.blocks.tiles.TileEntityFrictionHeater;
 import flaxbeard.sprockets.blocks.tiles.TileEntityMillstone;
 import flaxbeard.sprockets.blocks.tiles.TileEntityMultiblock;
 import flaxbeard.sprockets.blocks.tiles.TileEntityPump;
@@ -29,7 +31,9 @@ public class SprocketsBlocks
 	public static BlockWaterWheelPart waterwheelComponent;
 	public static BlockStampMill stampMill;
 	public static BlockPump pump;
-	
+	public static BlockFrictionHeater frictionHeater;
+	public static BlockBellows bellows;
+
 	public static void preInit()
 	{
 		windmillSmall = new BlockWindmillSmall("windmillSmall", Material.WOOD, 1.0f, 1.0f);
@@ -43,7 +47,9 @@ public class SprocketsBlocks
 		waterwheelComponent = new BlockWaterWheelPart("waterwheelComponent", Material.WOOD, 1.0f, 1.0f);
 		stampMill = new BlockStampMill("stampMill", Material.ROCK, 1.5F, 10.0F);
 		pump = new BlockPump("pump", Material.ROCK);
-		
+		frictionHeater = new BlockFrictionHeater("frictionHeater", Material.WOOD, 1.0f, 1.0f);
+		bellows = new BlockBellows("bellows", Material.WOOD, 1.0f, 1.0f);
+
 		registerTileEntity(TileEntityWindmillSmall.class);
 		registerTileEntity(TileEntityWindmill.class);
 		registerTileEntity(TileEntityRedstoneEngine.class);
@@ -55,6 +61,9 @@ public class SprocketsBlocks
 		registerTileEntity(TileEntityWaterWheelComponent.class);
 		registerTileEntity(TileEntityStampMill.class);
 		registerTileEntity(TileEntityPump.class);
+		registerTileEntity(TileEntityFrictionHeater.class);
+		registerTileEntity(TileEntityBellows.class);
+
 	}
 
 	

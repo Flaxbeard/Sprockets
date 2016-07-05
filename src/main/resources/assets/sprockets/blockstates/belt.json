@@ -1,8 +1,10 @@
 {
     "forge_marker": 1,
     "defaults": {
-        "model": "sprockets:belt",
-        "particle": "sprockets:belt"
+        "model": "sprockets:belt", 
+        "textures": {
+            "particle": "sprockets:blocks/leatherBelt"
+        }
     },
     "variants": {
         "dir": {
@@ -11,7 +13,8 @@
             "2": { "y": 90, "x": 90 },
             "3": { "y": 90, "x": 0 },
             "4": { "y": 0, "x": 0 },
-            "5": { "y": 0, "x": 90 }
+            "5": { "y": 0, "x": 90 },
+            "6": {}
         },
         "normal": [{}],
         "multipart": [{}]

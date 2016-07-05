@@ -97,7 +97,7 @@ public class BlockStampMill extends BlockSprocketBase implements ITileEntityProv
 	@Override
 	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
 	{
-	    return new ItemStack(Item.getItemFromBlock(SprocketsBlocks.stampMill));
+	    return new ItemStack(Item.getItemFromBlock(Blocks.IRON_BLOCK));
 	}
 
 	
@@ -140,6 +140,6 @@ public class BlockStampMill extends BlockSprocketBase implements ITileEntityProv
 	{
 	    return new BlockStateContainer(this, new IProperty[] {FACING});
 	}
-	
+
 
 }

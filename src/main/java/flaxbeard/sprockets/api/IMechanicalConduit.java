@@ -18,7 +18,7 @@ import flaxbeard.sprockets.api.network.MechanicalNetwork;
  * 
  */
 public interface IMechanicalConduit
-{
+{	
 	/**
 	 * All of the relative multipart positions this conduit can connect to in a cis connection
 	 * 
@@ -39,6 +39,10 @@ public interface IMechanicalConduit
 	 */
 	public Set<Tuple<Vec3i, PartSlot>> multipartTransConnections();
 	
+	
+	public Set<Tuple<Vec3i, PartSlot>> multipartLinearConnections();
+
+	
 	/**
 	 * All of the full blocks this conduit can connect to in a cis connection
 	 * 
@@ -52,6 +56,8 @@ public interface IMechanicalConduit
 	 * @return An iterable representing the different directions this conduit can connect.
 	 */
 	public Set<Vec3i> transConnections();
+	
+	public Set<Vec3i> linearConnections();
 
 	/**
 	 * The maximum speed this conduit can rotate at.

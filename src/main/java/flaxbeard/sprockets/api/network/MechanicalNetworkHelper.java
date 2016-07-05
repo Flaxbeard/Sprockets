@@ -289,6 +289,59 @@ public class MechanicalNetworkHelper
 			}
 		}
 		
+		// Process all potential multipart linear-type connections
+		outerLoop:
+		for (Tuple<Vec3i, PartSlot> connection : base.multipartLinearConnections())
+		{
+			Vec3i vector = connection.getFirst();
+			PartSlot slot = connection.getSecond();
+			
+			BlockPos checkPos = position.add(vector);
+			IMultipartContainer container = MultipartHelper.getPartContainer(world, checkPos);
+			
+			// If a container exists in the possible position...
+			if (container != null)
+			{
+				IMultipart part = getPartInSlot(container, slot);
+				
+				// And it has an IMechanicalConduit in the right spot...
+				if (part != null && part instanceof IMechanicalConduit)
+				{
+					IMechanicalConduit conduit = (IMechanicalConduit) part;
+					
+					// If this is a whole block (TE), check to make sure the conduit can
+					// link with this
+					if (base instanceof TileEntity)
+					{
+						if (willConnectLinear(conduit, invertVector(vector)))
+						{
+							output.add(conduit);
+							continue outerLoop;
+						}
+					}
+					// If this is a multipart, check to see if the conduit can link
+					else if (base instanceof ISlottedPart)
+					{
+						Object[] slots = getSlotsOccupied((ISlottedPart) base).toArray();
+						for (Object checkSlot : slots)
+						{
+							if (willConnectLinearMultipart(conduit, invertVector(vector), (PartSlot) checkSlot))
+							{
+
+								output.add(conduit);
+								continue outerLoop;
+							}
+						}
+						
+					}
+					else
+					{
+						throw new IllegalArgumentException("IMechanicalConduit that is not a TileEntity or IMultipart!");
+					}
+				}
+			}
+		}
+		
 		// Process all potential full block cis-type connections
 		outerLoop:
 		for (Vec3i vector : base.cisConnections())
@@ -366,6 +419,52 @@ public class MechanicalNetworkHelper
 					for (Object checkSlot : slots)
 					{
 						if (willConnectTransMultipart(conduit, invertVector(vector), (PartSlot) checkSlot))
+						{
+							output.add(conduit);
+							continue outerLoop;
+						}
+					}
+					
+				}
+				else
+				{
+					throw new IllegalArgumentException("IMechanicalConduit that is not a TileEntity or IMultipart!");
+				}
+			}
+		}
+		
+		// Process all potential full block linear-type connections
+		outerLoop:
+		for (Vec3i vector : base.linearConnections())
+		{
+			BlockPos checkPos = position.add(vector);
+			TileEntity te = world.getTileEntity(checkPos);
+			
+			// If an IMechanicalConduit te exists in the possible position
+			if (te != null && te instanceof IMechanicalConduit)
+			{	
+				IMechanicalConduit conduit = (IMechanicalConduit) te;
+				
+				// If this is a whole block (TE), check to make sure the conduit can
+				// link with this
+				if (base instanceof TileEntity)
+				{
+					if (willConnectLinear(conduit, invertVector(vector)))
+					{
+						
+						output.add(conduit);
+						continue outerLoop;
+					}
+				}
+				// If this is a multipart, check to see if the conduit can link
+				else if (base instanceof ISlottedPart)
+				{
+					
+					Object[] slots = getSlotsOccupied((ISlottedPart) base).toArray();
+					
+					for (Object checkSlot : slots)
+					{
+						if (willConnectLinearMultipart(conduit, invertVector(vector), (PartSlot) checkSlot))
 						{
 							output.add(conduit);
 							continue outerLoop;
@@ -530,6 +629,75 @@ public class MechanicalNetworkHelper
 			}
 		}
 		
+		// Process all potential multipart linear-type connections
+		outerLoop:
+		for (Tuple<Vec3i, PartSlot> connection : base.multipartLinearConnections())
+		{
+			Vec3i vector = connection.getFirst();
+			PartSlot slot = connection.getSecond();
+			
+			BlockPos checkPos = position.add(vector);
+			IMultipartContainer container = MultipartHelper.getPartContainer(world, checkPos);
+			
+			// If a container exists in the possible position...
+			if (container != null)
+			{
+				IMultipart part = getPartInSlot(container, slot);
+				
+				// And it has an IMechanicalConduit in the right spot...
+				if (part != null && part instanceof IMechanicalConduit)
+				{
+					IMechanicalConduit conduit = (IMechanicalConduit) part;
+					
+					// If this is a whole block (TE), check to make sure the conduit can
+					// link with this
+					if (base instanceof TileEntity)
+					{
+						if (willConnectLinear(conduit, invertVector(vector)))
+						{
+							if (conduit.isNegativeDirection() == base.isNegativeDirection())
+							{
+								output.add(conduit, state, mult);
+							}
+							else
+							{
+								output.add(conduit, !state, mult);
+							}
+
+							continue outerLoop;
+						}
+					}
+					// If this is a multipart, check to see if the conduit can link
+					else if (base instanceof ISlottedPart)
+					{
+						Object[] slots = getSlotsOccupied((ISlottedPart) base).toArray();
+						
+						for (Object checkSlot : slots)
+						{
+							if (willConnectLinearMultipart(conduit, invertVector(vector), (PartSlot) checkSlot))
+							{
+								if (conduit.isNegativeDirection() == base.isNegativeDirection())
+								{
+									output.add(conduit, state, mult);
+								}
+								else
+								{
+									output.add(conduit, !state, mult);
+								}
+								
+								continue outerLoop;
+							}
+						}
+						
+					}
+					else
+					{
+						throw new IllegalArgumentException("IMechanicalConduit that is not a TileEntity or IMultipart!");
+					}
+				}
+			}
+		}
+		
 		// Process all potential full block cis-type connections
 		outerLoop:
 		for (Vec3i vector : base.cisConnections())
@@ -639,6 +807,69 @@ public class MechanicalNetworkHelper
 				}
 			}
 		}
+		
+		// Process all potential full block linear-type connections
+		outerLoop:
+		for (Vec3i vector : base.linearConnections())
+		{
+			BlockPos checkPos = position.add(vector);
+			TileEntity te = world.getTileEntity(checkPos);
+			
+			// If an IMechanicalConduit te exists in the possible position
+			if (te != null && te instanceof IMechanicalConduit)
+			{	
+				
+				IMechanicalConduit conduit = (IMechanicalConduit) te;
+				
+				// If this is a whole block (TE), check to make sure the conduit can
+				// link with this
+				if (base instanceof TileEntity)
+				{
+					
+					if (willConnectLinear(conduit, invertVector(vector)))
+					{
+						if (conduit.isNegativeDirection() == base.isNegativeDirection())
+						{
+							output.add(conduit, state, mult);
+						}
+						else
+						{
+							output.add(conduit, !state, mult);
+						}
+						
+						continue outerLoop;
+					}
+				}
+				// If this is a multipart, check to see if the conduit can link
+				else if (base instanceof ISlottedPart)
+				{
+					
+					Object[] slots = getSlotsOccupied((ISlottedPart) base).toArray();
+					
+					for (Object checkSlot : slots)
+					{
+						if (willConnectLinearMultipart(conduit, invertVector(vector), (PartSlot) checkSlot))
+						{
+							if (conduit.isNegativeDirection() == base.isNegativeDirection())
+							{
+								output.add(conduit, state, mult);
+							}
+							else
+							{
+								output.add(conduit, !state, mult);
+							}
+	
+							continue outerLoop;
+						}
+					}
+					
+				}
+				else
+				{
+					throw new IllegalArgumentException("IMechanicalConduit that is not a TileEntity or IMultipart!");
+				}
+			}
+		}
 	
 
 		return output;
@@ -674,6 +905,19 @@ public class MechanicalNetworkHelper
 	public static boolean willConnectTrans(IMechanicalConduit conduit, Vec3i vector)
 	{
 		for (Vec3i potentialConnection : conduit.transConnections())
+		{
+			if (potentialConnection.equals(vector))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static boolean willConnectLinear(IMechanicalConduit conduit, Vec3i vector)
+	{
+
+		for (Vec3i potentialConnection : conduit.linearConnections())
 		{
 			if (potentialConnection.equals(vector))
 			{
@@ -724,6 +968,17 @@ public class MechanicalNetworkHelper
 		return false;
 	}
 	
+	public static boolean willConnectLinearMultipart(IMechanicalConduit conduit, Vec3i vector, PartSlot slot)
+	{
+		for (Tuple potentialConnection : conduit.multipartLinearConnections())
+		{
+			if (potentialConnection.getFirst().equals(vector) && potentialConnection.getSecond().equals(slot))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	private static Vec3i invertVector(Vec3i vec)
 	{

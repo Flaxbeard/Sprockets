@@ -90,14 +90,15 @@ public class PartClutch extends PartAxleBase
 	@Override
 	public ItemStack getPickBlock(EntityPlayer player, PartMOP hit)
 	{
-		return new ItemStack(SprocketsMultiparts.clutch, 1, damage); // TODO
+		return new ItemStack(SprocketsMultiparts.clutch);
 	}
 	
 	@Override
 	public List<ItemStack> getDrops()
 	{
 		ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
-		drops.add(new ItemStack(SprocketsMultiparts.clutch, 1, damage));
+		drops.add(new ItemStack(SprocketsMultiparts.clutch));
+		drops.add(new ItemStack(SprocketsMultiparts.axle, 1, damage));
 		return drops;
 	}
 	

@@ -249,7 +249,6 @@ public class Multiblock
 	
 	public boolean multiblockExists(World iba, BlockPos pos)
 	{
-		
 		return 
 				multiblockExists(iba, pos, false, false, false) || multiblockExists(iba, pos, true, false, false)
 				|| multiblockExists(iba, pos, false, true, false) || multiblockExists(iba, pos, true, true, false)
@@ -275,12 +274,13 @@ public class Multiblock
 					
 					if (!isEqual(mb[y][fz][fx], iba, pos.add(flipX ? -x : x, y, flipZ ? -z : z)))
 					{
-
+						
 						return false;
 					}
 				}
 			}
 		}
+		
 		createMultiblock(iba, pos, swapXZ, flipXo, flipZo);
 		return true;
 	}

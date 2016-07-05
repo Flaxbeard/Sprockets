@@ -407,6 +407,11 @@ public class MechanicalNetwork
 			
 		}
 
+		
+		if (!isJammed() && !this.world.isRemote)
+		{
+			this.rotation += speed;
+		}
 
 		return conduits.size() > 0;
 		
@@ -442,7 +447,7 @@ public class MechanicalNetwork
 			
 			for (MechanicalNetwork network : createdNetworks)
 			{
-				network.rotation = rotation;
+				//network.rotation = rotation;
 			}
 			resetAll();
 		}
@@ -497,9 +502,9 @@ public class MechanicalNetwork
 
 	public void clientTick()
 	{
-		if (!isJammed())
+		if (!isJammed() && this.world.isRemote)
 		{
-			this.rotation += speed;
+			this.rotation =  this.rotation + speed;
 		}
 		else
 		{

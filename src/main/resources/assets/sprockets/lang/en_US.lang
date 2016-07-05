@@ -30,11 +30,13 @@ item.sprockets.oreHeap.postfix.name=
 # BLOCKS
 tile.sprockets.windmillSmall.name=Small Windmill
 tile.sprockets.windmill.name=Windmill
-tile.sprockets.waterWheel.name=Water Wheel
+tile.sprockets.waterwheel.name=Water Wheel
+tile.sprockets.frictionHeater.name=Friction Heater
 tile.sprockets.redstoneEngine.name=Redstone Engine
 tile.sprockets.creativeEngine.name=Creative Engine
 tile.sprockets.millstone.name=Millstone
 tile.sprockets.spring.name=Torsion Spring
+tile.sprockets.bellows.name=Bellows
 
 # MISC
 itemGroup.sprockets=Sprockets
@@ -44,7 +46,12 @@ item.sprockets.wrench.name=Sprocket Wrench
 item.sprockets.crank.name=Crank
 item.sprockets.gyrometer.name=Gyrometer
 item.sprockets.resource.windmillBlade.name=Windmill Blade
+item.sprockets.resource.waterwheelPart.name=Water Wheel Component
+item.sprockets.clutch.name=Clutch
+item.sprockets.yoke.name=Scotch Yoke
 
+item.sprockets.belt.leather.name=Leather Belt
+item.sprockets.conveyorBelt.leather.name=Leather Conveyor Belt
 
 # GYROMETER OUTPUT
 sprockets.gyrometer.windmill.stuck=The windmill seems stuck on something
